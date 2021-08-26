@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="UserInfo"
+            type="com.liyihuanx.myjetpack.UserInfoBean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/navigation_fragment_list" />
+
+
+
+<!--        app:itemTextColor 指的是导航栏文字的颜色-->
+<!--        app:itemIconTint 指的是导航栏中图片的颜色-->
+<!--        app:itemBackground 指的是底部导航栏的背景颜色,默认是主题的颜色-->
+<!--        app:menu 指的是布局（文字和图片都写在这个里面）-->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/BnvLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?android:attr/windowBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/main_tab_menu" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

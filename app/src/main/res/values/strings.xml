@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyJetpack</string>
+    <string name="title_home">Home</string>
+    <string name="title_two">Two</string>
+    <string name="title_three">Three</string>
+    <string name="title_mine">Mine</string>
+
+</resources>

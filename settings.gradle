@@ -1,0 +1,4 @@
+include ':module_ui'
+include ':module_base'
+include ':app'
+rootProject.name = "MyJetpack"
