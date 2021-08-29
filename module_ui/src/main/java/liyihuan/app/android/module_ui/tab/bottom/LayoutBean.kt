@@ -8,7 +8,7 @@ package liyihuan.app.android.module_ui.tab.bottom
 data class LayoutBean(
     val defaultLineWidth: Float? = 1f,
     val defaultLineColor: String? = "#dfe0e1",
-    val defaultLayoutHeight: Int? = 50,
+    val defaultLayoutHeight: Float? = 50f,
     val defaultLayoutAlpha: Float? = 1f,
     val layoutBackground: String? = "#ffffff"
 )

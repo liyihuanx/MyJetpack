@@ -11,7 +11,7 @@ import java.lang.Exception
  */
 object AppContext {
     private var application: Application? = null
-    fun get(): Application? {
+    fun get(): Application {
         if (application == null) {
             try {
                 application = Class.forName("android.app.ActivityThread")
@@ -21,6 +21,6 @@ object AppContext {
                 ex.printStackTrace()
             }
         }
-        return application
+        return application!!
     }
 }

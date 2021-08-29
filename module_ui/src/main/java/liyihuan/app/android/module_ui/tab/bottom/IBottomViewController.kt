@@ -1,5 +1,6 @@
 package liyihuan.app.android.module_ui.tab.bottom
 
+import com.liyihuanx.module_base.utils.AppContext
 import liyihuan.app.android.module_ui.R
 
 /**
@@ -28,11 +29,11 @@ interface IBottomViewController {
     // 构建默认的
     companion object {
 
-        var defaultLineWidth: Float? = 1f
-        var defaultLineColor: String? = "#dfe0e1"
-        var defaultLayoutHeight: Int? = 50
-        var defaultLayoutAlpha: Float? = 1f
-        var layoutBackground: String? = "#ffffff"
+        var defaultLineWidth: Float = 1f
+        var defaultLineColor: String = "#dfe0e1"
+        var defaultLayoutHeight: Float = 50f
+        var defaultLayoutAlpha: Float = 1f
+        var layoutBackground: String = "#ffffff"
 
         var DEFAULT = object : IBottomViewController {
             override fun defaultNormalColor(): Int {
@@ -40,14 +41,14 @@ interface IBottomViewController {
             }
 
             override fun defaultSelectColor(): Int {
-                return R.color.defaultSelectColor
+                return AppContext.get().resources.getColor(R.color.defaultSelectColor)
             }
 
             override fun defaultLayoutBean(layoutBean: LayoutBean) {
                 layoutBean.let {
                     defaultLineWidth = layoutBean.defaultLineWidth ?: 1f
                     defaultLineColor = layoutBean.defaultLineColor ?: "#dfe0e1"
-                    defaultLayoutHeight = layoutBean.defaultLayoutHeight ?: 50
+                    defaultLayoutHeight = layoutBean.defaultLayoutHeight ?: 50f
                     defaultLayoutAlpha = layoutBean.defaultLayoutAlpha ?: 1f
                     layoutBackground = layoutBean.layoutBackground ?: "#ffffff"
                 }

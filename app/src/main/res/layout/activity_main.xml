@@ -11,14 +11,12 @@
 
     </data>
 
-
-    <liyihuan.app.android.module_ui.tab.bottom.HiTabBottomLayout
-        android:id="@+id/tabBottomLayout"
+    <liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    </liyihuan.app.android.module_ui.tab.bottom.HiTabBottomLayout>
-
+    </liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout>
 
 </layout>

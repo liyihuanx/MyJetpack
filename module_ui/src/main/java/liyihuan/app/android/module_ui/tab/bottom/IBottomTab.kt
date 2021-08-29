@@ -1,7 +1,5 @@
 package liyihuan.app.android.module_ui.tab.bottom
 
-import liyihuan.app.android.module_ui.R
-
 /**
  * @author created by liyihuanx
  * @date 2021/8/27
@@ -12,8 +10,11 @@ interface IBottomTab {
 
     fun setTabInfo(tabinfo: BottomTabBean)
 
-
-    fun tabSelect()
+    fun tabSelect(
+        currentBean: BottomTabBean,
+        prevBean: BottomTabBean,
+        prevTabView: BottomTabView
+    )
 
 
 }

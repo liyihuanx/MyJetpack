@@ -28,7 +28,7 @@ object DisplayUtil {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp,
-            AppContext.get()!!.resources.displayMetrics
+            AppContext.get().resources.displayMetrics
         ).toInt()
     }
 
