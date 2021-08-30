@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="UserInfo"
-            type="com.liyihuanx.myjetpack.UserInfoBean" />
+            name="test1"
+            type="String" />
+
 
     </data>
 
-    <liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout
+    <liyihuan.app.android.module_ui.tab.bottom.TestLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
+        app:tes1="@{test1}"
         android:layout_height="match_parent">
 
 
-    </liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout>
+    </liyihuan.app.android.module_ui.tab.bottom.TestLayout>
 
 </layout>

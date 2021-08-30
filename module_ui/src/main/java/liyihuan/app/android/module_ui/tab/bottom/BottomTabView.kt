@@ -49,11 +49,7 @@ class BottomTabView @JvmOverloads constructor(
         prevBean: BottomTabBean,
         prevTabView: BottomTabView
     ) {
-        if (currentBean == prevBean) {
-            return
-        }
-        prevTabView.inflateBottomView(selected = false, isInit = false)
-        inflateBottomView(selected = true, isInit = false)
+
     }
 
     /**

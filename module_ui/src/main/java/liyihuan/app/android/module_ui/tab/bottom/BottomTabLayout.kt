@@ -17,6 +17,9 @@ class BottomTabLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), IBottomLayout {
 
+    private val tabSelectedChangeListeners = ArrayList<IBottomLayout.OnTabSelectedListener>()
+
+
     private val TAG_TAB_BOTTOM_LAYOUT = "TAG_TAB_BOTTOM_LAYOUT"
 
     // 所有的tab的list
@@ -41,7 +44,6 @@ class BottomTabLayout @JvmOverloads constructor(
         DisplayUtil.getDisplayWidthInPx(context) / bottomTabList.size
     }
 
-    var enterPosition: Int = -1
 
     /**
      * 给外部调用，把底部tab初始化，添加到布局，和数据绑定
@@ -55,12 +57,13 @@ class BottomTabLayout @JvmOverloads constructor(
         }
         prevTabBeanInfo = null
 
-        // 赋初值
-        setPrevTabBeanInfo()
         val flBottomLayout = FrameLayout(context)
         flBottomLayout.tag = TAG_TAB_BOTTOM_LAYOUT
 
-        val defaultLayoutHeight = DisplayUtil.dp2px(IBottomViewController.defaultLayoutHeight, resources)
+        val defaultLayoutHeight = DisplayUtil.dp2px(
+            IBottomViewController.defaultLayoutHeight,
+            resources
+        )
         val tabWidth = DisplayUtil.getDisplayWidthInPx(context) / bottomTabList.size
 
 
@@ -79,15 +82,11 @@ class BottomTabLayout @JvmOverloads constructor(
                 }
             }
 
-            if (enterPosition == index) {
-
-            }
-
             flBottomLayout.addView(bottomTabView, params)
             bottomTabViewList[bottomTabBean] = bottomTabView
         }
         addLayoutLineWidth()
-        addLayoutBackgroud()
+        addLayoutBackground()
 
         val flPrams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         flPrams.gravity = Gravity.BOTTOM
@@ -119,21 +118,9 @@ class BottomTabLayout @JvmOverloads constructor(
     /**
      * 添加tablayout的背景
      */
-    private fun addLayoutBackgroud() {
+    private fun addLayoutBackground() {
 
     }
 
-    /**
-     * 得到进入时选中那一个的bean
-     */
-    private fun setPrevTabBeanInfo() {
-        if (enterPosition < 0 || enterPosition > bottomTabList.size) {
-            prevTabBeanInfo = bottomTabList[0]
-            return
-        }
-
-        prevTabBeanInfo = bottomTabList[enterPosition]
-
-    }
 
 }

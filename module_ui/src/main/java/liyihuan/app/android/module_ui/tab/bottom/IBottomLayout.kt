@@ -8,6 +8,10 @@ package liyihuan.app.android.module_ui.tab.bottom
  */
 interface IBottomLayout {
 
-    fun bindBottomTabData(data : ArrayList<BottomTabBean>)
+    fun bindBottomTabData(data: ArrayList<BottomTabBean>)
+
+    interface OnTabSelectedListener {
+        fun onTabSelectedChange(index: Int, prevInfo: BottomTabBean?, nextInfo: BottomTabBean)
+    }
 
 }

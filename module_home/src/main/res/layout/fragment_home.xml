@@ -5,7 +5,7 @@
 
         <variable
             name="homeHelper"
-            type="com.liyihuanx.myjetpack.navigation.HomeFragment" />
+            type="com.liyihuanx.module_home.HomeFragment" />
 
     </data>
 

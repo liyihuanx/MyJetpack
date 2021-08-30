@@ -1,18 +1,16 @@
-package com.liyihuanx.myjetpack.navigation
+package com.liyihuanx.module_home
 
 import android.util.Log
 import android.view.View
 import com.liyihuanx.module_base.fragment.BaseFragment
-import com.liyihuanx.myjetpack.R
-import com.liyihuanx.myjetpack.databinding.FragmentHomeBinding
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.liyihuanx.module_home.databinding.FragmentHomeBinding
 
 /**
  * @author created by liyihuanx
- * @date 2021/8/23
+ * @date 2021/8/30
  * @description: 类的描述
  */
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(){
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
