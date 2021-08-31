@@ -11,13 +11,18 @@
 
     </data>
 
-    <liyihuan.app.android.module_ui.tab.bottom.TestLayout
+    <liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        app:tes1="@{test1}"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/flFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-    </liyihuan.app.android.module_ui.tab.bottom.TestLayout>
+
+
+    </liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout>
 
 </layout>

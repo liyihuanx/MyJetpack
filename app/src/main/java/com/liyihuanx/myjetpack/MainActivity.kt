@@ -14,29 +14,43 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun bindLayoutData() {
-        mBinding.test1 = "66666666666666666666"
-//        mBinding.userInfo = UserInfoBean()
-////        val itemName: String,
-////        val selectIcon: Int? = null,
-////        val normalIcon: Int,
-////        val selectColor: Int? = null,
-////        val normalColor: Int? = null,
-////        val textFont: Int? = null
-//        val arrayListOf = arrayListOf<BottomTabBean>(
-//            BottomTabBean(
-//                "首页1", R.drawable.tabbar_account_selected, R.drawable.tabbar_account
-//            ),
-//            BottomTabBean(
-//                "首页2", R.drawable.tabbar_account_selected, R.drawable.tabbar_account
-//            ),
-//            BottomTabBean(
-//                "首页3", R.drawable.tabbar_account_selected, R.drawable.tabbar_account
-//            ),
-//            BottomTabBean(
-//                "首页4", R.drawable.tabbar_account_selected, R.drawable.tabbar_account
-//            )
-//        )
-//        tabLayout.bindBottomTabData(arrayListOf)
+//        val itemName: String,
+//        val selectIcon: Int? = null,
+//        val normalIcon: Int,
+//        val selectColor: Int? = null,
+//        val normalColor: Int? = null,
+//        val textFont: Int? = null
+        val arrayListOf = arrayListOf<BottomTabBean>(
+            BottomTabBean(
+                "首页1",
+                R.drawable.tabbar_account_selected,
+                R.drawable.tabbar_account,
+                R.color.defaultNormalColor,
+                R.color.defaultSelectColor
+            ),
+            BottomTabBean(
+                "首页2",
+                R.drawable.tabbar_account_selected,
+                R.drawable.tabbar_account,
+                R.color.defaultNormalColor,
+                R.color.defaultSelectColor
+            ),
+            BottomTabBean(
+                "首页3",
+                R.drawable.tabbar_account_selected,
+                R.drawable.tabbar_account,
+                R.color.defaultNormalColor,
+                R.color.defaultSelectColor
+            ),
+            BottomTabBean(
+                "首页4",
+                R.drawable.tabbar_account_selected,
+                R.drawable.tabbar_account,
+                R.color.defaultNormalColor,
+                R.color.defaultSelectColor
+            ),
+        )
+        tabLayout.bindBottomTabData(arrayListOf)
     }
 
 }

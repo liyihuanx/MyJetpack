@@ -16,33 +16,25 @@ class BottomTabLayout @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), IBottomLayout {
+    private val TAG_TAB_BOTTOM_LAYOUT = "TAG_TAB_BOTTOM_LAYOUT"
 
     private val tabSelectedChangeListeners = ArrayList<IBottomLayout.OnTabSelectedListener>()
-
-
-    private val TAG_TAB_BOTTOM_LAYOUT = "TAG_TAB_BOTTOM_LAYOUT"
 
     // 所有的tab的list
     private var bottomTabList = ArrayList<BottomTabBean>()
 
-    // 所有的tabview
-    private var bottomTabViewList = HashMap<BottomTabBean, BottomTabView>()
+    private val bottomAlpha = 1f
 
-    // 点击事件之前tab的信息
-    private var prevTabBeanInfo: BottomTabBean? = null
+    //TabBottom高度
+    private val defaultLayoutHeight = 50f
 
-    private var iBottomViewController = IBottomViewController.DEFAULT
+    //TabBottom的头部线条高度
+    private val bottomLineHeight = 0.5f
 
-    // 高度
-    private val defaultLayoutHeight by lazy {
-        DisplayUtil.dp2px(IBottomViewController.defaultLayoutHeight, resources)
-    }
+    //TabBottom的头部线条颜色
+    private val bottomLineColor = "#dfe0e1"
 
-
-    // 每个tab的宽度
-    private val tabWidth by lazy {
-        DisplayUtil.getDisplayWidthInPx(context) / bottomTabList.size
-    }
+    private var selectedInfo: BottomTabBean? = null
 
 
     /**
@@ -55,15 +47,14 @@ class BottomTabLayout @JvmOverloads constructor(
         for (i in childCount - 1 downTo 1) {
             removeViewAt(i)
         }
-        prevTabBeanInfo = null
+        // 清除接口
+        tabSelectedChangeListeners.clear()
 
+        // 父布局
         val flBottomLayout = FrameLayout(context)
         flBottomLayout.tag = TAG_TAB_BOTTOM_LAYOUT
 
-        val defaultLayoutHeight = DisplayUtil.dp2px(
-            IBottomViewController.defaultLayoutHeight,
-            resources
-        )
+        val defaultLayoutHeight = DisplayUtil.dp2px(defaultLayoutHeight, resources)
         val tabWidth = DisplayUtil.getDisplayWidthInPx(context) / bottomTabList.size
 
 
@@ -78,12 +69,12 @@ class BottomTabLayout @JvmOverloads constructor(
             val bottomTabView = BottomTabView(context).apply {
                 setTabInfo(bottomTabBean)
                 setOnClickListener {
-                    onSelect(bottomTabBean)
+                    onSelected(bottomTabBean)
                 }
-            }
 
+            }
+            tabSelectedChangeListeners.add(bottomTabView)
             flBottomLayout.addView(bottomTabView, params)
-            bottomTabViewList[bottomTabBean] = bottomTabView
         }
         addLayoutLineWidth()
         addLayoutBackground()
@@ -92,19 +83,27 @@ class BottomTabLayout @JvmOverloads constructor(
         flPrams.gravity = Gravity.BOTTOM
         addView(flBottomLayout, flPrams)
 
+        // 默认选中第一个
+        onSelected(bottomTabList[0])
+    }
 
+    /**
+     * 添加tab点击的监听
+     */
+    override fun addTabSelectedChangeListener(listener: IBottomLayout.OnTabSelectedListener) {
+        tabSelectedChangeListeners.add(listener)
     }
 
 
     /**
      * 每个tabView的点击方法
      */
-    private fun onSelect(nextTabBeanInfo: BottomTabBean) {
-        val nextTabView = bottomTabViewList[nextTabBeanInfo]!!
-        val prevTabView = bottomTabViewList[prevTabBeanInfo]!!
+    private fun onSelected(nextInfo: BottomTabBean) {
+        tabSelectedChangeListeners.forEach {
+            it.onTabSelectedChange(bottomTabList.indexOf(nextInfo), selectedInfo, nextInfo)
+        }
+        this.selectedInfo = nextInfo
 
-        nextTabView.tabSelect(nextTabBeanInfo, prevTabBeanInfo!!, prevTabView)
-        prevTabBeanInfo = nextTabBeanInfo
     }
 
 
@@ -123,4 +122,9 @@ class BottomTabLayout @JvmOverloads constructor(
     }
 
 
+    fun setCurrentSelect(position: Int) {
+        if (position > bottomTabList.size) return
+
+        onSelected(bottomTabList[position])
+    }
 }

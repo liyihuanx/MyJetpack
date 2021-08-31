@@ -10,6 +10,10 @@ interface IBottomLayout {
 
     fun bindBottomTabData(data: ArrayList<BottomTabBean>)
 
+
+    fun addTabSelectedChangeListener(listener: OnTabSelectedListener)
+
+
     interface OnTabSelectedListener {
         fun onTabSelectedChange(index: Int, prevInfo: BottomTabBean?, nextInfo: BottomTabBean)
     }

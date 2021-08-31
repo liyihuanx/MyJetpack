@@ -9,7 +9,7 @@ data class BottomTabBean(
     val itemName: String,
     val selectIcon: Int? = null,
     val normalIcon: Int,
-    val selectColor: Int? = null,
-    val normalColor: Int? = null,
+    val selectColor: Int,
+    val normalColor: Int,
     val textFont: Int? = null
 )

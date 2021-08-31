@@ -3,7 +3,6 @@ package liyihuan.app.android.module_ui.tab.bottom
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.default_bottom_tab.view.*
@@ -22,11 +21,9 @@ class BottomTabView @JvmOverloads constructor(
 
     private lateinit var tabInfo: BottomTabBean
 
-    private var iBottomViewController: IBottomViewController
 
     init {
         LayoutInflater.from(getContext()).inflate(R.layout.default_bottom_tab, this)
-        iBottomViewController = IBottomViewController.DEFAULT
 
     }
 
@@ -44,12 +41,19 @@ class BottomTabView @JvmOverloads constructor(
      * 点击事件
      * 1,2,3,4
      */
-    override fun tabSelect(
-        currentBean: BottomTabBean,
-        prevBean: BottomTabBean,
-        prevTabView: BottomTabView
+    override fun onTabSelectedChange(
+        index: Int,
+        prevInfo: BottomTabBean?,
+        nextInfo: BottomTabBean
     ) {
-
+        if (prevInfo !== tabInfo && nextInfo !== tabInfo || prevInfo === nextInfo) {
+            return
+        }
+        if (prevInfo === tabInfo) {
+            inflateBottomView(selected = false, isInit = false)
+        } else {
+            inflateBottomView(selected = true, isInit = false)
+        }
     }
 
     /**
@@ -65,9 +69,7 @@ class BottomTabView @JvmOverloads constructor(
                     Typeface.createFromAsset(context.assets, textFont.toString())
                 }
                 // 设置起初的颜色
-                tvTabName.setTextColor(
-                    getColor(it.normalColor) ?: iBottomViewController.defaultNormalColor()
-                )
+                tvTabName.setTextColor(getColor(it.normalColor))
                 tvTabName.text = it.itemName
                 // 设置起初的icon
                 ivTab.setImageResource(it.normalIcon)
@@ -77,21 +79,19 @@ class BottomTabView @JvmOverloads constructor(
 
         if (selected) {
             tvTabName.setTextColor(
-                getColor(tabInfo.selectColor) ?: iBottomViewController.defaultSelectColor()
+                getColor(tabInfo.selectColor)
             )
             // 选中的Icon可以为空，因为有些在中间的icon可以为一个固定的那种
             tabInfo.selectIcon?.let { ivTab.setImageResource(it) }
         } else {
-            tvTabName.setTextColor(
-                tabInfo.normalColor ?: iBottomViewController.defaultNormalColor()
-            )
+            tvTabName.setTextColor(tabInfo.normalColor)
             ivTab.setImageResource(tabInfo.normalIcon)
         }
     }
 
 
-    private fun getColor(colorId: Int?): Int? {
+    private fun getColor(colorId: Int): Int {
         // 返回null
-        return colorId?.let { context.resources.getColor(it) }
+        return context.resources.getColor(colorId)
     }
 }
