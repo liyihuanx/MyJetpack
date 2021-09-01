@@ -7,9 +7,6 @@ package liyihuan.app.android.module_ui.tab.bottom
  */
 interface IBottomTab : IBottomLayout.OnTabSelectedListener {
 
-
     fun setTabInfo(tabinfo: BottomTabBean)
-
-
 
 }

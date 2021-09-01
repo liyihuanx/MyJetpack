@@ -24,7 +24,6 @@ class BottomTabView @JvmOverloads constructor(
 
     init {
         LayoutInflater.from(getContext()).inflate(R.layout.default_bottom_tab, this)
-
     }
 
 
@@ -62,27 +61,33 @@ class BottomTabView @JvmOverloads constructor(
      * TODO 以后修改成可以统一设置TextView颜色和字体的
      */
     private fun inflateBottomView(selected: Boolean, isInit: Boolean) {
+        // 是否是初始化阶段
         if (isInit) {
             tabInfo.let {
                 // 设置了字体的话，设置字体
                 it.textFont?.let { textFont ->
                     Typeface.createFromAsset(context.assets, textFont.toString())
                 }
-                // 设置起初的颜色
-                tvTabName.setTextColor(getColor(it.normalColor))
                 tvTabName.text = it.itemName
-                // 设置起初的icon
-                ivTab.setImageResource(it.normalIcon)
-            }
 
+                // 是否 默认选中
+                if (it.start == true) {
+                    tvTabName.setTextColor(getColor(tabInfo.selectColor))
+                    ivTab.setImageResource(tabInfo.selectIcon ?: tabInfo.normalIcon)
+                } else {
+                    // 设置起初的颜色
+                    tvTabName.setTextColor(getColor(it.normalColor))
+                    // 设置起初的icon
+                    ivTab.setImageResource(it.normalIcon)
+                }
+            }
+            return
         }
 
         if (selected) {
-            tvTabName.setTextColor(
-                getColor(tabInfo.selectColor)
-            )
+            tvTabName.setTextColor(getColor(tabInfo.selectColor))
             // 选中的Icon可以为空，因为有些在中间的icon可以为一个固定的那种
-            tabInfo.selectIcon?.let { ivTab.setImageResource(it) }
+            ivTab.setImageResource(tabInfo.selectIcon ?: tabInfo.normalIcon)
         } else {
             tvTabName.setTextColor(tabInfo.normalColor)
             ivTab.setImageResource(tabInfo.normalIcon)

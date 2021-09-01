@@ -2,6 +2,7 @@ package liyihuan.app.android.module_ui.tab.bottom
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.widget.FrameLayout
 import com.liyihuanx.module_base.utils.DisplayUtil
@@ -20,6 +21,8 @@ class BottomTabLayout @JvmOverloads constructor(
 
     private val tabSelectedChangeListeners = ArrayList<IBottomLayout.OnTabSelectedListener>()
 
+    private var tabSelectedInterceptorListeners : IBottomLayout.OnTabSelectInterceptorListener? = null
+
     // 所有的tab的list
     private var bottomTabList = ArrayList<BottomTabBean>()
 
@@ -36,6 +39,7 @@ class BottomTabLayout @JvmOverloads constructor(
 
     private var selectedInfo: BottomTabBean? = null
 
+    private var startPosition: Int = 0
 
     /**
      * 给外部调用，把底部tab初始化，添加到布局，和数据绑定
@@ -59,6 +63,10 @@ class BottomTabLayout @JvmOverloads constructor(
 
 
         bottomTabList.forEachIndexed { index, bottomTabBean ->
+            if (bottomTabBean.start == true) {
+                selectedInfo = bottomTabBean
+            }
+
             //用LinearLayout当动态改变child大小后Gravity.BOTTOM会失效
             val params = LayoutParams(tabWidth, defaultLayoutHeight)
             params.gravity = Gravity.BOTTOM
@@ -84,26 +92,11 @@ class BottomTabLayout @JvmOverloads constructor(
         addView(flBottomLayout, flPrams)
 
         // 默认选中第一个
-        onSelected(bottomTabList[0])
+//        setCurrentSelect(startPosition)
     }
 
-    /**
-     * 添加tab点击的监听
-     */
-    override fun addTabSelectedChangeListener(listener: IBottomLayout.OnTabSelectedListener) {
-        tabSelectedChangeListeners.add(listener)
-    }
-
-
-    /**
-     * 每个tabView的点击方法
-     */
-    private fun onSelected(nextInfo: BottomTabBean) {
-        tabSelectedChangeListeners.forEach {
-            it.onTabSelectedChange(bottomTabList.indexOf(nextInfo), selectedInfo, nextInfo)
-        }
-        this.selectedInfo = nextInfo
-
+    override fun addTabSelectInterceptorListener(listener: IBottomLayout.OnTabSelectInterceptorListener) {
+        tabSelectedInterceptorListeners = listener
     }
 
 
@@ -123,8 +116,58 @@ class BottomTabLayout @JvmOverloads constructor(
 
 
     fun setCurrentSelect(position: Int) {
-        if (position > bottomTabList.size) return
-
+        if (position > bottomTabList.size) {
+            return
+        }
+        startPosition = position
         onSelected(bottomTabList[position])
     }
+
+    /**
+     * 每个tabView的点击方法
+     */
+    private fun onSelected(nextInfo: BottomTabBean) {
+        if (nextInfo === selectedInfo) {
+            return
+        }
+
+//        tabSelectedInterceptorListeners?.onTabSelectedInterceptor(
+//            bottomTabList.indexOf(nextInfo),
+//            selectedInfo,
+//            nextInfo
+//        ).takeIf {
+//        // 为true就不可点击
+//        // 为false 或者 null 可点击
+//            false
+//        }.let {
+//            if (it == true) {
+//                tabSelectedChangeListeners.forEach {
+//                    it.onTabSelectedChange(bottomTabList.indexOf(nextInfo), selectedInfo, nextInfo)
+//                }
+//                this.selectedInfo = nextInfo
+//            }
+//        }
+
+        val onTabSelectedInterceptor = tabSelectedInterceptorListeners?.onTabSelectedInterceptor(
+            bottomTabList.indexOf(nextInfo),
+            selectedInfo,
+            nextInfo
+        )
+
+        if (onTabSelectedInterceptor == true){
+           return
+        }
+
+        tabSelectedChangeListeners.forEach {
+            it.onTabSelectedChange(bottomTabList.indexOf(nextInfo), selectedInfo, nextInfo)
+        }
+        this.selectedInfo = nextInfo
+
+//        总是忘记，记录一下
+//        run this 返回结果
+//        apply this 返回调用的人
+//        let it 返回结果
+//        also it 返回调用的人
+    }
+
 }

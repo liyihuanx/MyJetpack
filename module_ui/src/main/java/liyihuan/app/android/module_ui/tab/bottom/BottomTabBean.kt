@@ -11,5 +11,6 @@ data class BottomTabBean(
     val normalIcon: Int,
     val selectColor: Int,
     val normalColor: Int,
+    val start: Boolean? = false,
     val textFont: Int? = null
 )
