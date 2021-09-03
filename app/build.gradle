@@ -46,4 +46,5 @@ dependencies {
 
     implementation project(':module_base')
     implementation project(':module_ui')
+    implementation project(':module_home')
 }

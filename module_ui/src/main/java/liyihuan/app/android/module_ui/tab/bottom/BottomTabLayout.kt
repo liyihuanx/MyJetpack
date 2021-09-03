@@ -1,11 +1,14 @@
 package liyihuan.app.android.module_ui.tab.bottom
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.liyihuanx.module_base.utils.DisplayUtil
+import liyihuan.app.android.module_ui.R
 
 /**
  * @author created by liyihuanx
@@ -21,7 +24,7 @@ class BottomTabLayout @JvmOverloads constructor(
 
     private val tabSelectedChangeListeners = ArrayList<IBottomLayout.OnTabSelectedListener>()
 
-    private var tabSelectedInterceptorListeners : IBottomLayout.OnTabSelectInterceptorListener? = null
+    private var tabSelectedInterceptorListeners: IBottomLayout.OnTabSelectInterceptorListener? = null
 
     // 所有的tab的list
     private var bottomTabList = ArrayList<BottomTabBean>()
@@ -35,11 +38,39 @@ class BottomTabLayout @JvmOverloads constructor(
     private val bottomLineHeight = 0.5f
 
     //TabBottom的头部线条颜色
-    private val bottomLineColor = "#dfe0e1"
+    private var splitLineColor = -1
+
+    private var defaultSelectColor = 0
+    private var defaultNormalColor = 0
+
 
     private var selectedInfo: BottomTabBean? = null
 
     private var startPosition: Int = 0
+
+    init {
+        initCustomAttrs(context, attrs)
+    }
+
+    private fun initCustomAttrs(context: Context, attrs: AttributeSet?) {
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BottomTabLayout)
+        defaultSelectColor = typedArray.getColor(
+            R.styleable.BottomTabLayout_defaultSelectColor,
+            Color.parseColor("#d44949")
+        )
+        defaultNormalColor = typedArray.getColor(
+            R.styleable.BottomTabLayout_defaultNormalColor,
+            Color.parseColor("#333333")
+        )
+
+        splitLineColor = typedArray.getColor(
+            R.styleable.BottomTabLayout_splitLineColor,
+            -1
+        )
+
+        typedArray.recycle()
+    }
+
 
     /**
      * 给外部调用，把底部tab初始化，添加到布局，和数据绑定
@@ -75,7 +106,7 @@ class BottomTabLayout @JvmOverloads constructor(
 
             //创建每个tabView,赋值，添加到布局,并且保存
             val bottomTabView = BottomTabView(context).apply {
-                setTabInfo(bottomTabBean)
+                setTabInfo(bottomTabBean, defaultNormalColor, defaultSelectColor)
                 setOnClickListener {
                     onSelected(bottomTabBean)
                 }
@@ -104,7 +135,20 @@ class BottomTabLayout @JvmOverloads constructor(
      *  添加tablayout和主页面之间的分割线
      */
     private fun addLayoutLineWidth() {
-
+        if (splitLineColor != -1) {
+            val bottomLine = View(context)
+            bottomLine.setBackgroundColor(splitLineColor)
+            val bottomLineParams =
+                LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    DisplayUtil.dp2px(bottomLineHeight)
+                )
+            bottomLineParams.gravity = Gravity.BOTTOM
+            bottomLineParams.bottomMargin =
+                DisplayUtil.dp2px(defaultLayoutHeight - bottomLineHeight)
+            addView(bottomLine, bottomLineParams)
+            bottomLine.alpha = bottomAlpha
+        }
     }
 
     /**
@@ -127,41 +171,25 @@ class BottomTabLayout @JvmOverloads constructor(
      * 每个tabView的点击方法
      */
     private fun onSelected(nextInfo: BottomTabBean) {
-        if (nextInfo === selectedInfo) {
-            return
-        }
-
-//        tabSelectedInterceptorListeners?.onTabSelectedInterceptor(
-//            bottomTabList.indexOf(nextInfo),
-//            selectedInfo,
-//            nextInfo
-//        ).takeIf {
-//        // 为true就不可点击
-//        // 为false 或者 null 可点击
-//            false
-//        }.let {
-//            if (it == true) {
-//                tabSelectedChangeListeners.forEach {
-//                    it.onTabSelectedChange(bottomTabList.indexOf(nextInfo), selectedInfo, nextInfo)
-//                }
-//                this.selectedInfo = nextInfo
-//            }
-//        }
-
-        val onTabSelectedInterceptor = tabSelectedInterceptorListeners?.onTabSelectedInterceptor(
-            bottomTabList.indexOf(nextInfo),
+        val indexOf = bottomTabList.indexOf(nextInfo)
+        // 点击前拦截
+        val onTabSelectedInterceptor = tabSelectedInterceptorListeners?.selectBeforeInterceptor(
+            indexOf,
             selectedInfo,
             nextInfo
         )
 
-        if (onTabSelectedInterceptor == true){
-           return
+        if (onTabSelectedInterceptor == true) {
+            return
         }
 
         tabSelectedChangeListeners.forEach {
-            it.onTabSelectedChange(bottomTabList.indexOf(nextInfo), selectedInfo, nextInfo)
+            it.onTabSelectedChange(indexOf, selectedInfo, nextInfo)
         }
         this.selectedInfo = nextInfo
+
+        // 点击后拦截
+        tabSelectedInterceptorListeners?.selectAfterInterceptor(indexOf)
 
 //        总是忘记，记录一下
 //        run this 返回结果

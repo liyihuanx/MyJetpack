@@ -17,7 +17,15 @@ interface IBottomLayout {
 
     fun addTabSelectInterceptorListener(listener: OnTabSelectInterceptorListener)
     interface OnTabSelectInterceptorListener {
-        fun onTabSelectedInterceptor(index: Int, prevInfo: BottomTabBean?, nextInfo: BottomTabBean) : Boolean
+        fun selectBeforeInterceptor(
+            index: Int,
+            prevInfo: BottomTabBean?,
+            nextInfo: BottomTabBean
+        ): Boolean {
+            return false
+        }
+
+        fun selectAfterInterceptor(index: Int) {}
     }
 
 }

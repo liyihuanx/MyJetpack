@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-
-    <!--    TabBottom-->
-    <color name="tabBottomDefaultColor">#ff656667</color>
-    <color name="tabBottomTintColor">#ffd44949</color>
-    <color name="color_333333">#333333</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
 </resources>

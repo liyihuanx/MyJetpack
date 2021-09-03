@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BottomTabLayout">
+        <attr name="defaultNormalColor" format="color" />
+        <attr name="defaultSelectColor" format="color" />
+        <attr name="splitLineColor" format="color" />
+    </declare-styleable>
+</resources>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="test1"
             type="String" />
@@ -11,18 +12,23 @@
 
     </data>
 
-    <liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout
-        android:id="@+id/tabLayout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/flFragment"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/mainVp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp" />
+
+        <liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom" />
 
 
-
-    </liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout>
+    </FrameLayout>
 
 </layout>

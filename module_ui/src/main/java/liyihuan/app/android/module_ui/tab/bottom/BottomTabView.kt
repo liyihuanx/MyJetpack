@@ -20,7 +20,8 @@ class BottomTabView @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr), IBottomTab {
 
     private lateinit var tabInfo: BottomTabBean
-
+    private var defaultSelectColor: Int = 0
+    private var defaultNormalColor: Int = 0
 
     init {
         LayoutInflater.from(getContext()).inflate(R.layout.default_bottom_tab, this)
@@ -30,8 +31,15 @@ class BottomTabView @JvmOverloads constructor(
     /**
      * 传入底部tab信息
      */
-    override fun setTabInfo(tabinfo: BottomTabBean) {
-        this.tabInfo = tabinfo
+    override fun setTabInfo(
+        info: BottomTabBean,
+        defaultNormalColor: Int,
+        defaultSelectColor: Int
+    ) {
+        this.tabInfo = info
+        this.defaultSelectColor = defaultSelectColor
+        this.defaultNormalColor = defaultNormalColor
+
         // 拿到信息后初始化底部tab栏目
         inflateBottomView(selected = false, isInit = true)
     }
@@ -72,11 +80,11 @@ class BottomTabView @JvmOverloads constructor(
 
                 // 是否 默认选中
                 if (it.start == true) {
-                    tvTabName.setTextColor(getColor(tabInfo.selectColor))
+                    tvTabName.setTextColor(getColor(tabInfo.selectColor) ?: defaultSelectColor)
                     ivTab.setImageResource(tabInfo.selectIcon ?: tabInfo.normalIcon)
                 } else {
                     // 设置起初的颜色
-                    tvTabName.setTextColor(getColor(it.normalColor))
+                    tvTabName.setTextColor(getColor(it.normalColor) ?: defaultNormalColor)
                     // 设置起初的icon
                     ivTab.setImageResource(it.normalIcon)
                 }
@@ -85,18 +93,18 @@ class BottomTabView @JvmOverloads constructor(
         }
 
         if (selected) {
-            tvTabName.setTextColor(getColor(tabInfo.selectColor))
+            tvTabName.setTextColor(getColor(tabInfo.selectColor) ?: defaultSelectColor)
             // 选中的Icon可以为空，因为有些在中间的icon可以为一个固定的那种
             ivTab.setImageResource(tabInfo.selectIcon ?: tabInfo.normalIcon)
         } else {
-            tvTabName.setTextColor(tabInfo.normalColor)
+            tvTabName.setTextColor(getColor(tabInfo.normalColor) ?: defaultNormalColor)
             ivTab.setImageResource(tabInfo.normalIcon)
         }
     }
 
 
-    private fun getColor(colorId: Int): Int {
+    private fun getColor(colorId: Int?): Int? {
         // 返回null
-        return context.resources.getColor(colorId)
+        return colorId?.let { context.resources.getColor(it) }
     }
 }
