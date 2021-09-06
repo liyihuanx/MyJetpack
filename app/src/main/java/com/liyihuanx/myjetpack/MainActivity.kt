@@ -2,6 +2,7 @@ package com.liyihuanx.myjetpack
 
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.liyihuanx.annotation.AutoApi
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.module_home.HomeFragment
 import com.liyihuanx.myjetpack.databinding.ActivityMainBinding
@@ -68,4 +69,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         mainVp.isUserInputEnabled = false
     }
 
+
+    @AutoApi
+    fun testAnnotation(page:Int): String{
+        return "没有下一页"
+    }
 }

@@ -15,6 +15,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -47,4 +48,8 @@ dependencies {
     implementation project(':module_base')
     implementation project(':module_ui')
     implementation project(':module_home')
+
+    implementation project(':lib_annotation')
+    kapt project(':lib_compiler')
+
 }
