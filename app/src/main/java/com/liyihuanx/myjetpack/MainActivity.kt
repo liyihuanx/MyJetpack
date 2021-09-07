@@ -70,8 +70,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
 
-    @AutoApi
-    fun testAnnotation(page:Int): String{
-        return "没有下一页"
-    }
 }

@@ -1,6 +1,7 @@
 package com.liyihuanx.compiler.repository
 
 import com.liyihuanx.annotation.AutoApi
+import com.liyihuanx.compiler.AptContext
 import com.liyihuanx.compiler.types.asKotlinTypeName
 import javax.lang.model.element.ExecutableElement
 
@@ -19,6 +20,8 @@ class AutoMethod(private val mExecutableElement: ExecutableElement) :
         annotation.keys.forEachIndexed { index, s ->
             defaultVMap[s] = annotation.defaultValues[index]
         }
+        AptContext.note(executableElement.modifiers) // [public, abstract]
+
         // 收集方法的参数
         executableElement.parameters.forEach {
             parameters.add(

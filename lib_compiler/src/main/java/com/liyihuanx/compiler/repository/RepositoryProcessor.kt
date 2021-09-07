@@ -46,12 +46,16 @@ class RepositoryProcessor : AbstractProcessor() {
                 mOutputDirectory = item.value.transformFromKaptPathToAptPath()
             }
         }
-        AptContext.note(mOutputDirectory)
 
     }
 
 
     override fun process(annotations: MutableSet<out TypeElement>, env: RoundEnvironment): Boolean {
+        if (annotations.isEmpty()) {
+            AptContext.note("没有使用过注解")
+            return false
+        }
+
         env.getElementsAnnotatedWith(AutoApi::class.java).forEach {
             // 拿到使用注解的 MainActivity
             //  typeElement 表示类或接口程序元素。 提供对类型及其成员的信息的访问。
@@ -68,9 +72,9 @@ class RepositoryProcessor : AbstractProcessor() {
 
 
         // 生成
-//        repositoryMap.forEach { k, repositoryClass ->
-//            RepositoryClassBuilder(repositoryClass).build(AptContext.filer, mOutputDirectory)
-//        }
+        repositoryMap.forEach { k, repositoryClass ->
+            RepositoryClassBuilder(repositoryClass).build(AptContext.filer, mOutputDirectory)
+        }
 
         return true
     }

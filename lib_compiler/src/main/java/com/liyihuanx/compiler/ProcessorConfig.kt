@@ -1,5 +1,6 @@
 package com.liyihuanx.compiler
 
+import com.squareup.kotlinpoet.ClassName
 import java.io.File
 
 /**
@@ -9,10 +10,10 @@ import java.io.File
  */
 const val ANNOTATION_PACKAGE = "com.liyihuanx.annotation"
 const val ANNOTATION_NAME = "$ANNOTATION_PACKAGE.AutoApi"
-
+val BaseRepositoryClassType = ClassName("com.liyihuanx.module_base.http","BaseRepository")
+val SimpleDataSourceClassType = ClassName("com.liyihuanx.module_base.http","SimpleDataSource")
 
 fun String.transformFromKaptPathToAptPath(): String {
-
     return File(this).parentFile.parentFile.parentFile.parentFile.parentFile.path + "/src/main/java"
     // 每个parentFile往上翻一个文件夹 一直到 D:\MyJetPack\app
     // D:\MyJetPack\app\build\generated\source\kaptKotlin/src/main/java
