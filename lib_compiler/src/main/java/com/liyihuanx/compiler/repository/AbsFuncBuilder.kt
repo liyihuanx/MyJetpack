@@ -24,13 +24,13 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
         // 添加方法上的参数
         repositoryMethod.parameters.forEach {
             val paramSpecBuilder = ParameterSpec.builder(it.name, it.type)
-                .defaultValue("%L", it.defaultValue)
-                .build()
+//                .defaultValue("%L", it.defaultValue) 这样会 参数 = null, 但是在service时写的不是非空类型会出错
+
             //默认参数
-//            it.defaultValue?.let { defaultValue ->
-//                paramSpecBuilder.defaultValue("%L", defaultValue)
-//            }
-            funcBuilder.addParameter(paramSpecBuilder)
+            it.defaultValue?.let { defaultValue ->
+                paramSpecBuilder.defaultValue("%L", defaultValue)
+            }
+            funcBuilder.addParameter(paramSpecBuilder.build())
         }
 
         addStatement(funcBuilder)
