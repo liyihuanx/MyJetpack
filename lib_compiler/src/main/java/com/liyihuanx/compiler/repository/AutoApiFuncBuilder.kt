@@ -28,7 +28,7 @@ class AutoApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
 
         // 用flow的
         funcBuilder.addStatement(
-            " return %T {\n  apiService!!.%L(%L)"
+            " return %T {\n  apiService.%L(%L)"
                     + " \n}.startFetchData()",
             CoroutineDataFetcherClassType, // CoroutineDataFetcher
             repositoryMethod.methodName, // 方法名

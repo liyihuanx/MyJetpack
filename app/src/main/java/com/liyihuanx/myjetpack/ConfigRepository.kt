@@ -11,13 +11,19 @@ import kotlinx.coroutines.flow.Flow
 open class ConfigRepository : BaseRepository<ConfigService>() {
     suspend fun config(page: String): Flow<String> {
          return CoroutineDataFetcher {
-                  apiService!!.config(page) 
+                  apiService.config(page) 
                 }.startFetchData()
     }
 
     suspend fun config2(page: String = "GS"): Flow<List<String>> {
          return CoroutineDataFetcher {
-                  apiService!!.config2(page) 
+                  apiService.config2(page) 
+                }.startFetchData()
+    }
+
+    suspend fun getData(): Flow<ChapterBean> {
+         return CoroutineDataFetcher {
+                  apiService.getData() 
                 }.startFetchData()
     }
 }

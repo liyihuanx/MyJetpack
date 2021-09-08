@@ -13,7 +13,7 @@ abstract class AbsDataFetcher<T> {
     /**
      * 从数据库读取缓存
      */
-    fun getCache(key: String): T? {
+    fun getCache(key: String): T {
         return CacheManager.getCache(key) as T
     }
 

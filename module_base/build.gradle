@@ -49,6 +49,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+
+    // gson
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+
     //navigation导航
     api 'com.google.android.material:material:1.2.1'
     api 'androidx.navigation:navigation-fragment:2.3.1'

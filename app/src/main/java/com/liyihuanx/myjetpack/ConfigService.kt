@@ -2,6 +2,7 @@ package com.liyihuanx.myjetpack
 
 import com.liyihuanx.annotation.AutoApi
 import com.liyihuanx.annotation.NetStrategy
+import retrofit2.http.GET
 
 /**
  * @author created by liyihuanx
@@ -15,4 +16,8 @@ interface ConfigService {
 
     @AutoApi(cache = NetStrategy.OnlyCache, keys = ["page"], defaultValues = ["\"GS\""])
     suspend fun config2(page: String): List<String>
+
+    @AutoApi
+    @GET("wxarticle/chapters/json")
+    suspend fun getData(): ChapterBean
 }
