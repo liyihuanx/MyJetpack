@@ -20,7 +20,7 @@ class AutoMethod(private val mExecutableElement: ExecutableElement) :
         annotation.keys.forEachIndexed { index, s ->
             defaultVMap[s] = annotation.defaultValues[index]
         }
-        AptContext.note(executableElement.modifiers) // [public, abstract]
+//        AptContext.note(executableElement.modifiers) // [public, abstract]
 
         // 收集方法的参数
         executableElement.parameters.forEach {

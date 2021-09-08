@@ -11,7 +11,11 @@ import java.io.File
 const val ANNOTATION_PACKAGE = "com.liyihuanx.annotation"
 const val ANNOTATION_NAME = "$ANNOTATION_PACKAGE.AutoApi"
 val BaseRepositoryClassType = ClassName("com.liyihuanx.module_base.http","BaseRepository")
-val SimpleDataSourceClassType = ClassName("com.liyihuanx.module_base.http","SimpleDataSource")
+val CoroutineDataFetcherClassType = ClassName("com.liyihuanx.module_base.http.datasource","CoroutineDataFetcher")
+val ContinuationType = ClassName("kotlin.coroutines", "Continuation")
+val FlowType = ClassName("kotlinx.coroutines.flow", "Flow")
+
+
 
 fun String.transformFromKaptPathToAptPath(): String {
     return File(this).parentFile.parentFile.parentFile.parentFile.parentFile.path + "/src/main/java"

@@ -15,6 +15,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -61,14 +67,21 @@ dependencies {
     api 'androidx.work:work-runtime:2.2.0'
 
     //room数据库
-    api 'android.arch.persistence.room:runtime:1.1.1'
+    def room_version = "2.2.6"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
     api "android.arch.lifecycle:extensions:1.1.1"
-    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
 
     // viewpager2
     api 'androidx.viewpager2:viewpager2:1.0.0'
 
+    // BaseQuickAdapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
+
+    // AutoApi 注解
+    api project(':lib_annotation')
 
 }

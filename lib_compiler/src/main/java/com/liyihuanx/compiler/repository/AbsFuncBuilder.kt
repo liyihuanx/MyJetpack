@@ -18,8 +18,10 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
         repositoryMethod.build()
         val funcBuilder = FunSpec.builder(repositoryMethod.methodName)
             .addModifiers(KModifier.PUBLIC)
-            .addModifiers(KModifier.SUSPEND)
             .returns(repositoryMethod.returnType.javaToKotlinType()) //把java类型的转成kotlin的，比如String 不加会是 java.lang.String
+        if (repositoryMethod.isSuspend) {
+            funcBuilder.addModifiers(KModifier.SUSPEND)
+        }
 
         // 添加方法上的参数
         repositoryMethod.parameters.forEach {
