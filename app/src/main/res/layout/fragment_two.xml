@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <Button
             android:id="@+id/tvHttp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:gravity="center"
             android:text="TWO_FRAGMENT"
             android:textSize="@dimen/dp_20" />

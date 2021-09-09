@@ -6,13 +6,13 @@ package com.liyihuanx.module_base.http
  * @Author: liyihuan
  * @Date: 2021/9/8 22:41
  */
-data class CommonResponse<T>(
-    var data: T,
+data class CommonListResponse<T>(
+    var data: List<T>,
     val message: String,
     val code: Int
 )
 
 
-fun CommonResponse<*>.isSuccess(): Boolean {
-    return this.code == 200
+fun CommonListResponse<*>.isSuccess(): Boolean {
+    return this.code == 200 || this.code == 0
 }

@@ -1,12 +1,12 @@
 package com.liyihuanx.myjetpack
 
 import android.app.Application
-import android.util.Log
-import com.google.gson.Gson
 import com.liyihuanx.module_base.http.RepositoryManager
+import com.liyihuanx.module_base.utils.asToast
+import com.liyihuanx.module_base.utils.coroutine
 import com.liyihuanx.module_base.viewmodel.BaseViewModel
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import java.lang.Exception
 
 /**
  * @ClassName: TwoViewModel
@@ -22,15 +22,40 @@ class TwoViewModel(application: Application) : BaseViewModel(application) {
                 RepositoryManager.getRepo(ConfigRepository::class.java)
                     .getData()
                     .collect {
-                        Log.d("QWER", "http: ${Gson().toJson(it)}")
+
                     }
             }
 
             catchError {
-                Log.d("QWER", "Exception: ${it.message}")
 
             }
         }
+
+        RepositoryManager.getRepo(ConfigRepository::class.java).http {
+
+        }
+
+
     }
 
+//    /**
+//     * 在Repository中最后想实现的效果
+//     */
+//    fun http(error: ((e: Exception) -> Unit)? = null): ChapterBean? {
+//        var result: ChapterBean? = null
+//        coroutine {
+//            doWork {
+//                getData().collect {
+//                    result = it
+//                }
+//            }
+//            catchError {
+//                error?.invoke(it)
+//            }
+//            onFinally {
+//
+//            }
+//        }
+//        return result
+//    }
 }

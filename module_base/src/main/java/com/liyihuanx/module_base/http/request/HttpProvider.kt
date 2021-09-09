@@ -44,18 +44,23 @@ object HttpProvider {
      */
     @JvmStatic
     fun newRetrofit(configClass: Class<out IHttpConfig>): Retrofit {
-        val retrofit = retrofitMap[configClass.simpleName]
+        var retrofit = retrofitMap[configClass.simpleName]
         if (retrofit == null) {
             try {
+                // retrofit
                 val builder = Retrofit.Builder()
+                // 我的Http配置
                 val config = configClass.newInstance()
                 config.build(builder)
+                // retrofit 和 http配置 结合
                 val build = builder.build()
+                // 保存起来复用
                 retrofitMap[configClass.simpleName] = build
+                // 把返回值赋值
+                retrofit = build
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
         return retrofit!!
     }

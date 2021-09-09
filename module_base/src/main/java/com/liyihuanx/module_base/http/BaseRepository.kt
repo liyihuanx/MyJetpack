@@ -1,6 +1,12 @@
 package com.liyihuanx.module_base.http
 
 import com.liyihuanx.module_base.http.request.HttpProvider
+import com.liyihuanx.module_base.viewmodel.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * @author created by liyihuanx

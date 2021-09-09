@@ -23,10 +23,10 @@ public class CustomLogInterceptor implements Interceptor {
         ResponseBody body = response.body();
         String bodyString = body.string();
         Log.v("Http_Request", "intercept: " + String.format("result\nUrl=%s\nbody=%s", request.url(), bodyString));
-//        response.newBuilder()
-//                .headers(response.headers())
-//                .body(ResponseBody.create(body.contentType(), bodyString))
-//                .build();
+        // 解决java.lang.IllegalStateException: closed，因为Response.body().string()方法只能读取一次
+        response.newBuilder()
+                .body(ResponseBody.create(body.contentType(), bodyString))
+                .build();
         return response;
     }
 }

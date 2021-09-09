@@ -2,6 +2,8 @@ package com.liyihuanx.module_home
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.liyihuanx.module_base.utils.coroutine
+import com.liyihuanx.module_base.utils.defaultCoroutine
 import com.liyihuanx.module_base.viewmodel.BaseViewModel
 
 /**
@@ -30,6 +32,9 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     fun defaultHttp(){
         defaultCoroutine {
+
+
+
         }
     }
 

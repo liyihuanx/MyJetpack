@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
+import com.liyihuanx.module_base.utils.AppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -69,7 +70,7 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
         showLoadingCall = null
     }
 
-    fun getAppContext(): Application {
+    private fun getAppContext(): Application {
         return getApplication<Application>()
     }
 
@@ -88,51 +89,51 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
     }
 
 
-    fun BaseViewModel.defaultCoroutine(block: suspend CoroutineScope.() -> Unit) {
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                block.invoke(this)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                toast(e.message)
-            } finally {
-
-            }
-        }
-    }
-
-    fun BaseViewModel.coroutine(c: CoroutineScopeWrap.() -> Unit) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val block = CoroutineScopeWrap()
-            c.invoke(block)
-            try {
-                block.work.invoke(this)
-
-            } catch (e: Exception) {
-                block.error.invoke(e)
-            } finally {
-                block.complete.invoke()
-            }
-        }
-    }
-
-    class CoroutineScopeWrap {
-        var work: (suspend CoroutineScope.() -> Unit) = {}
-        var error: (e: Exception) -> Unit = {}
-        var complete: () -> Unit = {}
-
-        fun doWork(call: suspend CoroutineScope.() -> Unit) {
-            this.work = call
-        }
-
-        fun catchError(error: (e: Exception) -> Unit) {
-            this.error = error
-        }
-
-        fun onFinally(call: () -> Unit) {
-            this.complete = call
-        }
-    }
+//    fun BaseViewModel.defaultCoroutine(block: suspend CoroutineScope.() -> Unit) {
+//        GlobalScope.launch(Dispatchers.Main) {
+//            try {
+//                block.invoke(this)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                toast(e.message)
+//            } finally {
+//
+//            }
+//        }
+//    }
+//
+//    fun BaseViewModel.coroutine(c: CoroutineScopeWrap.() -> Unit) {
+//        GlobalScope.launch(Dispatchers.Main) {
+//            val block = CoroutineScopeWrap()
+//            c.invoke(block)
+//            try {
+//                block.work.invoke(this)
+//
+//            } catch (e: Exception) {
+//                block.error.invoke(e)
+//            } finally {
+//                block.complete.invoke()
+//            }
+//        }
+//    }
+//
+//    class CoroutineScopeWrap {
+//        var work: (suspend CoroutineScope.() -> Unit) = {}
+//        var error: (e: Exception) -> Unit = {}
+//        var complete: () -> Unit = {}
+//
+//        fun doWork(call: suspend CoroutineScope.() -> Unit) {
+//            this.work = call
+//        }
+//
+//        fun catchError(error: (e: Exception) -> Unit) {
+//            this.error = error
+//        }
+//
+//        fun onFinally(call: () -> Unit) {
+//            this.complete = call
+//        }
+//    }
 
 
 }

@@ -2,6 +2,8 @@ package com.liyihuanx.myjetpack
 
 import com.liyihuanx.annotation.AutoApi
 import com.liyihuanx.annotation.NetStrategy
+import io.reactivex.Observable
+import retrofit2.Call
 import retrofit2.http.GET
 
 /**
