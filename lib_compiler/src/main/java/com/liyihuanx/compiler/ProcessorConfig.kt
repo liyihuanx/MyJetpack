@@ -14,7 +14,10 @@ val BaseRepositoryClassType = ClassName("com.liyihuanx.module_base.http","BaseRe
 val CoroutineDataFetcherClassType = ClassName("com.liyihuanx.module_base.http.datasource","CoroutineDataFetcher")
 val ContinuationType = ClassName("kotlin.coroutines", "Continuation")
 val FlowType = ClassName("kotlinx.coroutines.flow", "Flow")
+val UnitType = ClassName("kotlin", "Unit")
 
+val CoroutineLambdaType = ClassName("com.liyihuanx.module_base.utils","coroutine")
+val FlowCollectLambdaType = ClassName("kotlinx.coroutines.flow","collect")
 
 
 fun String.transformFromKaptPathToAptPath(): String {

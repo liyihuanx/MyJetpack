@@ -2,6 +2,7 @@ package com.liyihuanx.myjetpack
 
 import android.app.Application
 import com.liyihuanx.module_base.http.RepositoryManager
+import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_base.utils.coroutine
 import com.liyihuanx.module_base.viewmodel.BaseViewModel
@@ -17,45 +18,13 @@ import java.lang.Exception
 class TwoViewModel(application: Application) : BaseViewModel(application) {
 
     fun http() {
-        coroutine {
-            doWork {
-                RepositoryManager.getRepo(ConfigRepository::class.java)
-                    .getData()
-                    .collect {
-
-                    }
-            }
-
-            catchError {
+        RepositoryManager.getRepo(ConfigRepository::class.java)
+            .config2 {
 
             }
-        }
-
-        RepositoryManager.getRepo(ConfigRepository::class.java).http {
-
-        }
 
 
     }
 
-//    /**
-//     * 在Repository中最后想实现的效果
-//     */
-//    fun http(error: ((e: Exception) -> Unit)? = null): ChapterBean? {
-//        var result: ChapterBean? = null
-//        coroutine {
-//            doWork {
-//                getData().collect {
-//                    result = it
-//                }
-//            }
-//            catchError {
-//                error?.invoke(it)
-//            }
-//            onFinally {
-//
-//            }
-//        }
-//        return result
-//    }
+
 }

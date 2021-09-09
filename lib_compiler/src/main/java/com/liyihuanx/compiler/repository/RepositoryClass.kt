@@ -1,5 +1,6 @@
 package com.liyihuanx.compiler.repository
 
+import com.liyihuanx.compiler.repository.RepositoryMethod
 import com.liyihuanx.compiler.types.*
 import com.squareup.kotlinpoet.asTypeName
 import java.util.*

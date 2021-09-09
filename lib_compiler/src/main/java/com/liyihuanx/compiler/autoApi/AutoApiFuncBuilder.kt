@@ -1,6 +1,7 @@
-package com.liyihuanx.compiler.repository
+package com.liyihuanx.compiler.autoApi
 
 import com.liyihuanx.compiler.CoroutineDataFetcherClassType
+import com.liyihuanx.compiler.repository.RepositoryMethod
 import com.squareup.kotlinpoet.FunSpec
 
 /**
@@ -12,7 +13,6 @@ class AutoApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
     AbsFuncBuilder(mRepositoryMethod) {
 
     override fun addStatement(funcBuilder: FunSpec.Builder) {
-
         // 收集参数
         val paramsStringBuilder = StringBuilder()
         repositoryMethod.parameters.forEach {
@@ -20,19 +20,10 @@ class AutoApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
         }
 
         // 普通的
-//        funcBuilder.addStatement(
-//            " return apiService!!.%L(%L)",
-//            repositoryMethod.methodName,
-//            paramsStringBuilder.toString().dropLast(1)
-//        )
-
-        // 用flow的
         funcBuilder.addStatement(
-            " return %T {\n  apiService.%L(%L)"
-                    + " \n}.startFetchData()",
-            CoroutineDataFetcherClassType, // CoroutineDataFetcher
-            repositoryMethod.methodName, // 方法名
-            paramsStringBuilder.toString().dropLast(1) // 参数，丢弃最后一个","
+            "return apiService.%L(%L)",
+            repositoryMethod.methodName,
+            paramsStringBuilder.toString().dropLast(1)
         )
     }
 }

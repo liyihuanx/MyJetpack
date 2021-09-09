@@ -1,7 +1,10 @@
 package com.liyihuanx.compiler.repository
 
-import com.liyihuanx.compiler.AptContext
 import com.liyihuanx.compiler.BaseRepositoryClassType
+import com.liyihuanx.compiler.autoApi.AutoApiFuncBuilder
+import com.liyihuanx.compiler.autoApi.AutoMethod
+import com.liyihuanx.compiler.autoFlowApi.AutoFlowApiFuncBuilder
+import com.liyihuanx.compiler.autoFlowApi.AutoFlowMethod
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -58,7 +61,12 @@ class RepositoryClassBuilder(private val repositoryClass: RepositoryClass) {
     private fun startFuncBuild(typeBuilder: TypeSpec.Builder) {
         // 遍历方法
         repositoryClass.methods.forEach {
-            AutoApiFuncBuilder(it).build(typeBuilder)
+            if (it is AutoMethod) {
+                AutoApiFuncBuilder(it).build(typeBuilder)
+            } else if (it is AutoFlowMethod) {
+                AutoFlowApiFuncBuilder(it).build(typeBuilder)
+            }
+
         }
     }
 

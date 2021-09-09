@@ -2,15 +2,17 @@ package com.liyihuanx.compiler.repository
 
 import com.google.auto.service.AutoService
 import com.liyihuanx.annotation.AutoApi
+import com.liyihuanx.annotation.AutoFlowApi
 import com.liyihuanx.compiler.ANNOTATION_NAME
 import com.liyihuanx.compiler.AptContext
+import com.liyihuanx.compiler.autoApi.AutoMethod
+import com.liyihuanx.compiler.autoFlowApi.AutoFlowMethod
 import com.liyihuanx.compiler.transformFromKaptPathToAptPath
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
-import javax.tools.Diagnostic
 
 /**
  * @author created by liyihuanx
@@ -29,9 +31,10 @@ class RepositoryProcessor : AbstractProcessor() {
     /**
      * 输出路径key 可通过这个判断被注解的包
      */
-    private  val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
+    private val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
 
 
+    //写成全局的和局部的有什么区别呢，看起来没有太大区别
     private val repositoryMap = HashMap<Element, RepositoryClass>()
 
 
@@ -55,6 +58,23 @@ class RepositoryProcessor : AbstractProcessor() {
             AptContext.note("没有使用过注解")
             return false
         }
+//        val repositoryMap = HashMap<Element, RepositoryClass>()
+
+        env.getElementsAnnotatedWith(AutoFlowApi::class.java).forEach {
+            // 拿到使用注解的 MainActivity
+            //  typeElement 表示类或接口程序元素。 提供对类型及其成员的信息的访问。
+            val typeElement = it.enclosingElement as TypeElement
+            // 查找
+            var repositoryClass = repositoryMap[typeElement]
+            if (repositoryClass == null) {
+                repositoryClass =
+                    RepositoryClass(typeElement)
+                repositoryMap[typeElement] = repositoryClass
+            }
+            // ExecutableElement 表示类或接口的方法，构造函数或初始化程序（静态或实例），包括注释类型元素。
+            repositoryClass.methods.add(AutoFlowMethod(it as ExecutableElement))
+        }
+
 
         env.getElementsAnnotatedWith(AutoApi::class.java).forEach {
             // 拿到使用注解的 MainActivity
@@ -63,17 +83,25 @@ class RepositoryProcessor : AbstractProcessor() {
             // 查找
             var repositoryClass = repositoryMap[typeElement]
             if (repositoryClass == null) {
-                repositoryClass = RepositoryClass(typeElement)
-                repositoryMap[typeElement] = repositoryClass
+                repositoryClass =
+                    RepositoryClass(typeElement)
+                repositoryMap[typeElement] = repositoryClass!!
             }
             // ExecutableElement 表示类或接口的方法，构造函数或初始化程序（静态或实例），包括注释类型元素。
-            repositoryClass.methods.add(AutoMethod(it as ExecutableElement))
+            repositoryClass!!.methods.add(
+                AutoMethod(
+                    it as ExecutableElement
+                )
+            )
         }
 
 
         // 生成
-        repositoryMap.forEach { k, repositoryClass ->
-            RepositoryClassBuilder(repositoryClass).build(AptContext.filer, mOutputDirectory)
+        repositoryMap.forEach { (k, repositoryClass) ->
+            RepositoryClassBuilder(
+                repositoryClass
+            )
+                .build(AptContext.filer, mOutputDirectory)
         }
 
         return true

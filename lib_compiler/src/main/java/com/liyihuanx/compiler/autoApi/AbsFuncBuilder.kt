@@ -1,17 +1,17 @@
-package com.liyihuanx.compiler.repository
+package com.liyihuanx.compiler.autoApi
 
-import com.liyihuanx.compiler.AptContext
+import com.liyihuanx.compiler.UnitType
+import com.liyihuanx.compiler.repository.RepositoryMethod
 import com.liyihuanx.compiler.types.javaToKotlinType
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeSpec
-import kotlin.reflect.jvm.internal.impl.builtins.SuspendFunctionTypesKt
 
 /**
  * @author created by liyihuanx
  * @date 2021/9/7
- * @description: 添加方法
+ * @description: 添加方法 suspend fun config2(page: String = "GS"): Flow<List<String>> { }
  */
 abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
     fun build(typeBuilder: TypeSpec.Builder) {
@@ -19,6 +19,7 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
         val funcBuilder = FunSpec.builder(repositoryMethod.methodName)
             .addModifiers(KModifier.PUBLIC)
             .returns(repositoryMethod.returnType.javaToKotlinType()) //把java类型的转成kotlin的，比如String 不加会是 java.lang.String
+
         if (repositoryMethod.isSuspend) {
             funcBuilder.addModifiers(KModifier.SUSPEND)
         }
@@ -35,10 +36,14 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
             funcBuilder.addParameter(paramSpecBuilder.build())
         }
 
+        addLambdaParameter(funcBuilder)
+
         addStatement(funcBuilder)
         typeBuilder.addFunction(funcBuilder.build())
     }
 
     abstract fun addStatement(funcBuilder: FunSpec.Builder)
+    open fun addLambdaParameter(funcBuilder: FunSpec.Builder) {
+    }
 
 }

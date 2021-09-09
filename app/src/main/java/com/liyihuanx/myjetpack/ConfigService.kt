@@ -1,6 +1,7 @@
 package com.liyihuanx.myjetpack
 
 import com.liyihuanx.annotation.AutoApi
+import com.liyihuanx.annotation.AutoFlowApi
 import com.liyihuanx.annotation.NetStrategy
 import io.reactivex.Observable
 import retrofit2.Call
@@ -16,10 +17,10 @@ interface ConfigService {
     @AutoApi
     suspend fun config(page: String): String
 
-    @AutoApi(cache = NetStrategy.OnlyCache, keys = ["page"], defaultValues = ["\"GS\""])
+    @AutoFlowApi(cache = NetStrategy.OnlyCache, keys = ["page"], defaultValues = ["\"GS\""])
     suspend fun config2(page: String): List<String>
 
-    @AutoApi
+    @AutoFlowApi
     @GET("wxarticle/chapters/json")
     suspend fun getData(): ChapterBean
 }

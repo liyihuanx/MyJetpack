@@ -25,7 +25,7 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
     /**
      * 是不是Observable
      */
-    var isObservable = true
+    var isObservable = false
 
     /**
      * 是不是挂起函数
@@ -33,13 +33,17 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
     var isSuspend = false
 
     abstract fun initParameters()
-    open fun isfilterCommonParseModel(): Boolean {
-        return true
+
+    /**
+     * 可以添加你想包装的类型到返回值中去
+     */
+    open fun addTypeInReturnType(returnType : TypeName) : TypeName{
+        return returnType
     }
+
 
     open fun build() {
         initParameters()
-
         /**
          *  // 挂起函数 会生成一个参数 Continuation<in xxxx >
          *  // 返回值1: kotlin.coroutines.Continuation<in java.lang.String>
@@ -75,29 +79,30 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
                         typeName =
                             (list[i] as ClassName).parameterizedBy(typeName) // 把String 放入 List<这里>
                     }
-                    // 生成 kotlin.collections.List<kotlin.String>
-                    // 在放入Flow<T>中
-                    returnType = FlowType.parameterizedBy(typeName)
+                    returnType = typeName
 
                 } else {
                     // 返回值1的处理
                     // kotlin.String
                     val className = getClassName(returnTypeTemp.toString().replaceFirst("in ", ""))
-                    returnType = FlowType.parameterizedBy(className)
+                    returnType = className
 
                 }
             }
         }
 
+        returnType = returnType.asNullable()
+
+        // 用这种方法添加可空类型的话，list<bean>不行，但是bean类可以
+//        returnType = addTypeInReturnType(returnType)
+
         // 3.移除掉最后一个Continuation参数
         if (isSuspend) {
             parameters.removeLast()
         }
-
-
     }
 
-    private fun getClassName(typeStr: String): TypeName {
+    fun getClassName(typeStr: String): TypeName {
         val index = typeStr.lastIndexOf('.')
 
         return ClassName(
