@@ -18,10 +18,21 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
         repositoryMethod.build()
         val funcBuilder = FunSpec.builder(repositoryMethod.methodName)
             .addModifiers(KModifier.PUBLIC)
-            .returns(repositoryMethod.returnType.javaToKotlinType()) //把java类型的转成kotlin的，比如String 不加会是 java.lang.String
 
-        if (repositoryMethod.isSuspend) {
-            funcBuilder.addModifiers(KModifier.SUSPEND)
+        // 是否需要返回值
+        if (repositoryMethod.isNeedReturnType()) {
+            // 返回值是否为可空类型
+            val realReturnType = if (repositoryMethod.isNullable()) {
+                //把java类型的转成kotlin的，比如String 不加会是 java.lang.String
+                repositoryMethod.returnType.javaToKotlinType().asNullable()
+            } else {
+                repositoryMethod.returnType.javaToKotlinType()
+            }
+            funcBuilder.returns(realReturnType)
+
+            if (repositoryMethod.isNeedSuspend()) {
+                funcBuilder.addModifiers(KModifier.SUSPEND)
+            }
         }
 
         // 添加方法上的参数
@@ -36,14 +47,14 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
             funcBuilder.addParameter(paramSpecBuilder.build())
         }
 
+        // 在入参添加lambda表达式
         addLambdaParameter(funcBuilder)
-
+        // 添加方法语句
         addStatement(funcBuilder)
         typeBuilder.addFunction(funcBuilder.build())
     }
 
     abstract fun addStatement(funcBuilder: FunSpec.Builder)
-    open fun addLambdaParameter(funcBuilder: FunSpec.Builder) {
-    }
+    open fun addLambdaParameter(funcBuilder: FunSpec.Builder) {}
 
 }

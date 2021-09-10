@@ -1,8 +1,8 @@
 package com.liyihuanx.compiler.repository
 
-import com.liyihuanx.compiler.AptContext
+import com.liyihuanx.annotation.NetStrategy
+import com.liyihuanx.compiler.CACHE_STRATEGY_PARAMETER_NAME
 import com.liyihuanx.compiler.ContinuationType
-import com.liyihuanx.compiler.FlowType
 import com.liyihuanx.compiler.types.javaToKotlinType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
@@ -11,6 +11,7 @@ import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asTypeName
 import java.util.*
 import javax.lang.model.element.ExecutableElement
+import javax.lang.model.element.TypeElement
 
 /**
  * @author created by liyihuanx
@@ -23,6 +24,14 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
     var returnType = executableElement.returnType.asTypeName()
 
     /**
+     * 缓存策略 netStrategy
+     * 缓存策略这个变量加到哪里去
+     */
+    var netStrategy = NetStrategy.NET_ONLY
+    var isUserStrategyParameter = false
+    var isUserStrategyFunction = false
+
+    /**
      * 是不是Observable
      */
     var isObservable = false
@@ -32,6 +41,10 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
      */
     var isSuspend = false
 
+
+    /**
+     *  收集参数的方法
+     */
     abstract fun initParameters()
 
     /**
@@ -41,8 +54,39 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
         return returnType
     }
 
+    /**
+     * 返回值 是否为可空类型
+     */
+    open fun isNullable(): Boolean {
+        return false
+    }
+
+    /**
+     * 是否 为挂起函数
+     */
+    open fun isNeedSuspend(): Boolean {
+        return isSuspend
+    }
+
+    /**
+     * 是否 需要返回值
+     */
+    open fun isNeedReturnType(): Boolean {
+        return true
+    }
+
+
 
     open fun build() {
+        // 使用了缓存策略的注解，并且要求要加到参数中
+        if (isUserStrategyParameter) {
+            parameters.addFirst(
+                Parameter(
+                    CACHE_STRATEGY_PARAMETER_NAME,
+                    Int::class.java.asTypeName(),
+                )
+            )
+        }
         initParameters()
         /**
          *  // 挂起函数 会生成一个参数 Continuation<in xxxx >
@@ -72,7 +116,6 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
                         }
                     }
 
-                    AptContext.note(list)
                     var typeName = list.last() // String
 
                     for (i in list.size - 2 downTo 0) { // 取出List<>
@@ -91,10 +134,7 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
             }
         }
 
-        returnType = returnType.asNullable()
-
-        // 用这种方法添加可空类型的话，list<bean>不行，但是bean类可以
-//        returnType = addTypeInReturnType(returnType)
+        returnType = addTypeInReturnType(returnType)
 
         // 3.移除掉最后一个Continuation参数
         if (isSuspend) {
@@ -102,7 +142,7 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
         }
     }
 
-    fun getClassName(typeStr: String): TypeName {
+    private fun getClassName(typeStr: String): TypeName {
         val index = typeStr.lastIndexOf('.')
 
         return ClassName(
@@ -111,6 +151,23 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
         ).javaToKotlinType()
     }
 
+
+    fun getCacheKey(): String {
+        var pStr = if (parameters.isEmpty()) {
+            ""
+        } else {
+            "?"
+        }
+        parameters.forEachIndexed { index, parameter ->
+            var str = "${parameter.name}=\${${parameter.name}}"
+            if (index != parameters.size - 1) {
+                str = "$str&"
+            }
+            pStr += str
+        }
+
+        return "cache//${(executableElement.enclosingElement as TypeElement).qualifiedName}//$methodName${pStr}"
+    }
 
     /**
      * 参数

@@ -1,9 +1,6 @@
 package com.liyihuanx.compiler.autoFlowApi
 
-import com.liyihuanx.compiler.CoroutineDataFetcherClassType
-import com.liyihuanx.compiler.CoroutineLambdaType
-import com.liyihuanx.compiler.FlowCollectLambdaType
-import com.liyihuanx.compiler.UnitType
+import com.liyihuanx.compiler.*
 import com.liyihuanx.compiler.autoApi.AbsFuncBuilder
 import com.liyihuanx.compiler.repository.RepositoryMethod
 import com.liyihuanx.compiler.types.javaToKotlinType
@@ -15,51 +12,57 @@ import java.lang.Exception
  * @date 2021/9/7
  * @description: 添加方法语句 return CoroutineDataFetcher { apiService.config2(page) }.startFetchData()
  */
-class AutoFlowApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
+class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
     AbsFuncBuilder(mRepositoryMethod) {
 
     override fun addStatement(funcBuilder: FunSpec.Builder) {
         // 收集参数 这是调用接口时传入的那一串
         val paramsStringBuilder = StringBuilder()
         repositoryMethod.parameters.forEach {
+            if (it.name == CACHE_STRATEGY_PARAMETER_NAME){
+                return@forEach
+            }
             paramsStringBuilder.append(it.name).append(",")
         }
 
         funcBuilder.addStatement(
-            "var result : %T = null", repositoryMethod.returnType.javaToKotlinType().asNullable()
-        )
-        funcBuilder.addStatement(
-            "%T{ \n" +
-                "doWork{ %T { apiService.%L(%L) }.startFetchData().%T{ result = it } } \n" +
-                "catchError{ onError?.invoke(it) } \n" +
-                "onFinally{  onComplete?.invoke() } \n" +
+            "%T {\n" +
+                "doWork { \n" +
+                    "\t%T { apiService.%L(%L) }.$startFetchData \n" +
+                    "\t\t.%T {\n" +
+                        "\t\t\tonResult.invoke(it) \n" +
+                    "\t\t} \n" +
+                 "} \n" +
+                "catchError { onError?.invoke(it) } \n" +
+                "onFinally { onComplete?.invoke() } \n" +
             "}",
-            CoroutineLambdaType,
+            CoroutineLambdaType, // coroutine
             CoroutineDataFetcherClassType, // CoroutineDataFetcher
             repositoryMethod.methodName, // 方法名
             paramsStringBuilder.toString().dropLast(1), // 参数，丢弃最后一个","
-            FlowCollectLambdaType
+            repositoryMethod.getCacheKey(),
+            FlowCollectLambdaType // collect
         )
-        funcBuilder.addStatement(
-            "return result"
-        )
-//        "return %T {\n  apiService.%L(%L) \n}.startFetchData()", " } \n" +
 
-        // 用flow的
-//        funcBuilder.addStatement(
-//            "return %T {\n  apiService.%L(%L)"
-//                    + " \n}.startFetchData()",
-//            CoroutineDataFetcherClassType, // CoroutineDataFetcher
-//            repositoryMethod.methodName, // 方法名
-//            paramsStringBuilder.toString().dropLast(1) // 参数，丢弃最后一个","
-//        )
     }
 
-    // 参数1：(e: Exception) -> Unit)? = null,
-    // 参数2：(() -> Unit)? = null
+    private val startFetchData by lazy {
+        // 是不是添加在参数上
+        if (repositoryMethod.isUserStrategyParameter) {
+            "startFetchData($CACHE_STRATEGY_PARAMETER_NAME,\n %S)"
+        } else if (repositoryMethod.isUserStrategyFunction) {
+            "startFetchData(${repositoryMethod.netStrategy},\n %S)"
+        } else {
+
+        }
+    }
+
 
     /**
      * 添加lambda表达式
+     *  参数1：(e: Exception) -> Unit)? = null,
+     *  参数2：(() -> Unit)? = null
+     *  参数3: result: ((e: ChapterBean) -> Unit)
      */
     override fun addLambdaParameter(funcBuilder: FunSpec.Builder) {
         /**
@@ -83,7 +86,9 @@ class AutoFlowApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
             .defaultValue("%L", null)
 
 
-        // (() -> Unit)? = null
+        /**
+         * (() -> Unit)? = null
+         */
         val onComplete = LambdaTypeName.get(
             returnType = UnitType
         ).asNullable()
@@ -91,8 +96,20 @@ class AutoFlowApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
         val onCompleteParameter = ParameterSpec.builder("onComplete", onComplete)
             .defaultValue("%L", null)
 
+        /**
+         * result: ((e: ChapterBean) -> Unit)
+         */
+        val asTypeName = repositoryMethod.returnType.javaToKotlinType()
+        val onResult = LambdaTypeName.get(
+            parameters = arrayOf(asTypeName),
+            returnType = UnitType
+        )
+        val onResultParameter = ParameterSpec.builder("onResult", onResult)
+
+
         funcBuilder.addParameter(onErrorParameter.build())
             .addParameter(onCompleteParameter.build())
+            .addParameter(onResultParameter.build())
 
     }
 
@@ -100,25 +117,21 @@ class AutoFlowApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
 //    /**
 //     * 在Repository中最后想实现的效果
 //     */
-//    fun http(error: ((e: Exception) -> Unit)? = null,onComplete: (() -> Unit)? = null): ChapterBean? {
-//        var result: ChapterBean? = null
+//    fun getData(
+//        onError: ((e: Exception) -> Unit)? = null,
+//        onComplete: (() -> Unit)? = null,
+//        onResult: ((e: ChapterBean) -> Unit),
+//    ) {
 //        coroutine {
 //            doWork {
-//                CoroutineDataFetcher {
-//                    apiService.getData()
-//                }.startFetchData().collect {
-//                    result = it
-//                }
+//                CoroutineDataFetcher { apiService.getData() }.startFetchData()
+//                    .collect {
+//                        result.invoke(it)
+//                    }
 //            }
-//            catchError {
-//                error?.invoke(it)
-//            }
-//
-//            onFinally {
-//
-//            }
+//            catchError { onError?.invoke(it) }
+//            onFinally { onComplete?.invoke() }
 //        }
-//        return result
 //    }
 
 }

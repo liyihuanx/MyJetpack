@@ -10,8 +10,6 @@ package com.liyihuanx.annotation
 @Retention(AnnotationRetention.BINARY)
 annotation class AutoApi(
 
-    val cache : NetStrategy = NetStrategy.OnlyHttp,
-
     /**
      * 默认值对应的字段
      * @return

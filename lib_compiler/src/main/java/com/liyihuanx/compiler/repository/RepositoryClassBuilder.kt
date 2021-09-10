@@ -27,12 +27,8 @@ class RepositoryClassBuilder(private val repositoryClass: RepositoryClass) {
         const val POSIX = "Repository"
     }
     // 最终输出
-//    open class ConfigReposity : BaseReposity<ConfigService>() {
-//        fun rapidlyStatistic(uid: String, type: String): Observable<Any> {
-//            return SimpleDataSource {
-//                apiService.rapidlyStatistic(uid, type).filterHttpCode()
-//            }.startFetchData()
-//        }
+//    open class ConfigRepository : BaseRepository<ConfigService>() {
+
 //    }
 
     fun build(filer: Filer, mOutputDirectory: String) {
@@ -61,12 +57,11 @@ class RepositoryClassBuilder(private val repositoryClass: RepositoryClass) {
     private fun startFuncBuild(typeBuilder: TypeSpec.Builder) {
         // 遍历方法
         repositoryClass.methods.forEach {
-            if (it is AutoMethod) {
-                AutoApiFuncBuilder(it).build(typeBuilder)
-            } else if (it is AutoFlowMethod) {
-                AutoFlowApiFuncBuilder(it).build(typeBuilder)
-            }
+            when(it::class.java){
+                AutoMethod::class.java -> AutoApiFuncBuilder(it).build(typeBuilder)
+                AutoFlowMethod::class.java ->AutoFlowApiFuncBuilder(it).build(typeBuilder)
 
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.liyihuanx.module_base.utils
 
 import android.app.Application
+import android.content.Context
 import java.lang.Exception
 
 /**
@@ -23,4 +24,9 @@ object AppContext {
         }
         return application!!
     }
+
+    fun getApplicationContext(): Context {
+        return get().applicationContext
+    }
+
 }

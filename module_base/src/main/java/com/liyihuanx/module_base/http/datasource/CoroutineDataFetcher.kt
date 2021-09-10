@@ -7,51 +7,37 @@ import kotlinx.coroutines.flow.*
 /**
  * @author created by liyihuanx
  * @date 2021/9/8
- * @description: 类的描述
+ * @description: remoteQuest为Http请求
  */
-class CoroutineDataFetcher<T>(
-    private var netStrategy: NetStrategy = NetStrategy.OnlyHttp, // 请求策略
-    private var remoteQuest: suspend () -> T // http 请求
-) : AbsDataFetcher<T>() {
+class CoroutineDataFetcher<T>(remoteQuest: suspend () -> T) : AbsDataFetcher<T>(remoteQuest) {
 
     /**
      * 根据请求策略，发起Http请求
+     * // 1.只发起网络请求，不缓存 OnlyHttp(分页)
+     * // 2.先取缓存，没有发起网络请，然后更新缓存 CacheFirst(页面初始化)
+     * // 3.先接口，接口成功后更新缓存 NetCache (下拉属性)
      */
-    fun startFetchData(): Flow<T> {
-        return when (netStrategy) {
-            NetStrategy.OnlyHttp -> flow { emit(this@CoroutineDataFetcher.remoteRequest()) }
 
-            NetStrategy.OnlyCache -> {
+    override fun startFetchData(cacheStrategy: Int?,cacheKey: String?): Flow<T> {
+        return when (cacheStrategy) {
+            NetStrategy.NET_ONLY -> flow { emit(this@CoroutineDataFetcher.remoteRequest()) }
+
+            NetStrategy.CACHE_FIRST -> {
                 flow {
-                    val localData = getCache("")
-                    if (localData != null) {
-                        emit(localData)
-                    }
+                    emit(getCache("") ?: this@CoroutineDataFetcher.remoteRequest()
+                        .also { saveCache("", it) }
+                    )
                 }
             }
 
-            NetStrategy.CacheFirst -> {
+            NetStrategy.NET_CACHE -> {
                 flow {
-                    emit(getCache("") ?: this@CoroutineDataFetcher.remoteRequest())
-                }
-            }
-
-            NetStrategy.Both -> {
-                val localData = getCache("")
-                flow {
-                    if (localData != null) {
-                        emit(localData)
-                    }
-                    emit(this@CoroutineDataFetcher.remoteRequest())
+                    emit(this@CoroutineDataFetcher.remoteRequest().also { saveCache("", it) })
                 }
             }
 
             else -> flow { emit(this@CoroutineDataFetcher.remoteRequest()) }
         }.flowOn(Dispatchers.IO)
-    }
-
-    private suspend fun remoteRequest(): T {
-        return remoteQuest.invoke()
     }
 
 }

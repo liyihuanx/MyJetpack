@@ -20,6 +20,8 @@ val CoroutineLambdaType = ClassName("com.liyihuanx.module_base.utils","coroutine
 val FlowCollectLambdaType = ClassName("kotlinx.coroutines.flow","collect")
 
 
+const val CACHE_STRATEGY_PARAMETER_NAME = "cacheStrategy"
+
 fun String.transformFromKaptPathToAptPath(): String {
     return File(this).parentFile.parentFile.parentFile.parentFile.parentFile.path + "/src/main/java"
     // 每个parentFile往上翻一个文件夹 一直到 D:\MyJetPack\app

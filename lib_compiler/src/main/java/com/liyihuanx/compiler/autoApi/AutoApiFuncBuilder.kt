@@ -1,5 +1,6 @@
 package com.liyihuanx.compiler.autoApi
 
+import com.liyihuanx.compiler.CACHE_STRATEGY_PARAMETER_NAME
 import com.liyihuanx.compiler.CoroutineDataFetcherClassType
 import com.liyihuanx.compiler.repository.RepositoryMethod
 import com.squareup.kotlinpoet.FunSpec
@@ -16,8 +17,12 @@ class AutoApiFuncBuilder(private val mRepositoryMethod: RepositoryMethod) :
         // 收集参数
         val paramsStringBuilder = StringBuilder()
         repositoryMethod.parameters.forEach {
+            if (it.name == CACHE_STRATEGY_PARAMETER_NAME){
+                return@forEach
+            }
             paramsStringBuilder.append(it.name).append(",")
         }
+
 
         // 普通的
         funcBuilder.addStatement(

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
+import com.liyihuanx.module_base.http.RepositoryManager
 import com.liyihuanx.module_base.utils.AppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +87,10 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
         if (!TextUtils.isEmpty(msg)) {
             Toast.makeText(getAppContext(), msg, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun <T> BaseViewModel.getHttp(childRepo: Class<T>) : T {
+        return RepositoryManager.getRepo(childRepo::class.java) as T
     }
 
 

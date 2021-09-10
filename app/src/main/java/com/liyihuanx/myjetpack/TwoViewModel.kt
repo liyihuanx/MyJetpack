@@ -1,12 +1,14 @@
 package com.liyihuanx.myjetpack
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import com.liyihuanx.module_base.http.RepositoryManager
 import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_base.utils.coroutine
 import com.liyihuanx.module_base.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 
 /**
@@ -17,14 +19,18 @@ import java.lang.Exception
  */
 class TwoViewModel(application: Application) : BaseViewModel(application) {
 
-    fun http() {
-        RepositoryManager.getRepo(ConfigRepository::class.java)
-            .config2 {
-
-            }
-
-
+    val getHttpData by lazy {
+        MutableLiveData<ChapterBean>()
     }
+
+    fun http() {
+//        RepositoryManager.getRepo(ConfigRepository::class.java)
+//            .getData {
+//                getHttpData.value = it
+//            }
+    }
+
+
 
 
 }

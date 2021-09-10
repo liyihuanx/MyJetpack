@@ -1,17 +1,8 @@
 package com.liyihuanx.compiler.autoApi
 
 import com.liyihuanx.annotation.AutoApi
-import com.liyihuanx.compiler.AptContext
-import com.liyihuanx.compiler.ContinuationType
-import com.liyihuanx.compiler.FlowType
 import com.liyihuanx.compiler.repository.RepositoryMethod
 import com.liyihuanx.compiler.types.asKotlinTypeName
-import com.liyihuanx.compiler.types.javaToKotlinType
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.ParameterizedTypeName
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.TypeName
-import java.util.ArrayList
 import javax.lang.model.element.ExecutableElement
 
 /**
@@ -29,7 +20,6 @@ class AutoMethod(private val mExecutableElement: ExecutableElement) :
         annotation.keys.forEachIndexed { index, s ->
             defaultVMap[s] = annotation.defaultValues[index]
         }
-//        AptContext.note(executableElement.modifiers) // [public, abstract]
 
         // 收集方法的参数
         executableElement.parameters.forEach {
@@ -41,6 +31,7 @@ class AutoMethod(private val mExecutableElement: ExecutableElement) :
                 )
             )
         }
+
     }
 
 }

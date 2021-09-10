@@ -11,6 +11,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.asTypeName
 import java.util.ArrayList
 import javax.lang.model.element.ExecutableElement
 
@@ -22,10 +23,13 @@ import javax.lang.model.element.ExecutableElement
  */
 class AutoFlowMethod(private val mExecutableElement: ExecutableElement) :
     RepositoryMethod(mExecutableElement) {
+
+
     override fun initParameters() {
         val defaultVMap = HashMap<String, String>()
-        // 拿到注解的中，key-values 他是一 一对应的
         val annotation: AutoFlowApi = executableElement.getAnnotation(AutoFlowApi::class.java)
+
+        // 拿到注解的中，key-values 他是一 一对应的
         annotation.keys.forEachIndexed { index, s ->
             defaultVMap[s] = annotation.defaultValues[index]
         }
@@ -42,6 +46,18 @@ class AutoFlowMethod(private val mExecutableElement: ExecutableElement) :
             )
         }
 
+    }
+
+    override fun isNullable(): Boolean {
+        return true
+    }
+
+    override fun isNeedSuspend(): Boolean {
+        return false
+    }
+
+    override fun isNeedReturnType(): Boolean {
+        return false
     }
 
 }

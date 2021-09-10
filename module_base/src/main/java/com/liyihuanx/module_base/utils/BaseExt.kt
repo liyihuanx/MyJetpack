@@ -30,8 +30,8 @@ fun Any.defaultCoroutine(
 
 fun Any.coroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
-    c: CoroutineScopeWrap.() -> Unit
-) {
+    c: CoroutineScopeWrap.() -> Unit,
+){
     GlobalScope.launch(dispatcher) {
         val block = CoroutineScopeWrap()
         c.invoke(block)

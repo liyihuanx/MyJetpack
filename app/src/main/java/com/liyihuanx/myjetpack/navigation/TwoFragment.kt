@@ -2,6 +2,7 @@ package com.liyihuanx.myjetpack.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.liyihuanx.module_base.fragment.BaseFragment
@@ -39,5 +40,9 @@ class TwoFragment : BaseFragment<FragmentTwoBinding>() {
         tvHttp.setOnClickListener {
             create.http()
         }
+
+        create.getHttpData.observe(this, Observer {
+            Log.d("QWER", "initViewOrData: ${Gson().toJson(it)}")
+        })
     }
 }

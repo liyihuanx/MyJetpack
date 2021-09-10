@@ -43,13 +43,12 @@ object CacheManager {
      * 根据key获取缓存
      */
     @JvmStatic
-    fun getCache(key: String): Any? {
+    fun <T> getCache(key: String): T? {
         val cache = CacheDatabase.database.getCacheDao().getCache(key)
-        if (cache?.data != null) {
-            return toObject(cache.data)!!
-        }
+        return (if (cache?.data != null) {
+            toObject(cache.data)
+        } else null) as? T?
 
-        return null
     }
 
     /**
