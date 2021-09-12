@@ -16,7 +16,7 @@ interface ConfigService {
     @NetStrategy(isNeedAddParameter = true)
     suspend fun config(page: String): String
 
-    @NetStrategy(NetStrategy.NET_CACHE, isNeedAddParameter = true)
+    @NetStrategy(strategy = NetStrategy.NET_CACHE, isNeedAddParameter = true)
     @AutoFlowApi(keys = ["page"], defaultValues = ["\"GS\""])
     suspend fun config2(page: String): List<String>
 

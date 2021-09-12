@@ -5,30 +5,16 @@ package com.liyihuanx.annotation
  * @date 2021/9/8
  * @description: 类的描述
  */
-enum class NetStrategy(strategyName: String) {
-    /**
-     * 只请求缓存
-     */
-    OnlyCache("OnlyCache"),
 
-    /**
-     * 只请求网络
-     */
-    OnlyHttp("OnlyHttp"),
+annotation class NetStrategy(
+    val strategy: Int = NET_ONLY,
+    val isNeedAddParameter: Boolean = false
+) {
 
-    /**
-     * 优先缓存，缓存拿到就展示缓存，缓存没拿到就请求网络
-     */
-    CacheFirst("CacheFirst"),
+    companion object {
+        const val CACHE_FIRST = 0 // 先取缓存，没有发起网络请，然后更新缓存 CacheFirst(页面初始化)
+        const val NET_ONLY = 1 // 只发起网络请求，不缓存 OnlyHttp(分页)
+        const val NET_CACHE = 2 // 先接口，接口成功后更新缓存 NetCache (下拉属性)
 
-    /**
-     * 缓存和网络同时请求，数据会返回2次（如果都成功的话）
-     */
-    Both("Both");
-
-    var strategy = "OnlyRemote"
-
-    init {
-        strategy = strategyName
     }
 }
