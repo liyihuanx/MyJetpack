@@ -1,7 +1,10 @@
 package com.liyihuanx.module_base.http.interceptor
 
+import android.util.Log
 import okhttp3.Interceptor
+import okhttp3.Request
 import okhttp3.Response
+import okhttp3.ResponseBody
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -31,8 +34,16 @@ class HeadInterceptor : Interceptor {
         params["APPID"] = "12345"
         params["VERSION"] = "1.0.0"
 
+        val response = chain.proceed(request)
+        val body = response.body()
+        val bodyString = body!!.string()
+
+        response.newBuilder()
+            .body(ResponseBody.create(body.contentType(), bodyString))
+            .build()
 
         // 传递给下一层拦截器获取他的返回结果
-        return chain.proceed(request)
+        return response
+
     }
 }

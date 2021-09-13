@@ -75,6 +75,16 @@ class RepositoryProcessor : AbstractProcessor() {
             }
             // ExecutableElement 表示类或接口的方法，构造函数或初始化程序（静态或实例），包括注释类型元素。
             repositoryClass.methods.add(AutoFlowMethod(it as ExecutableElement))
+
+            // 这样也能获取到缓存策略的注解，而且感觉性能比较好
+//            val executableElement = it as ExecutableElement
+//            val annotation = executableElement.getAnnotation(NetStrategy::class.java)
+//            if (annotation != null) {
+//                AptContext.note(annotation.strategy)
+//            } else {
+//                AptContext.note("我没用！")
+//            }
+
         }
 
 

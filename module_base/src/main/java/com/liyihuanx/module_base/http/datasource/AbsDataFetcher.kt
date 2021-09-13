@@ -37,7 +37,7 @@ abstract class AbsDataFetcher<T>(private val remoteQuest: suspend () -> T) {
     /**
      * 返回T,还是返回T?
      */
-    suspend fun remoteRequest(): T {
+    suspend fun remoteRequest(): T? {
         Log.d("QWER", "remoteRequest: ")
         return remoteQuest.invoke()
     }

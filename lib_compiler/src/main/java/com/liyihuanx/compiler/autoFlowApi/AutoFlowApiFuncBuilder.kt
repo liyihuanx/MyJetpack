@@ -132,9 +132,9 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
         /**
          * result: ((e: ChapterBean) -> Unit)
          */
-        val asTypeName = repositoryMethod.returnType.javaToKotlinType()
+        val asTypeName = repositoryMethod.returnType.javaToKotlinType().asNullable()
         val onResult = LambdaTypeName.get(
-            parameters = arrayOf(asTypeName),
+            parameters = *arrayOf(asTypeName),
             returnType = UnitType
         )
         val onResultParameter = ParameterSpec.builder("onResult", onResult)

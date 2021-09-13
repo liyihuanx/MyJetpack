@@ -1,9 +1,13 @@
 package com.liyihuanx.myjetpack
 
 import android.app.Application
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.liyihuanx.annotation.NetStrategy
 import com.liyihuanx.module_base.http.RepositoryManager
 import com.liyihuanx.module_base.utils.viewModelScopeCoroutine
 import com.liyihuanx.module_base.viewmodel.BaseViewModel

@@ -16,7 +16,6 @@ interface ConfigService {
     @GET("wxarticle/chapters/json")
     suspend fun config(): ChapterBean
 
-    @NetStrategy(isNeedAddParameter = true)
     @AutoFlowApi(keys = ["page"], defaultValues = ["\"GS\""])
     suspend fun config2(page: String): List<String>
 

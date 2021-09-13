@@ -25,30 +25,35 @@ class CoroutineDataFetcher<T>(remoteQuest: suspend () -> T) : AbsDataFetcher<T>(
     fun startFetchData(
         cacheStrategy: Int? = NetStrategy.NET_ONLY,
         cacheKey: String? = null
-    ): Flow<T> {
+    ): Flow<T?> {
         return when (cacheStrategy) {
             NetStrategy.NET_ONLY -> flow {
-                emit(this@CoroutineDataFetcher.remoteRequest())
+                emit(remoteRequest())
             }
 
             NetStrategy.CACHE_FIRST -> {
                 flow {
-                    emit(getCache(cacheKey) ?: this@CoroutineDataFetcher.remoteRequest()
-                        .also { saveCache(cacheKey, it) }
+                    emit(getCache(cacheKey)
+                        ?: remoteRequest()
+                            .takeIf { it != null }
+                            ?.also { saveCache(cacheKey, it) }
                     )
                 }
             }
 
             NetStrategy.NET_CACHE -> {
                 flow {
-                    emit(this@CoroutineDataFetcher.remoteRequest().also { saveCache(cacheKey, it) })
+                    emit(
+                        remoteRequest()?.also {
+                            saveCache(cacheKey, it)
+                        }
+                    )
                 }
             }
 
             else -> flow { emit(this@CoroutineDataFetcher.remoteRequest()) }
         }.flowOn(Dispatchers.IO)
     }
-
 
 
 }

@@ -9,6 +9,6 @@ import com.liyihuanx.module_base.http.request.HttpProvider
  */
 abstract class BaseRepository<T> {
 
-    protected var apiService: T = HttpProvider.defaultCreate(TypeUtils.findNeedType(javaClass) as Class<out T>)
+    var apiService: T = HttpProvider.defaultCreate(TypeUtils.findNeedType(javaClass) as Class<out T>)
 
 }

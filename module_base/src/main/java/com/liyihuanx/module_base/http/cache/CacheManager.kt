@@ -14,9 +14,27 @@ object CacheManager {
 
     /**
      * 反序列,把二进制数据转换成java object对象
+     * 是用一个user就可以还是每个Closeable对象都要配一个？？
      */
     @JvmStatic
     fun toObject(data: ByteArray): Any? {
+//        var bais: ByteArrayInputStream? = null
+//        var ois: ObjectInputStream? = null
+//        try {
+//            bais = ByteArrayInputStream(data)
+//            ois = ObjectInputStream(bais)
+//            return ois.readObject()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            try {
+//                bais?.close()
+//                ois?.close()
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//        return null
         return ByteArrayInputStream(data).use {
             ObjectInputStream(it).use {
                 it.readObject()
@@ -29,6 +47,26 @@ object CacheManager {
      */
     @JvmStatic
     fun <T> toByteArray(body: T): ByteArray {
+//        var baos: ByteArrayOutputStream? = null
+//        var oos: ObjectOutputStream? = null
+//        try {
+//            baos = ByteArrayOutputStream()
+//            oos = ObjectOutputStream(baos)
+//            oos.writeObject(body)
+//            oos.flush()
+//            return baos.toByteArray()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            try {
+//                baos?.close()
+//                oos?.close()
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//        return ByteArray(0)
+
         return ByteArrayOutputStream().use {
             ObjectOutputStream(it).use { ObjectOutputStream ->
                 ObjectOutputStream.writeObject(body)
