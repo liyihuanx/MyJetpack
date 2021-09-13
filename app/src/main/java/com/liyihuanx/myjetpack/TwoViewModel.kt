@@ -1,15 +1,13 @@
 package com.liyihuanx.myjetpack
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.liyihuanx.module_base.http.RepositoryManager
-import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
-import com.liyihuanx.module_base.utils.asToast
-import com.liyihuanx.module_base.utils.coroutine
+import com.liyihuanx.module_base.utils.viewModelScopeCoroutine
 import com.liyihuanx.module_base.viewmodel.BaseViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.runBlocking
-import java.lang.Exception
+import kotlinx.coroutines.*
 
 /**
  * @ClassName: TwoViewModel
@@ -23,14 +21,33 @@ class TwoViewModel(application: Application) : BaseViewModel(application) {
         MutableLiveData<ChapterBean>()
     }
 
-    fun http() {
-//        RepositoryManager.getRepo(ConfigRepository::class.java)
-//            .getData {
-//                getHttpData.value = it
-//            }
+    val getHttpData2 by lazy {
+        MutableLiveData<ChapterBean>()
     }
 
+    fun http() {
+        getRepo(ConfigRepository::class.java)
+            .getData(viewModelScope) {
+                Log.d("QWER", "http: $it")
+            }
+    }
 
+    fun http2() {
+        viewModelScope.async(Dispatchers.Main) {
+            val withContext = withContext(Dispatchers.IO) {
+                getRepo(ConfigRepository::class.java).config()
+            }
+            getHttpData2.value = withContext
+        }
 
+//        viewModelScopeCoroutine(viewModelScope) {
+//            doWork {
+//                getHttpData2.value = withContext(Dispatchers.IO) {
+//                    getRepo(ConfigRepository::class.java).config()
+//                }
+//            }
+//        }
+
+    }
 
 }

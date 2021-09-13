@@ -2,12 +2,13 @@ package com.liyihuanx.myjetpack
 
 import com.liyihuanx.module_base.http.BaseRepository
 import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
-import com.liyihuanx.module_base.utils.coroutine
+import com.liyihuanx.module_base.utils.viewModelScopeCoroutine
 import java.lang.Exception
 import kotlin.Int
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 
 /**
@@ -16,17 +17,18 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     fun config2(
         cacheStrategy: Int,
         page: String = "GS",
+        viewModelScope: CoroutineScope,
         onError: ((e: Exception) -> Unit)? = null,
         onComplete: (() -> Unit)? = null,
         onResult: (List<String>) -> Unit
     ) {
-        coroutine {
-                doWork {
-                    CoroutineDataFetcher { apiService.config2(page) }.startFetchData(cacheStrategy,
-                        "cache//com.liyihuanx.myjetpack.ConfigService//config2?cacheStrategy=${cacheStrategy}&page=${page}")
-                        .collect {
-                            onResult.invoke(it)
-                        }
+        viewModelScopeCoroutine(viewModelScope) {
+                doWork { 
+                	CoroutineDataFetcher { apiService.config2(page) }.startFetchData(cacheStrategy,
+                 		"cache//com.liyihuanx.myjetpack.ConfigService//config2?cacheStrategy=${cacheStrategy}&page=${page}") 
+                		.collect {
+                			onResult.invoke(it) 
+                		} 
                 } 
                 catchError { onError?.invoke(it) } 
                 onFinally { onComplete?.invoke() } 
@@ -34,22 +36,23 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     }
 
     fun getData(
+        viewModelScope: CoroutineScope,
         onError: ((e: Exception) -> Unit)? = null,
         onComplete: (() -> Unit)? = null,
         onResult: (ChapterBean) -> Unit
     ) {
-        coroutine {
-                doWork {
-                	CoroutineDataFetcher { apiService.getData() }.startFetchData(2,
-                 "cache//com.liyihuanx.myjetpack.ConfigService//getData")
+        viewModelScopeCoroutine(viewModelScope) {
+                doWork { 
+                	CoroutineDataFetcher { apiService.getData() }.startFetchData(0,
+                 		"cache//com.liyihuanx.myjetpack.ConfigService//getData") 
                 		.collect {
-                			onResult.invoke(it)
-                		}
-                }
-                catchError { onError?.invoke(it) }
-                onFinally { onComplete?.invoke() }
+                			onResult.invoke(it) 
+                		} 
+                } 
+                catchError { onError?.invoke(it) } 
+                onFinally { onComplete?.invoke() } 
                 }
     }
 
-    suspend fun config(cacheStrategy: Int, page: String): String = apiService.config(page)
+    suspend fun config(): ChapterBean = apiService.config()
 }

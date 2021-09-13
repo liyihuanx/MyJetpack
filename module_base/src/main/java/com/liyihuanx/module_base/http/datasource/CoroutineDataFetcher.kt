@@ -1,7 +1,10 @@
 package com.liyihuanx.module_base.http.datasource
 
+import android.util.Log
 import com.liyihuanx.annotation.NetStrategy
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 /**
@@ -16,28 +19,36 @@ class CoroutineDataFetcher<T>(remoteQuest: suspend () -> T) : AbsDataFetcher<T>(
      * // 1.只发起网络请求，不缓存 OnlyHttp(分页)
      * // 2.先取缓存，没有发起网络请，然后更新缓存 CacheFirst(页面初始化)
      * // 3.先接口，接口成功后更新缓存 NetCache (下拉属性)
+     * // 每一个请求都新建一个Flow, 能否做复用？
      */
 
-    override fun startFetchData(cacheStrategy: Int?,cacheKey: String?): Flow<T> {
+    fun startFetchData(
+        cacheStrategy: Int? = NetStrategy.NET_ONLY,
+        cacheKey: String? = null
+    ): Flow<T> {
         return when (cacheStrategy) {
-            NetStrategy.NET_ONLY -> flow { emit(this@CoroutineDataFetcher.remoteRequest()) }
+            NetStrategy.NET_ONLY -> flow {
+                emit(this@CoroutineDataFetcher.remoteRequest())
+            }
 
             NetStrategy.CACHE_FIRST -> {
                 flow {
-                    emit(getCache("") ?: this@CoroutineDataFetcher.remoteRequest()
-                        .also { saveCache("", it) }
+                    emit(getCache(cacheKey) ?: this@CoroutineDataFetcher.remoteRequest()
+                        .also { saveCache(cacheKey, it) }
                     )
                 }
             }
 
             NetStrategy.NET_CACHE -> {
                 flow {
-                    emit(this@CoroutineDataFetcher.remoteRequest().also { saveCache("", it) })
+                    emit(this@CoroutineDataFetcher.remoteRequest().also { saveCache(cacheKey, it) })
                 }
             }
 
             else -> flow { emit(this@CoroutineDataFetcher.remoteRequest()) }
         }.flowOn(Dispatchers.IO)
     }
+
+
 
 }

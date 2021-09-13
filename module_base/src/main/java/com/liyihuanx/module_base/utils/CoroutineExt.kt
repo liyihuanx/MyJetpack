@@ -1,6 +1,7 @@
 package com.liyihuanx.module_base.utils
 
 import android.widget.Toast
+import androidx.lifecycle.LifecycleCoroutineScope
 import kotlinx.coroutines.*
 import java.lang.Exception
 
@@ -10,25 +11,52 @@ import java.lang.Exception
  * @description: 类的描述
  */
 
-
-fun Any.defaultCoroutine(
+/**
+ * 与viewModel绑定生命周期
+ */
+fun Any.viewModelScopeCoroutine(
+    viewModelScope: CoroutineScope,
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
-    block: suspend CoroutineScope.() -> Unit
+    c: CoroutineScopeWrap.() -> Unit,
 ) {
-    GlobalScope.launch(dispatcher) {
+    viewModelScope.launch(dispatcher) {
+        val block = CoroutineScopeWrap()
+        c.invoke(block)
         try {
-            block.invoke(this)
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            e.message.asToast()
+            block.work.invoke(this)
+        } catch (e: Exception) {
+            block.error.invoke(e)
         } finally {
-
+            block.complete.invoke()
         }
     }
 }
 
+/**
+ * 与lifecycleScope绑定生命周期
+ */
+fun Any.lifecycleScopeCoroutine(
+    lifecycleScope: LifecycleCoroutineScope,
+    dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    c: CoroutineScopeWrap.() -> Unit,
+) {
+    lifecycleScope.launch(dispatcher) {
+        val block = CoroutineScopeWrap()
+        c.invoke(block)
+        try {
+            block.work.invoke(this)
+        } catch (e: Exception) {
+            block.error.invoke(e)
+        } finally {
+            block.complete.invoke()
+        }
+    }
+}
 
-fun Any.coroutine(
+/**
+ * 普通的全局协程
+ */
+fun Any.globalCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
     c: CoroutineScopeWrap.() -> Unit,
 ){
@@ -46,6 +74,9 @@ fun Any.coroutine(
     }
 }
 
+/**
+ *  协程回调的包装类
+ */
 class CoroutineScopeWrap {
     var work: (suspend CoroutineScope.() -> Unit) = {}
     var error: (e: Exception) -> Unit = {}
@@ -64,6 +95,9 @@ class CoroutineScopeWrap {
     }
 }
 
+/**
+ * Toast
+ */
 fun String?.asToast() {
     Toast.makeText(AppContext.get(), this, Toast.LENGTH_SHORT).show()
 }

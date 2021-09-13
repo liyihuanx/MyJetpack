@@ -13,15 +13,15 @@ import retrofit2.http.GET
 interface ConfigService {
 
     @AutoApi
-    @NetStrategy(isNeedAddParameter = true)
-    suspend fun config(page: String): String
+    @GET("wxarticle/chapters/json")
+    suspend fun config(): ChapterBean
 
-    @NetStrategy(strategy = NetStrategy.NET_CACHE, isNeedAddParameter = true)
+    @NetStrategy(isNeedAddParameter = true)
     @AutoFlowApi(keys = ["page"], defaultValues = ["\"GS\""])
     suspend fun config2(page: String): List<String>
 
 
-    @NetStrategy(NetStrategy.NET_CACHE)
+    @NetStrategy(NetStrategy.CACHE_FIRST)
     @AutoFlowApi
     @GET("wxarticle/chapters/json")
     suspend fun getData(): ChapterBean

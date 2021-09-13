@@ -117,7 +117,7 @@ class RepositoryProcessor : AbstractProcessor() {
                 if (method.methodName == userCacheStrategyMethod) {
                     val annotation = executableElement.getAnnotation(NetStrategy::class.java)
                     // 找到类后，获取注解的值,并且做保存
-                    method.netStrategy = annotation.value
+                    method.netStrategy = annotation.strategy
                     method.isUserStrategyParameter = annotation.isNeedAddParameter
 
                     method.isUserStrategyFunction = !annotation.isNeedAddParameter

@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2021/4/15
  * description: 类的描述
  */
-public class Utils {
+public class TypeUtils {
     /**
      * find the type by interfaces
      *

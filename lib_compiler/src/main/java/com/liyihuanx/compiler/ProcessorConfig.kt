@@ -16,11 +16,16 @@ val ContinuationType = ClassName("kotlin.coroutines", "Continuation")
 val FlowType = ClassName("kotlinx.coroutines.flow", "Flow")
 val UnitType = ClassName("kotlin", "Unit")
 
-val CoroutineLambdaType = ClassName("com.liyihuanx.module_base.utils","coroutine")
+val CoroutineLambdaType = ClassName("com.liyihuanx.module_base.utils","globalCoroutine")
+val ViewModelScopeCoroutineType = ClassName("com.liyihuanx.module_base.utils","viewModelScopeCoroutine")
+
+
 val FlowCollectLambdaType = ClassName("kotlinx.coroutines.flow","collect")
+val CoroutineScopeType = ClassName("kotlinx.coroutines","CoroutineScope")
 
 
 const val CACHE_STRATEGY_PARAMETER_NAME = "cacheStrategy"
+const val VIEW_MODEl_SCOPE = "viewModelScope"
 
 fun String.transformFromKaptPathToAptPath(): String {
     return File(this).parentFile.parentFile.parentFile.parentFile.parentFile.path + "/src/main/java"

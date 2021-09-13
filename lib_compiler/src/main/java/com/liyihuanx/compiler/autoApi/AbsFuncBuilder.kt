@@ -47,6 +47,8 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
             funcBuilder.addParameter(paramSpecBuilder.build())
         }
 
+        // 在入参添加viewModelScope
+        addViewModelScope(funcBuilder)
         // 在入参添加lambda表达式
         addLambdaParameter(funcBuilder)
         // 添加方法语句
@@ -56,5 +58,6 @@ abstract class AbsFuncBuilder(val repositoryMethod: RepositoryMethod) {
 
     abstract fun addStatement(funcBuilder: FunSpec.Builder)
     open fun addLambdaParameter(funcBuilder: FunSpec.Builder) {}
+    open fun addViewModelScope(funcBuilder: FunSpec.Builder) {}
 
 }

@@ -25,38 +25,71 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
             paramsStringBuilder.append(it.name).append(",")
         }
 
-        funcBuilder.addStatement(
-            "%T {\n" +
-                "doWork { \n" +
-                    "\t%T { apiService.%L(%L) }.$startFetchData \n" +
-                    "\t\t.%T {\n" +
-                        "\t\t\tonResult.invoke(it) \n" +
-                    "\t\t} \n" +
-                 "} \n" +
-                "catchError { onError?.invoke(it) } \n" +
-                "onFinally { onComplete?.invoke() } \n" +
-            "}",
-            CoroutineLambdaType, // coroutine
-            CoroutineDataFetcherClassType, // CoroutineDataFetcher
-            repositoryMethod.methodName, // 方法名
-            paramsStringBuilder.toString().dropLast(1), // 参数，丢弃最后一个","
-            repositoryMethod.getCacheKey(),
-            FlowCollectLambdaType // collect
-        )
-
-    }
-
-    private val startFetchData by lazy {
-        // 是不是添加在参数上
-        if (repositoryMethod.isUserStrategyParameter) {
-            "startFetchData($CACHE_STRATEGY_PARAMETER_NAME,\n %S)"
-        } else if (repositoryMethod.isUserStrategyFunction) {
-            "startFetchData(${repositoryMethod.netStrategy},\n %S)"
+        // 有没有使用缓存策略
+        if (repositoryMethod.isUserStrategyParameter || repositoryMethod.isUserStrategyFunction) {
+            funcBuilder.addStatement(
+                withCache, // 生成的语句
+                ViewModelScopeCoroutineType, // coroutine
+                VIEW_MODEl_SCOPE, // viewModelScope
+                CoroutineDataFetcherClassType, // CoroutineDataFetcher
+                repositoryMethod.methodName, // 方法名
+                paramsStringBuilder.toString().dropLast(1), // 参数，丢弃最后一个","
+                repositoryMethod.getCacheKey(),
+                FlowCollectLambdaType // collect
+            )
         } else {
-
+            // 没有使用
+            funcBuilder.addStatement(
+                withoutCache, // 生成的语句
+                ViewModelScopeCoroutineType, // coroutine
+                VIEW_MODEl_SCOPE, // viewModelScope
+                CoroutineDataFetcherClassType, // CoroutineDataFetcher
+                repositoryMethod.methodName, // 方法名
+                paramsStringBuilder.toString().dropLast(1), // 参数，丢弃最后一个","
+                FlowCollectLambdaType // collect
+            )
         }
     }
 
+    private val startFetchData by lazy {
+        if (repositoryMethod.isUserStrategyParameter) {
+            "startFetchData($CACHE_STRATEGY_PARAMETER_NAME,\n \t\t%S)"
+        } else {
+            "startFetchData(${repositoryMethod.netStrategy},\n \t\t%S)"
+        }
+    }
+
+    private val withoutCache =
+        "%T(%L) {\n" +
+            "doWork { \n" +
+              "\t%T { apiService.%L(%L) }.startFetchData() \n" +
+                "\t\t.%T {\n" +
+                "\t\t\tonResult.invoke(it) \n" +
+                "\t\t} \n" +
+            "} \n" +
+           "catchError { onError?.invoke(it) } \n" +
+           "onFinally { onComplete?.invoke() } \n" + "}"
+
+    private val withCache =
+        "%T(%L) {\n" +
+           "doWork { \n" +
+              "\t%T { apiService.%L(%L) }.$startFetchData \n" +
+                "\t\t.%T {\n" +
+                "\t\t\tonResult.invoke(it) \n" +
+                "\t\t} \n" +
+           "} \n" +
+           "catchError { onError?.invoke(it) } \n" +
+           "onFinally { onComplete?.invoke() } \n" + "}"
+
+
+
+    /**
+     * 添加 viewModelScope : CoroutineScope
+     */
+    override fun addViewModelScope(funcBuilder: FunSpec.Builder) {
+        val viewModelScopeParameter = ParameterSpec.builder(VIEW_MODEl_SCOPE, CoroutineScopeType)
+        funcBuilder.addParameter(viewModelScopeParameter.build())
+    }
 
     /**
      * 添加lambda表达式
@@ -118,15 +151,16 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
 //     * 在Repository中最后想实现的效果
 //     */
 //    fun getData(
+//        viewModelScope: CoroutineScope,
 //        onError: ((e: Exception) -> Unit)? = null,
 //        onComplete: (() -> Unit)? = null,
-//        onResult: ((e: ChapterBean) -> Unit),
+//        onResult: (ChapterBean) -> Unit
 //    ) {
-//        coroutine {
+//        viewModelScopeCoroutine(viewModelScope) {
 //            doWork {
 //                CoroutineDataFetcher { apiService.getData() }.startFetchData()
 //                    .collect {
-//                        result.invoke(it)
+//                        onResult.invoke(it)
 //                    }
 //            }
 //            catchError { onError?.invoke(it) }
