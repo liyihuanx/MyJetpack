@@ -127,10 +127,14 @@ class RepositoryProcessor : AbstractProcessor() {
                 if (method.methodName == userCacheStrategyMethod) {
                     val annotation = executableElement.getAnnotation(NetStrategy::class.java)
                     // 找到类后，获取注解的值,并且做保存
-                    method.netStrategy = annotation.strategy
-                    method.isUserStrategyParameter = annotation.isNeedAddParameter
+                    method.cacheInfo.netStrategy = annotation.strategy
+                    method.cacheInfo.isUserStrategyParameter = annotation.isNeedAddParameter
+                    method.cacheInfo.isUserStrategyFunction = !annotation.isNeedAddParameter
+                    method.cacheInfo.effectiveTime =  annotation.effectiveTime
+                    method.cacheInfo.timeUnit =  annotation.timeUnit
 
-                    method.isUserStrategyFunction = !annotation.isNeedAddParameter
+                    AptContext.note(annotation.effectiveTime)
+                    AptContext.note(annotation.timeUnit)
                 }
             }
         }

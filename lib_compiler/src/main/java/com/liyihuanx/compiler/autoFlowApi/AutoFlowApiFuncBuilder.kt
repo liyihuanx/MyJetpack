@@ -26,7 +26,7 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
         }
 
         // 有没有使用缓存策略
-        if (repositoryMethod.isUserStrategyParameter || repositoryMethod.isUserStrategyFunction) {
+        if (repositoryMethod.cacheInfo.isUserStrategyParameter || repositoryMethod.cacheInfo.isUserStrategyFunction) {
             funcBuilder.addStatement(
                 withCache, // 生成的语句
                 ViewModelScopeCoroutineType, // coroutine
@@ -35,6 +35,7 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
                 repositoryMethod.methodName, // 方法名
                 paramsStringBuilder.toString().dropLast(1), // 参数，丢弃最后一个","
                 repositoryMethod.getCacheKey(),
+                repositoryMethod.cacheInfo.effectiveTime.times(repositoryMethod.cacheInfo.timeUnit).toLong(),
                 FlowCollectLambdaType // collect
             )
         } else {
@@ -52,10 +53,10 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
     }
 
     private val startFetchData by lazy {
-        if (repositoryMethod.isUserStrategyParameter) {
-            "startFetchData($CACHE_STRATEGY_PARAMETER_NAME,\n \t\t%S)"
+        if (repositoryMethod.cacheInfo.isUserStrategyParameter) {
+            "startFetchData($CACHE_STRATEGY_PARAMETER_NAME,\n \t\t%S,\n\t\t%L\n)"
         } else {
-            "startFetchData(${repositoryMethod.netStrategy},\n \t\t%S)"
+            "startFetchData(${repositoryMethod.cacheInfo.netStrategy},\n\t\t%S,\n\t\t%L\n\t)"
         }
     }
 
@@ -73,10 +74,10 @@ class AutoFlowApiFuncBuilder(mRepositoryMethod: RepositoryMethod) :
     private val withCache =
         "%T(%L) {\n" +
            "doWork { \n" +
-              "\t%T { apiService.%L(%L) }.$startFetchData \n" +
-                "\t\t.%T {\n" +
-                "\t\t\tonResult.invoke(it) \n" +
-                "\t\t} \n" +
+              "\t%T { apiService.%L(%L) }.$startFetchData" +
+                ".%T {\n" +
+                "\t\tonResult.invoke(it) \n" +
+                "\t} \n" +
            "} \n" +
            "catchError { onError?.invoke(it) } \n" +
            "onFinally { onComplete?.invoke() } \n" + "}"

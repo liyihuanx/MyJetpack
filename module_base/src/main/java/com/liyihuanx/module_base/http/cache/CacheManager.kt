@@ -1,5 +1,6 @@
 package com.liyihuanx.module_base.http.cache
 
+import android.util.Log
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
@@ -83,8 +84,18 @@ object CacheManager {
     @JvmStatic
     fun <T> getCache(key: String): T? {
         val cache = CacheDatabase.database.getCacheDao().getCache(key)
+        // 判断缓存是否过期
+        cache?.also {
+            it.effectiveTime?.plus(it.createTime)?.takeIf { time ->
+                time < System.currentTimeMillis()
+            }?.also {
+                deleteCache(key)
+                return null
+            }
+        }
+
         return (if (cache?.data != null) {
-            toObject(cache.data)
+            toObject(cache.data!!)
         } else null) as? T?
 
     }
@@ -93,17 +104,20 @@ object CacheManager {
      * 删除缓存
      */
     @JvmStatic
-    fun <T> deleteCache(key: String, body: T) {
-        val cache = Cache(key, toByteArray(body))
-        CacheDatabase.database.getCacheDao().delete(cache)
+    fun deleteCache(key: String) {
+        Cache(key).also {
+            CacheDatabase.database.getCacheDao().delete(it)
+        }
+
     }
 
     /**
      * 保存缓存
+     * 缓存时间默认半小时 30 * 60 * 1000
      */
     @JvmStatic
-    fun <T> saveCache(key: String, body: T) {
-        val cache = Cache(key, toByteArray(body))
+    fun <T> saveCache(key: String, body: T, effectiveTime: Long? = null) {
+        val cache = Cache(key, toByteArray(body), System.currentTimeMillis(), effectiveTime)
         CacheDatabase.database.getCacheDao().saveCache(cache)
     }
 

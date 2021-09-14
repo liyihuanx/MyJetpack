@@ -27,7 +27,7 @@ interface CacheDao {
     @Query("select *from tab_cache where `key`=:key")
     fun getCache(key: String): Cache?
 
-    //只能传递对象昂,删除时根据Cache中的主键 来比对的
+    //只能传递对象,删除时根据Cache中的主键 来比对的
     @Delete
     fun delete(cache: Cache): Int
 

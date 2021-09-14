@@ -22,10 +22,12 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     ) {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
-                	CoroutineDataFetcher { apiService.config2(page) }.startFetchData() 
-                		.collect {
-                			onResult.invoke(it) 
-                		} 
+                	CoroutineDataFetcher { apiService.config2(page) }.startFetchData(1,
+                		"cache//com.liyihuanx.myjetpack.ConfigService//config2?page=${page}",
+                		1800000
+                	).collect {
+                		onResult.invoke(it) 
+                	} 
                 } 
                 catchError { onError?.invoke(it) } 
                 onFinally { onComplete?.invoke() } 
@@ -40,11 +42,12 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     ) {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
-                	CoroutineDataFetcher { apiService.getData() }.startFetchData(0,
-                 		"cache//com.liyihuanx.myjetpack.ConfigService//getData") 
-                		.collect {
-                			onResult.invoke(null)
-                		} 
+                	CoroutineDataFetcher { apiService.getData() }.startFetchData(3,
+                		"cache//com.liyihuanx.myjetpack.ConfigService//getData",
+                		10000
+                	).collect {
+                		onResult.invoke(it) 
+                	} 
                 } 
                 catchError { onError?.invoke(it) } 
                 onFinally { onComplete?.invoke() } 

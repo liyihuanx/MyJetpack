@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SecondActivity : AppCompatActivity() {
-
     private val create by lazy {
         ViewModelProvider(this)[TwoViewModel::class.java]
     }

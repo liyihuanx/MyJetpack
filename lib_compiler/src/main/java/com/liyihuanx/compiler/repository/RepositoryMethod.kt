@@ -2,6 +2,7 @@ package com.liyihuanx.compiler.repository
 
 import com.liyihuanx.annotation.NetStrategy
 import com.liyihuanx.compiler.CACHE_STRATEGY_PARAMETER_NAME
+import com.liyihuanx.compiler.CacheInfo
 import com.liyihuanx.compiler.ContinuationType
 import com.liyihuanx.compiler.types.javaToKotlinType
 import com.squareup.kotlinpoet.ClassName
@@ -24,12 +25,9 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
     var returnType = executableElement.returnType.asTypeName()
 
     /**
-     * 缓存策略 netStrategy
-     * 缓存策略这个变量加到哪里去
+     * 缓存策略 netStrategy 的信息
      */
-    var netStrategy = NetStrategy.NET_ONLY
-    var isUserStrategyParameter = false
-    var isUserStrategyFunction = false
+    var cacheInfo = CacheInfo()
 
     /**
      * 是不是Observable
@@ -79,7 +77,7 @@ abstract class RepositoryMethod(val executableElement: ExecutableElement) {
 
     open fun build() {
         // 使用了缓存策略的注解，并且要求要加到参数中
-        if (isUserStrategyParameter) {
+        if (cacheInfo.isUserStrategyParameter) {
             parameters.addFirst(
                 Parameter(
                     CACHE_STRATEGY_PARAMETER_NAME,

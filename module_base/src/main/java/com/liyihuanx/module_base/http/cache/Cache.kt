@@ -9,11 +9,16 @@ import androidx.room.PrimaryKey
  * @description: 类的描述
  */
 @Entity(tableName = "tab_cache")
-data class Cache (
+data class Cache(
     @PrimaryKey(autoGenerate = false)
-    var key:String,
+    var key: String,
 
-    var data: ByteArray
+    var data: ByteArray? = null,
+
+    var createTime: Long = System.currentTimeMillis(),
+
+    //  60 * 60 * 1000L // 1小时
+    var effectiveTime: Long? = null
 
 ) {
     override fun equals(other: Any?): Boolean {
@@ -22,15 +27,12 @@ data class Cache (
 
         other as Cache
 
-        if (key != other.key) return false
         if (!data.contentEquals(other.data)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = key.hashCode()
-        result = 31 * result + data.contentHashCode()
-        return result
+        return data.contentHashCode()
     }
 }
