@@ -15,7 +15,11 @@
             <option value="$PROJECT_DIR$/lib_annotation" />
             <option value="$PROJECT_DIR$/lib_compiler" />
             <option value="$PROJECT_DIR$/module_base" />
+            <option value="$PROJECT_DIR$/module_common" />
             <option value="$PROJECT_DIR$/module_home" />
+            <option value="$PROJECT_DIR$/module_mine" />
+            <option value="$PROJECT_DIR$/module_three" />
+            <option value="$PROJECT_DIR$/module_two" />
             <option value="$PROJECT_DIR$/module_ui" />
           </set>
         </option>

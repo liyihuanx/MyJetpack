@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp" />
 
-        <liyihuan.app.android.module_ui.tab.bottom.BottomTabLayout
+        <com.liyihuanx.module_ui.tab.bottom.BottomTabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"

@@ -1,6 +1,7 @@
 package com.liyihuanx.myjetpack
 
 import android.app.Application
+import com.alibaba.android.arouter.launcher.ARouter
 
 /**
  * @author created by liyihuanx
@@ -11,5 +12,11 @@ class JetPackApplication : Application(){
 
     override fun onCreate() {
         super.onCreate()
+
+        ARouter.openLog()
+        ARouter.openDebug()
+        ARouter.init(this)
+
+
     }
 }

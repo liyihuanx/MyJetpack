@@ -1,10 +1,6 @@
 package com.liyihuanx.module_base.http.datasource
 
-import android.util.Log
-import com.liyihuanx.annotation.NetStrategy
 import com.liyihuanx.module_base.http.cache.CacheManager
-import kotlinx.coroutines.flow.Flow
-import okhttp3.internal.cache.CacheStrategy
 
 /**
  * @author created by liyihuanx

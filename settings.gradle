@@ -1,7 +1,11 @@
+include ':module_ui'
+include ':module_common'
+include ':module_three'
+include ':module_two'
+include ':module_mine'
 include ':lib_compiler'
 include ':lib_annotation'
 include ':module_home'
-include ':module_ui'
 include ':module_base'
 include ':app'
 rootProject.name = "MyJetpack"

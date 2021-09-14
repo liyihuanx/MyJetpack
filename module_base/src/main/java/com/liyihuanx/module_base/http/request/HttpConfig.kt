@@ -1,7 +1,6 @@
 package com.liyihuanx.module_base.http.request
 
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.liyihuanx.module_base.http.interceptor.CustomLogInterceptor
 import com.liyihuanx.module_base.http.interceptor.HeadInterceptor
 import okhttp3.OkHttpClient

@@ -1,17 +1,16 @@
 package com.liyihuanx.myjetpack
 
-import android.util.Log
 import androidx.fragment.app.Fragment
-import com.liyihuanx.annotation.AutoApi
+import com.liyihuan.module_three.ThreeFragment
+import com.liyihuan.module_two.TwoFragment
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.module_home.HomeFragment
+import com.liyihuanx.module_mine.MineFragment
+import com.liyihuanx.module_ui.tab.bottom.BottomTabBean
+import com.liyihuanx.module_ui.tab.bottom.IBottomLayout
 import com.liyihuanx.myjetpack.databinding.ActivityMainBinding
-import com.liyihuanx.myjetpack.navigation.MineFragment
-import com.liyihuanx.myjetpack.navigation.ThreeFragment
-import com.liyihuanx.myjetpack.navigation.TwoFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import liyihuan.app.android.module_ui.tab.bottom.BottomTabBean
-import liyihuan.app.android.module_ui.tab.bottom.IBottomLayout
+
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {

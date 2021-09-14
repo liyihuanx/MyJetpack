@@ -2,18 +2,12 @@ package com.liyihuanx.myjetpack
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.liyihuanx.module_base.http.RepositoryManager
-import com.liyihuanx.module_base.utils.AppContext
-import com.liyihuanx.module_base.utils.lifecycleScopeCoroutine
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.liyihuan.module_common.RouterPath
 import kotlinx.android.synthetic.main.activity_second.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
+@Route(path = RouterPath.Main.secondActivity)
 class SecondActivity : AppCompatActivity() {
     private val create by lazy {
         ViewModelProvider(this)[TwoViewModel::class.java]
