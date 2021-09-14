@@ -38,8 +38,9 @@ class HttpConfig : IHttpConfig {
         builder.baseUrl(getBaseUrl())
         // 添加okhttp
         builder.client(client())
+        builder.addConverterFactory(HttpConverterFactory(Gson()))
         // 添加数据处理器 影响 (@Body User ueser)
-        builder.addConverterFactory(GsonConverterFactory.create())
+//        builder.addConverterFactory(GsonConverterFactory.create())
         // 影响的就是Call或者Observable
 //        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         // 构建

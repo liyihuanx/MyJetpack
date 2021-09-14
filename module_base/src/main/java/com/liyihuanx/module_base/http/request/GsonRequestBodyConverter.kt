@@ -15,12 +15,9 @@ import java.nio.charset.Charset
  * @date 2021/9/9
  * @description: 类的描述
  */
-class GsonRequestBodyConverter<T>(gson: Gson, adapter: TypeAdapter<T>) : Converter<T, RequestBody> {
+class GsonRequestBodyConverter<T>(private val gson: Gson, private val adapter: TypeAdapter<T>) : Converter<T, RequestBody> {
     private val MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8")
     private val UTF_8 = Charset.forName("UTF-8")
-
-    private val gson = gson
-    private val adapter = adapter
 
     override fun convert(value: T): RequestBody {
         val buffer = Buffer()

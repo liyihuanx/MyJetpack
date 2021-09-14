@@ -3,6 +3,7 @@ package com.liyihuanx.myjetpack
 import com.liyihuanx.annotation.AutoApi
 import com.liyihuanx.annotation.AutoFlowApi
 import com.liyihuanx.annotation.NetStrategy
+import com.liyihuanx.module_base.bean.BaseCommonListResponse
 import retrofit2.http.GET
 
 /**
@@ -29,5 +30,5 @@ interface ConfigService {
     )
     @AutoFlowApi
     @GET("wxarticle/chapters/json")
-    suspend fun getData(): ChapterBean
+    suspend fun getData(): List<ChapterBean>
 }

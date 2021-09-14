@@ -32,7 +32,7 @@ class TwoViewModel(application: Application) : BaseViewModel(application) {
     fun http() {
         getRepo(ConfigRepository::class.java)
             .getData(viewModelScope) {
-                Log.d("QWER", "http: $it")
+                Log.d("QWER", "http: ${Gson().toJson(it)}")
             }
     }
 

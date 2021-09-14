@@ -38,7 +38,7 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
         viewModelScope: CoroutineScope,
         onError: ((e: Exception) -> Unit)? = null,
         onComplete: (() -> Unit)? = null,
-        onResult: (ChapterBean?) -> Unit
+        onResult: (List<ChapterBean>?) -> Unit
     ) {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
