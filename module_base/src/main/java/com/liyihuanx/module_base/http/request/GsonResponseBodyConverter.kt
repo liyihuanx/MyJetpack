@@ -2,17 +2,16 @@ package com.liyihuanx.module_base.http.request
 
 import android.text.TextUtils
 import android.util.Log
-import com.alibaba.fastjson.util.ParameterizedTypeImpl
 import com.google.gson.Gson
 import com.google.gson.JsonIOException
 import com.google.gson.TypeAdapter
-import com.liyihuanx.module_base.bean.BaseCommonListResponse
-import com.liyihuanx.module_base.bean.BaseCommonResponse
-import com.liyihuanx.module_base.bean.isSuccess
+import com.google.gson.reflect.TypeToken
+import com.liyihuanx.module_base.http.bean.BaseCommonListResponse
+import com.liyihuanx.module_base.http.bean.BaseCommonResponse
+import com.liyihuanx.module_base.http.bean.isSuccess
 import com.liyihuanx.module_base.http.CustomHttpException
 import okhttp3.ResponseBody
 import retrofit2.Converter
-import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
@@ -33,44 +32,26 @@ class GsonResponseBodyConverter<T>(
                 throw JsonIOException("网络异常 101")
             }
 
-            if (type.toString().startsWith("io.reactivex.Observable<")) {
-                var sub: Type? = null
-                if (type is ParameterizedType) {
-                    sub = (type as ParameterizedType).actualTypeArguments[0]
-                    type = sub
-                }
-            }
-
-
+            // 返回的List<T>列表
             if (type.toString().contains("List")) {
-                var sub: Type? = null
-                if (type is ParameterizedType) {
-                    sub = (type as ParameterizedType).actualTypeArguments[0]
-                }
-                var result = response
-                result = result.replace("\"data\":{}", "\"data\":[]")
-                val p = ParameterizedTypeImpl(
-                    arrayOf(sub),
-                    BaseCommonListResponse::class.java,
-                    BaseCommonListResponse::class.java
-                )
-                val baseBean: BaseCommonListResponse<T> = mGson.fromJson(result, p)
+//                var sub: Type? = null
+//                if (type is ParameterizedType) {
+//                    sub = (type as ParameterizedType).actualTypeArguments[0]
+//                }
+                val result = response.replace("\"data\":{}", "\"data\":[]")
+
+                val typeToken = object : TypeToken<BaseCommonListResponse<T>>(){}.type
+                val baseBean: BaseCommonListResponse<T> = mGson.fromJson(result, typeToken)
+
                 if (!baseBean.isSuccess()) {
                     throw CustomHttpException(baseBean.errorCode, baseBean.errorMsg)
                 }
                 return baseBean.data as T
             }
 
-
-            val p = ParameterizedTypeImpl(
-                arrayOf(type),
-                BaseCommonResponse::class.java,
-                BaseCommonResponse::class.java
-            )
-            baseBean = mGson.fromJson(response, p)
-            Log.d("QWER", "ParameterizedTypeImpl: $p")
-            Log.d("QWER", "baseBean: $baseBean")
-
+            // 普通的object对象
+            val typeToken = object : TypeToken<BaseCommonResponse<T>>(){}.type
+            baseBean = mGson.fromJson(response, typeToken)
             if (!baseBean?.isSuccess()!!) {
                 throw CustomHttpException(baseBean.errorCode, baseBean.errorMsg)
             }
@@ -84,70 +65,3 @@ class GsonResponseBodyConverter<T>(
     }
 
 }
-
-//try {
-//    // io.reactivex.Observable<com.qizhou.base.been.common.CommonParseModel<java.lang.Boolean>>
-//    if (TextUtils.isEmpty(response)) {
-//        throw new JsonIOException("网络异常 101");
-//    }
-//    if (type.toString().startsWith("io.reactivex.Observable<")) {
-//        Type sub = null;
-//        if (type instanceof java.lang.reflect.ParameterizedType) {
-//            sub = ((java.lang.reflect.ParameterizedType) type).getActualTypeArguments()[0];
-//            type = sub;
-//        }
-//    }
-//    if (type.toString().contains("CommonParseModel")) {
-//        //  ParameterizedTypeImpl p = new ParameterizedTypeImpl(new Type[]{type}, CommonParseModel.class, CommonParseModel.class);
-//
-//        CommonParseModel baseBean = gson.fromJson(response, type);
-//        if (!baseBean.isSuccess()) {
-//            throw new RenovaceException(baseBean.code, baseBean.message);
-//        }
-//        return (T) baseBean;
-//    }
-//
-//    if (type.toString().contains("CommonListResult")) {
-//
-//        String result = response;
-//        result = result.replace("\"data\":{}", "\"data\":[]");
-//
-//        //  ParameterizedTypeImpl p = new ParameterizedTypeImpl(new Type[]{type}, CommonListResult.class, CommonListResult.class);
-//
-//        CommonListResult baseBean = gson.fromJson(result, type);
-//        if (!baseBean.isSuccess()) {
-//            throw new RenovaceException(baseBean.code, baseBean.message);
-//        }
-//        return (T) baseBean;
-//    }
-//
-//    if (type.toString().contains("List")) {
-//
-//
-//        Type sub = null;
-//        if (type instanceof java.lang.reflect.ParameterizedType) {
-//            sub = ((java.lang.reflect.ParameterizedType) type).getActualTypeArguments()[0];
-//        }
-//        String result = response;
-//        result = result.replace("\"data\":{}", "\"data\":[]");
-//        ParameterizedTypeImpl p = new ParameterizedTypeImpl(new Type[]{sub}, CommonListResult.class, CommonListResult.class);
-//
-//        CommonListResult baseBean = gson.fromJson(result, p);
-//        if (!baseBean.isSuccess()) {
-//            throw new RenovaceException(baseBean.code, baseBean.message);
-//        }
-//        return (T) baseBean.data;
-//    }
-//
-//
-//    ParameterizedTypeImpl p = new ParameterizedTypeImpl(new Type[]{type}, CommonParseModel.class, CommonParseModel.class);
-//    CommonParseModel baseBean = gson.fromJson(response, p);
-//    if (!baseBean.isSuccess()) {
-//        throw new RenovaceException(baseBean.code, baseBean.message);
-//    }
-//
-//    return (T) baseBean.data;
-//
-//} finally {
-//    value.close();
-//}

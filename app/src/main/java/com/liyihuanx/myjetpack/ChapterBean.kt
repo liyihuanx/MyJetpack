@@ -1,6 +1,5 @@
 package com.liyihuanx.myjetpack
 
-import com.liyihuanx.module_base.bean.BaseCommonListResponse
 import java.io.Serializable
 
 /**

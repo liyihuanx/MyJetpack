@@ -14,26 +14,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv1"
+        <Button
+            android:id="@+id/btnToSecond"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/bg_000000_r20"
             android:gravity="center"
             android:onClick="@{homeHelper::onReferencesClick}"
-            android:text="onReferencesClick"
+            android:text="btnToSecond"
             android:textSize="20dp"
             android:textStyle="bold" />
 
 
-        <TextView
-            android:id="@+id/tv2"
+        <Button
+            android:id="@+id/btnSendLiveData"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/bg_000000_r20"
             android:gravity="center"
             android:onClick="@{homeHelper::onReferencesClick}"
-            android:text="onClick"
+            android:text="btnSendLiveData"
             android:textSize="20dp"
             android:textStyle="bold" />
 

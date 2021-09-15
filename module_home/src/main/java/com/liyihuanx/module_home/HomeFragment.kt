@@ -2,8 +2,12 @@ package com.liyihuanx.module_home
 
 import android.util.Log
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
+import com.liyihuan.module_common.RouterPath
+import com.liyihuan.module_common.utils.LiveDataBus
 import com.liyihuanx.module_base.fragment.BaseFragment
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * @author created by liyihuanx
@@ -18,9 +22,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(){
 
     /**
      * 方法引用，但是参数固定写死了
+     * 和setOnClickListener(this)一样
      */
     fun onReferencesClick(v: View) {
-        Log.d("QWER", "onReferencesClick: ${v.id}")
+        when (v) {
+            btnToSecond -> {
+                ARouter.getInstance().build(RouterPath.Main.secondActivity).navigation()
+            }
+
+            btnSendLiveData -> {
+                LiveDataBus.with<String>("TestLiveDataBus").postStickyData("测试！")
+            }
+        }
     }
 
     /**

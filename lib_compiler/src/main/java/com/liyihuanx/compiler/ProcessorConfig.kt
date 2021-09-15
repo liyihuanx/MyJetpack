@@ -16,8 +16,8 @@ val ContinuationType = ClassName("kotlin.coroutines", "Continuation")
 val FlowType = ClassName("kotlinx.coroutines.flow", "Flow")
 val UnitType = ClassName("kotlin", "Unit")
 
-val CoroutineLambdaType = ClassName("com.liyihuanx.module_base.utils","globalCoroutine")
-val ViewModelScopeCoroutineType = ClassName("com.liyihuanx.module_base.utils","viewModelScopeCoroutine")
+val CoroutineLambdaType = ClassName("com.liyihuan.module_common.utils","globalCoroutine")
+val ViewModelScopeCoroutineType = ClassName("com.liyihuan.module_common.utils","viewModelScopeCoroutine")
 
 
 val FlowCollectLambdaType = ClassName("kotlinx.coroutines.flow","collect")

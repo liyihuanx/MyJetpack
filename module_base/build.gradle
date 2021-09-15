@@ -58,8 +58,6 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.7.0'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
-    api 'com.alibaba:fastjson:1.2.61'
-
     // gson
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
 

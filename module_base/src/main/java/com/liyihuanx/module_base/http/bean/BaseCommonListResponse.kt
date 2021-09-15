@@ -1,4 +1,4 @@
-package com.liyihuanx.module_base.bean
+package com.liyihuanx.module_base.http.bean
 
 import java.io.Serializable
 

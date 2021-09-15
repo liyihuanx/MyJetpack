@@ -1,8 +1,8 @@
 package com.liyihuanx.myjetpack
 
+import com.liyihuan.module_common.utils.viewModelScopeCoroutine
 import com.liyihuanx.module_base.http.BaseRepository
 import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
-import com.liyihuanx.module_base.utils.viewModelScopeCoroutine
 import java.lang.Exception
 import kotlin.String
 import kotlin.Unit
@@ -42,12 +42,10 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     ) {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
-                	CoroutineDataFetcher { apiService.getData() }.startFetchData(3,
-                		"cache//com.liyihuanx.myjetpack.ConfigService//getData",
-                		10000
-                	).collect {
-                		onResult.invoke(it) 
-                	} 
+                	CoroutineDataFetcher { apiService.getData() }.startFetchData() 
+                		.collect {
+                			onResult.invoke(it) 
+                		} 
                 } 
                 catchError { onError?.invoke(it) } 
                 onFinally { onComplete?.invoke() } 
