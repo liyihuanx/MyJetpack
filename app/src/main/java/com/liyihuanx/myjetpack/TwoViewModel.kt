@@ -1,6 +1,7 @@
 package com.liyihuanx.myjetpack
 
 import android.app.Application
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,10 +15,13 @@ import kotlinx.coroutines.*
  * @Author: liyihuan
  * @Date: 2021/9/8 22:49
  */
-class TwoViewModel(application: Application) : BaseViewModel(application) {
+class TwoViewModel(application: Application, data: Bundle?) : BaseViewModel(application,data) {
+
+    val peer = data?.getString("test") // 用户id
+
 
     val getHttpData by lazy {
-        MutableLiveData<ChapterBean>()
+        MutableLiveData<List<ChapterBean>?>()
     }
 
     val getHttpData2 by lazy {
@@ -27,12 +31,12 @@ class TwoViewModel(application: Application) : BaseViewModel(application) {
     fun http() {
         getRepo(ConfigRepository::class.java)
             .getData(viewModelScope) {
-                Log.d("QWER", "http: ${Gson().toJson(it)}")
+                getHttpData.value =  it
             }
     }
 
     fun http2() {
-        viewModelScope.async(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             val withContext = withContext(Dispatchers.IO) {
                 getRepo(ConfigRepository::class.java).config()
             }

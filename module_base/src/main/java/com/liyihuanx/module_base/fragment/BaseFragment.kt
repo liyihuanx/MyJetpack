@@ -29,14 +29,14 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewOrData()
+        observeLiveData()
     }
 
 
     abstract fun getLayoutId(): Int
     abstract fun initViewOrData()
 
-    open fun defaultClick(v: View) {
-
-    }
+    open fun defaultClick(v: View) {}
+    open fun observeLiveData() {}
 
 }

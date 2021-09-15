@@ -3,6 +3,7 @@ package com.liyihuan.module_common.utils
 import android.widget.Toast
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.liyihuanx.module_base.utils.AppContext
+import com.liyihuanx.module_base.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
 import java.lang.Exception
 

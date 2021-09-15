@@ -7,11 +7,8 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MutableLiveData
 import com.liyihuanx.module_base.http.RepositoryManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 /**
  * @author created by liyihuanx
@@ -32,7 +29,7 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
     /**
      * 获取activity fm
      */
-    var getFragmentManagrCall: (() -> androidx.fragment.app.FragmentManager)? = null
+    var getFragmentManagerCall: (() -> androidx.fragment.app.FragmentManager)? = null
 
     /**
      * 回调showloading
@@ -49,7 +46,7 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
      * 显示弹窗
      */
     fun showDialog(tag: String, call: () -> androidx.fragment.app.DialogFragment) {
-        getFragmentManagrCall?.invoke()?.let {
+        getFragmentManagerCall?.invoke()?.let {
             call().show(it, tag)
         }
     }
@@ -65,7 +62,7 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
      */
     private fun removeCall() {
         finishedActivityCall = null
-        getFragmentManagrCall = null
+        getFragmentManagerCall = null
         showLoadingCall = null
     }
 
@@ -87,52 +84,6 @@ open class BaseViewModel : AndroidViewModel, LifecycleObserver {
         }
     }
 
-
-    fun BaseViewModel.defaultBg(block: suspend CoroutineScope.() -> Unit) {
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                block.invoke(this)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                toast(e.message)
-            } finally {
-
-            }
-        }
-    }
-
-    fun BaseViewModel.bg(c: CoroutineScopeWrap.() -> Unit) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val block = CoroutineScopeWrap()
-            c.invoke(block)
-            try {
-                block.work.invoke(this)
-
-            } catch (e: Exception) {
-                block.error.invoke(e)
-            } finally {
-                block.complete.invoke()
-            }
-        }
-    }
-
-    class CoroutineScopeWrap {
-        var work: (suspend CoroutineScope.() -> Unit) = {}
-        var error: (e: Exception) -> Unit = {}
-        var complete: () -> Unit = {}
-
-        fun doWork(call: suspend CoroutineScope.() -> Unit) {
-            this.work = call
-        }
-
-        fun catchError(error: (e: Exception) -> Unit) {
-            this.error = error
-        }
-
-        fun onFinally(call: () -> Unit) {
-            this.complete = call
-        }
-    }
 
     fun <T> BaseViewModel.getRepo(cls: Class<T>): T {
         return RepositoryManager.getRepo(cls)

@@ -27,7 +27,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(){
     fun onReferencesClick(v: View) {
         when (v) {
             btnToSecond -> {
-                ARouter.getInstance().build(RouterPath.Main.secondActivity).navigation()
+                ARouter.getInstance()
+                    .build(RouterPath.Main.secondActivity)
+                    .withString("test", "123456")
+                    .navigation()
             }
 
             btnSendLiveData -> {

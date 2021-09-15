@@ -1,8 +1,6 @@
 package com.liyihuanx.module_base.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -22,9 +20,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, getLayout())
         bindLayoutData()
+        observeLiveData()
     }
 
 
     abstract fun getLayout(): Int
     abstract fun bindLayoutData()
+
+    open fun observeLiveData() {}
 }
