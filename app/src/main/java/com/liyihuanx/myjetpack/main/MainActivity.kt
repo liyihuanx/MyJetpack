@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import com.liyihuan.module_three.ThreeFragment
 import com.liyihuan.module_two.TwoFragment
 import com.liyihuanx.module_base.activity.BaseActivity
+import com.liyihuanx.module_base.fragment.LazyRecyclerFragment
 import com.liyihuanx.module_home.HomeFragment
 import com.liyihuanx.module_mine.MineFragment
 import com.liyihuanx.module_ui.tab.bottom.BottomTabBean
@@ -22,6 +23,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun bindLayoutData() {
+        val arrayListOfFragment = arrayListOf<Fragment>(
+            HomeFragment(), TwoFragment(), ThreeFragment(), MineFragment()
+        )
+
         val arrayListOf = arrayListOf<BottomTabBean>(
             BottomTabBean(
                 "首页1",
@@ -51,13 +56,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             override fun selectAfterInterceptor(index: Int) {
                 mainVp.setCurrentItem(index,false)
+                if (arrayListOfFragment[index] is LazyRecyclerFragment<*,*>){
+                    (arrayListOfFragment[index] as LazyRecyclerFragment<*,*>).clickRefresh(index)
+                }
             }
         })
 
 
-        val arrayListOfFragment = arrayListOf<Fragment>(
-            HomeFragment(), TwoFragment(), ThreeFragment(), MineFragment()
-        )
+
         //viewpager2
 //        val mainAdapter = MainAdapter(arrayListOfFragment, this)
 //        mainVp.adapter = mainAdapter

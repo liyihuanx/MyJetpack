@@ -21,7 +21,7 @@ abstract class BaseLazyFragment<T : ViewDataBinding> : BaseFragment<T>() {
      * 3.fragment的嵌套加载问题
      */
 
-    // 记录Fragment的可见状态
+    // 记录Fragment的可见状态  可见 true  不可见 false
     private var currentVisibleStatus = false
 
     // 是否第一次加载
@@ -54,8 +54,15 @@ abstract class BaseLazyFragment<T : ViewDataBinding> : BaseFragment<T>() {
     /**
      *   1.可见--> 不可见
      *   2.不可见--> 可见
-     *   isVisibleToUser
-     *   currentVisibleStatus 判断当前的状态
+     *   isVisibleToUser true 可见，false 不可见
+     *   currentVisibleStatus 判断当前的状态, dispatchVisible分发数据才会赋值
+     *
+     *   1.第一次点击到此Fragment时，
+     *      isVisibleToUser == true, 但是没分发过数据，所以currentVisibleStatus == false
+     *      符合 不可见到可见 状态 --> dispatchVisible(true) 所以currentVisibleStatus 赋值为 true
+     *   2.从此Fragment离开时
+     *      isVisibleToUser == false,currentVisibleStatus == true
+     *      符合 可见到不可见 状态 --> dispatchVisible(false) 所以currentVisibleStatus 赋值为 false
      */
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
@@ -101,10 +108,12 @@ abstract class BaseLazyFragment<T : ViewDataBinding> : BaseFragment<T>() {
     }
 
     /**
-     * 父Fragment 是否可见
-     * return false 是分发
-     * return true 是不分发 ---> 就是不可见的时候 ---> currentVisibleStatus == false
-     * 所以刚好和currentVisibleStatus相反
+     *
+     * 1.当前父Fragment是不可见的，所以子Fragment也不能加载数据
+     *      父currentVisibleStatus == false --> 但是isSupportVisible == true 所以isParentVisible--> true --> 直接return了
+     * 2.当前父Fragment是可见的，子Fragment也从不可见到可见
+     *      父currentVisibleStatus == true --> 但是isSupportVisible == false 所以isParentVisible--> false -->可以分发数据
+     *
      */
     private fun isParentVisible(): Boolean {
         if (parentFragment is BaseLazyFragment<*>) {
@@ -114,8 +123,8 @@ abstract class BaseLazyFragment<T : ViewDataBinding> : BaseFragment<T>() {
     }
 
 
-    private fun isSupportVisible(): Boolean {
-        return !currentVisibleStatus // 可见 true  不可见 false
+    fun isSupportVisible(): Boolean {
+        return !currentVisibleStatus
     }
 
     override fun onResume() {

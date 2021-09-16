@@ -3,6 +3,7 @@ package com.liyihuanx.module_base.refresh
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.liyihuanx.module_base.utils.NetUtil
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import liyihuan.app.android.lazyfragment.refresh.IEmptyView
@@ -70,11 +71,6 @@ open class SmartRefreshHelper<T>(
 
             } else if (isRefreshing) {
                 adapter.setNewInstance(data as MutableList<T>?)
-//                /** 假装有缓存数据 **/
-//                cacheData.clear()
-//                cacheData.addAll(data)
-//                hasCache = true
-//                /** 假装有缓存数据 **/
                 refresh_layout.finishRefresh()
             }
 
@@ -145,10 +141,6 @@ open class SmartRefreshHelper<T>(
         refresh_layout.autoRefresh()
     }
 
-//    fun fakeRefresh() {
-//        refresh_layout.autoRefresh()
-//        pauseRefresh()
-//    }
 
     private fun loadCacheData() {
         Log.d("QWER", "loadCacheData: ")

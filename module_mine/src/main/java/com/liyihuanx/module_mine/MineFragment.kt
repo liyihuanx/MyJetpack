@@ -24,5 +24,5 @@ class MineFragment : BaseLazyFragment<FragmentMineBinding>() {
     }
 
     override val getTagName: String
-        get() = "ThreeFragment"
+        get() = "MineFragment"
 }

@@ -2,6 +2,7 @@ package com.liyihuanx.module_base.fragment
 
 import android.util.Log
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.liyihuanx.module_base.refresh.CommonEmptyView
@@ -12,6 +13,10 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import kotlinx.android.synthetic.main.layout_refresh_recyclerview.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import liyihuan.app.android.lazyfragment.refresh.IEmptyView
 
 
@@ -21,12 +26,13 @@ import liyihuan.app.android.lazyfragment.refresh.IEmptyView
  * @Author: liyihuan
  * @Date: 2021/6/8 21:16
  */
-abstract class LazyRecyclerFragment<T, VB : ViewDataBinding> : BaseLazyFragment<VB>() {
+abstract class LazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyFragment<DB>() {
 
     private val halfPageSize = 1
 
-    lateinit var lazyStatus: LazyStatus
+    private var lazyStatus = LazyStatus()
 
+    private var currentIndex = -1
     /**
      * 通用emptyView
      */
@@ -55,14 +61,12 @@ abstract class LazyRecyclerFragment<T, VB : ViewDataBinding> : BaseLazyFragment<
 
 //    abstract val getTagName: String
 
-    open val refreshTime: Double = 60.0
+    open val refreshTime: Float = 0.5f
 
-    open val timeUnit = TimeUnit.SECOND
+    open val timeUnit = TimeUnit.HOUR
 
 
     override fun initViewOrData() {
-        lazyStatus = LazyStatus()
-
         // 把RecyclerView 和 SmartRefreshHelper 建立联系
         mSmartRecycler.recyclerView.layoutManager = layoutManager
         mSmartRecycler.setRefreshHeader(setRefreshHeader())
@@ -106,9 +110,12 @@ abstract class LazyRecyclerFragment<T, VB : ViewDataBinding> : BaseLazyFragment<
         TopSmoothScroller.get().targetPosition = 0
         mSmartRecycler.recyclerView.layoutManager!!.startSmoothScroll(TopSmoothScroller.get())
         lazyStatus.inTop = true
-        mSmartRecycler.smartRefreshHelper.refresh()
+        mSmartRecycler.startRefresh()
     }
 
+    /**
+     * 第一次加载页面
+     */
     override fun onFragmentFirstVisible() {
         super.onFragmentFirstVisible()
     }
@@ -117,21 +124,30 @@ abstract class LazyRecyclerFragment<T, VB : ViewDataBinding> : BaseLazyFragment<
      * 进入加载
      *   1. 第一次打开该Fragment
      *   2. 距离上一次切到该Fragment时间比较久
-     *   3. 连续点击两次该Fragment
      *   4. 从另一个activity回来
      */
     override fun onFragmentResume() {
+        // 第一次打开该Fragment - 加载数据
         if (lazyStatus.clickTime == 0L) {
             Log.d("QWER", "$getTagName : 第一次打开该Fragment - 加载数据")
             mSmartRecycler.startRefresh()
             lazyStatus.clickTime = System.currentTimeMillis()
         } else {
+            // 当前时间
             val currentTimeMillis = System.currentTimeMillis()
+            // 当前时间与上一次点击的时间的差
             val defTime = currentTimeMillis - lazyStatus.clickTime
+            // 重新记录点击的时间
             lazyStatus.clickTime = currentTimeMillis
+            // 差值 > 自己设定的刷新事件时
             if (lazyStatus.clickTime != 0L && defTime >= (refreshTime * timeUnit).toLong()) {
                 Log.d("QWER", "$getTagName : 距离上一次切到该Fragment时间比较久 - 加载数据")
-                smoothScrollToTop()
+                // 在顶部直接刷新，不在顶部
+                if (lazyStatus.inTop) {
+                    mSmartRecycler.startRefresh()
+                } else {
+                    smoothScrollToTop()
+                }
             } else {
                 Log.d("QWER", "$getTagName : 距离上一次切到该Fragment时间短 - 不加载数据")
             }
@@ -139,13 +155,22 @@ abstract class LazyRecyclerFragment<T, VB : ViewDataBinding> : BaseLazyFragment<
     }
 
 
-    fun doubleClickRefresh() {
-        Log.d("QWER", "$getTagName : 连续点击两次该Fragment - 加载数据")
-        if (!lazyStatus.inTop) {
-            smoothScrollToTop()
-        } else {
-            mSmartRecycler.startRefresh()
+    /**
+     * 在当前页面，再次点击该Tab，刷新页面，但是这样，点击的效果和左右切换的效果不能同步起来
+     * 1. currentIndex = -1  --> currentIndex == position
+     * 2. 再次点击，刷新 --> 重置currentIndex = -1
+     */
+    fun clickRefresh(position: Int) {
+
+        if (!isSupportVisible() && currentIndex == position) {
+            Log.d("QWER", "$getTagName : 连续点击两次该Fragment - 加载数据")
+            if (!lazyStatus.inTop) {
+                smoothScrollToTop()
+            } else {
+                mSmartRecycler.startRefresh()
+            }
         }
+        currentIndex = position
     }
 
 
@@ -156,6 +181,7 @@ abstract class LazyRecyclerFragment<T, VB : ViewDataBinding> : BaseLazyFragment<
         super.onFragmentPause()
         Log.d("QWER", "$getTagName : 离开 - 停止加载")
         // 离开时，清除选中状态
+        currentIndex = -1
         mSmartRecycler.pauseRefresh()
     }
 

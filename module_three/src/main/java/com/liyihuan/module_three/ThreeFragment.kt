@@ -1,8 +1,11 @@
 package com.liyihuan.module_three
 
+import androidx.fragment.app.Fragment
 import com.liyihuan.module_three.databinding.FragmentThreeBinding
 import com.liyihuanx.module_base.fragment.BaseFragment
 import com.liyihuanx.module_base.fragment.BaseLazyFragment
+import kotlinx.android.synthetic.main.fragment_three.*
+import java.util.ArrayList
 
 /**
  * @ClassName: ThreeFragment
@@ -16,7 +19,9 @@ class ThreeFragment : BaseLazyFragment<FragmentThreeBinding>(){
     }
 
     override fun initViewOrData() {
-
+        val fragmentsList = arrayListOf<Fragment>(Three1Fragment(),Three2Fragment())
+        val homeViewPagerAdapter = HomeViewPagerAdapter(childFragmentManager, fragmentsList)
+        vpThree.adapter = homeViewPagerAdapter
     }
 
     override fun observeLiveData() {

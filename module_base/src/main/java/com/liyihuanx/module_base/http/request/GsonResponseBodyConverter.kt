@@ -12,6 +12,7 @@ import com.liyihuanx.module_base.http.bean.isSuccess
 import com.liyihuanx.module_base.http.CustomHttpException
 import okhttp3.ResponseBody
 import retrofit2.Converter
+import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
@@ -34,24 +35,37 @@ class GsonResponseBodyConverter<T>(
 
             // 返回的List<T>列表
             if (type.toString().contains("List")) {
-//                var sub: Type? = null
-//                if (type is ParameterizedType) {
-//                    sub = (type as ParameterizedType).actualTypeArguments[0]
-//                }
-                val result = response.replace("\"data\":{}", "\"data\":[]")
-
-                val typeToken = object : TypeToken<BaseCommonListResponse<T>>(){}.type
-                val baseBean: BaseCommonListResponse<T> = mGson.fromJson(result, typeToken)
-
-                if (!baseBean.isSuccess()) {
-                    throw CustomHttpException(baseBean.errorCode, baseBean.errorMsg)
+                var sub: Type? = null
+                if (type is ParameterizedType) {
+                    sub = (type as ParameterizedType).actualTypeArguments[0]
                 }
-                return baseBean.data as T
+                val result = response.replace("\"data\":{}", "\"data\":[]")
+                val p = ParameterizedTypeImpl(
+                    arrayOf(sub),
+                    BaseCommonListResponse::class.java,
+                    BaseCommonListResponse::class.java
+                )
+                val listBean: BaseCommonListResponse<T> = mGson.fromJson(result, p)
+
+//                // 这样会在recyclerview的adapter时候报错(应该是遍历的时候)
+//                // com.google.gson.internal.LinkedTreeMap cannot be cast to xxx
+//                val typeToken = object : TypeToken<BaseCommonListResponse<T>>(){}.type
+//                val baseBean: BaseCommonListResponse<T> = mGson.fromJson(result, typeToken)
+
+                if (!listBean.isSuccess()) {
+                    throw CustomHttpException(listBean.errorCode, listBean.errorMsg)
+                }
+                return listBean.data as T
             }
 
             // 普通的object对象
-            val typeToken = object : TypeToken<BaseCommonResponse<T>>(){}.type
-            baseBean = mGson.fromJson(response, typeToken)
+            val p = ParameterizedTypeImpl(
+                arrayOf(type),
+                BaseCommonResponse::class.java,
+                BaseCommonResponse::class.java
+            )
+
+            baseBean = mGson.fromJson(response, p)
             if (!baseBean?.isSuccess()!!) {
                 throw CustomHttpException(baseBean.errorCode, baseBean.errorMsg)
             }

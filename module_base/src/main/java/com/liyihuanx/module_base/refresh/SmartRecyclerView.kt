@@ -62,8 +62,8 @@ class SmartRecyclerView @JvmOverloads constructor(
     /**
      * 将请求结果交给smartRefreshHelper处理
      */
-    fun onFetchDataFinish(data: List<Nothing>?) {
-        smartRefreshHelper.onFetchDataFinish(data)
+    fun onFetchDataFinish(data: List<*>?) {
+        smartRefreshHelper.onFetchDataFinish(data as List<Nothing>?)
     }
 
     /**

@@ -9,13 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <com.liyihuanx.module_base.refresh.SmartRecyclerView
+            android:id="@+id/mTwoSmartRecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="TWO_FRAGMENT"
-            android:textSize="40dp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
