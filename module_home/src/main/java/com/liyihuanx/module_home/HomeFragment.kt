@@ -2,13 +2,18 @@ package com.liyihuanx.module_home
 
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
 import com.liyihuan.module_common.RouterPath
-import com.liyihuan.module_common.utils.LiveDataBus
-import com.liyihuanx.module_base.fragment.BaseFragment
+import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.fragment.BaseLazyFragment
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 /**
  * @author created by liyihuanx

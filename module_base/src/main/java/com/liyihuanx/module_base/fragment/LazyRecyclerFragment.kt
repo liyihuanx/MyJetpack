@@ -2,7 +2,6 @@ package com.liyihuanx.module_base.fragment
 
 import android.util.Log
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.liyihuanx.module_base.refresh.CommonEmptyView
@@ -13,10 +12,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import kotlinx.android.synthetic.main.layout_refresh_recyclerview.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import liyihuan.app.android.lazyfragment.refresh.IEmptyView
 
 
@@ -93,8 +88,8 @@ abstract class LazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyFragment<
                 if (view != null) {
                     // 获取这个view的下标
                     val position = recyclerView.layoutManager!!.getPosition(view)
-                    if (position >= halfPageSize && lazyStatus.inTop) {
-                        lazyStatus.inTop = false
+                    if (position >= halfPageSize && lazyStatus.isInTop) {
+                        lazyStatus.isInTop = false
                     }
                 }
             }
@@ -109,7 +104,7 @@ abstract class LazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyFragment<
     private fun smoothScrollToTop() {
         TopSmoothScroller.get().targetPosition = 0
         mSmartRecycler.recyclerView.layoutManager!!.startSmoothScroll(TopSmoothScroller.get())
-        lazyStatus.inTop = true
+        lazyStatus.isInTop = true
         mSmartRecycler.startRefresh()
     }
 
@@ -128,51 +123,48 @@ abstract class LazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyFragment<
      */
     override fun onFragmentResume() {
         // 第一次打开该Fragment - 加载数据
-        if (lazyStatus.clickTime == 0L) {
+        if (lazyStatus.lastLoadDataTime == 0L) {
             Log.d("QWER", "$getTagName : 第一次打开该Fragment - 加载数据")
             mSmartRecycler.startRefresh()
-            lazyStatus.clickTime = System.currentTimeMillis()
+            lazyStatus.lastLoadDataTime = System.currentTimeMillis()
         } else {
-            // 当前时间
-            val currentTimeMillis = System.currentTimeMillis()
-            // 当前时间与上一次点击的时间的差
-            val defTime = currentTimeMillis - lazyStatus.clickTime
-            // 重新记录点击的时间
-            lazyStatus.clickTime = currentTimeMillis
+            // 当前时间与上一次加载数据的时间的差
+            val defTime = System.currentTimeMillis() - lazyStatus.lastLoadDataTime
+
             // 差值 > 自己设定的刷新事件时
-            if (lazyStatus.clickTime != 0L && defTime >= (refreshTime * timeUnit).toLong()) {
+            if (lazyStatus.lastLoadDataTime != 0L && defTime >= (refreshTime * timeUnit).toLong()) {
                 Log.d("QWER", "$getTagName : 距离上一次切到该Fragment时间比较久 - 加载数据")
-                // 在顶部直接刷新，不在顶部
-                if (lazyStatus.inTop) {
-                    mSmartRecycler.startRefresh()
-                } else {
-                    smoothScrollToTop()
-                }
+                lazyRefresh()
             } else {
                 Log.d("QWER", "$getTagName : 距离上一次切到该Fragment时间短 - 不加载数据")
             }
         }
     }
 
-
     /**
-     * 在当前页面，再次点击该Tab，刷新页面，但是这样，点击的效果和左右切换的效果不能同步起来
-     * 1. currentIndex = -1  --> currentIndex == position
+     * 在当前页面，再次点击该Tab，刷新页面
+     * 1. currentIndex = -1,第一次点击显示当前页 --> currentIndex == position
      * 2. 再次点击，刷新 --> 重置currentIndex = -1
      */
     fun clickRefresh(position: Int) {
 
         if (!isSupportVisible() && currentIndex == position) {
             Log.d("QWER", "$getTagName : 连续点击两次该Fragment - 加载数据")
-            if (!lazyStatus.inTop) {
-                smoothScrollToTop()
-            } else {
-                mSmartRecycler.startRefresh()
-            }
+            lazyRefresh()
         }
         currentIndex = position
     }
 
+
+    private fun lazyRefresh(){
+        if (!lazyStatus.isInTop) {
+            smoothScrollToTop()
+        } else {
+            mSmartRecycler.startRefresh()
+        }
+        // 重新记录点击的时间
+        lazyStatus.lastLoadDataTime = System.currentTimeMillis()
+    }
 
     /**
      * 离开停止刷新

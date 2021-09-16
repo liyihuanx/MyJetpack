@@ -1,9 +1,9 @@
 package com.liyihuan.module_common.service
 
 import com.liyihuan.module_common.bean.ChapterBean
-import com.liyihuan.module_common.utils.viewModelScopeCoroutine
 import com.liyihuanx.module_base.http.BaseRepository
 import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
+import com.liyihuanx.module_base.utils.viewModelScopeCoroutine
 import java.lang.Exception
 import kotlin.String
 import kotlin.Unit
@@ -43,10 +43,12 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     ) {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
-                	CoroutineDataFetcher { apiService.getData() }.startFetchData() 
-                		.collect {
-                			onResult.invoke(it) 
-                		} 
+                	CoroutineDataFetcher { apiService.getData() }.startFetchData(0,
+                		"cache//com.liyihuan.module_common.service.ConfigService//getData",
+                		1800000
+                	).collect {
+                		onResult.invoke(it) 
+                	} 
                 } 
                 catchError { onError?.invoke(it) } 
                 onFinally { onComplete?.invoke() } 

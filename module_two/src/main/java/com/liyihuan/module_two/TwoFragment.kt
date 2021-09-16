@@ -1,11 +1,12 @@
 package com.liyihuan.module_two
 
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.liyihuan.module_common.bean.ChapterBean
-import com.liyihuan.module_common.utils.asToast
-import com.liyihuan.module_common.utils.lazyVm
+import com.liyihuanx.module_base.utils.asToast
+import com.liyihuanx.module_base.utils.lazyVm
 import com.liyihuan.module_common.viewmodel.TestViewModel
 import com.liyihuan.module_two.databinding.FragmentTwoBinding
 import com.liyihuanx.module_base.fragment.LazyRecyclerFragment

@@ -107,7 +107,8 @@ open class SmartRefreshHelper<T>(
             return
         }
         isLoadMoreing = true
-        fetcherFuc(currentPage + 1)
+        currentPage += 1
+        fetcherFuc(currentPage)
     }
 
     /**
@@ -118,12 +119,6 @@ open class SmartRefreshHelper<T>(
         if (isRefreshing || isLoadMoreing) {
             return
         }
-        // 判断缓存
-//        if (hasCache && isNeedCache) {
-//            // 加载缓存数据
-//            loadCacheData()
-//            return
-//        }
 
         // 判断网络
         val connectedStatus = NetUtil.isNetworkAvailable(recycler_view.context)
@@ -141,10 +136,6 @@ open class SmartRefreshHelper<T>(
         refresh_layout.autoRefresh()
     }
 
-
-    private fun loadCacheData() {
-        Log.d("QWER", "loadCacheData: ")
-    }
 
     fun pauseRefresh() {
         if (isRefreshing) {

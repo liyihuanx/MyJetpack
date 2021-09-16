@@ -35,8 +35,9 @@ class CoroutineDataFetcher<T>(remoteQuest: suspend () -> T) : AbsDataFetcher<T>(
 
             NetStrategy.CACHE_FIRST -> {
                 flow {
-                    emit(getCache(cacheKey))
-
+                    getCache(cacheKey)?.let {
+                        emit(it)
+                    }
                     emit(remoteRequest().takeIf { it != null }
                         ?.also { saveCache(cacheKey, it, effectiveTime) })
                 }

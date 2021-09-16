@@ -24,6 +24,7 @@ interface ConfigService {
 
 
     @AutoFlowApi
+    @NetStrategy(NetStrategy.CACHE_FIRST)
     @GET("wxarticle/chapters/json")
     suspend fun getData(): List<ChapterBean>
 }

@@ -7,7 +7,6 @@ package com.liyihuanx.module_base.fragment
  * @Date: 2021/6/14 22:33
  */
 class LazyStatus {
-    var needCache: Boolean = true
-    var inTop: Boolean = true
-    var clickTime = 0L
+    var isInTop: Boolean = true
+    var lastLoadDataTime = 0L
 }

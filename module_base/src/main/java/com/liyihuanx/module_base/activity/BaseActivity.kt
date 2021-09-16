@@ -19,13 +19,13 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, getLayout())
-        bindLayoutData()
+        bindViewOrData()
         observeLiveData()
     }
 
 
     abstract fun getLayout(): Int
-    abstract fun bindLayoutData()
+    abstract fun bindViewOrData()
 
     open fun observeLiveData() {}
 }

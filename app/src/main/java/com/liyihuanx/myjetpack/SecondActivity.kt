@@ -5,8 +5,8 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.gson.Gson
 import com.liyihuan.module_common.RouterPath
-import com.liyihuan.module_common.utils.LiveDataBus
-import com.liyihuan.module_common.utils.lazyVm
+import com.liyihuanx.module_base.utils.LiveDataBus
+import com.liyihuanx.module_base.utils.lazyVm
 import com.liyihuan.module_common.viewmodel.TestViewModel
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
@@ -21,7 +21,7 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>() {
         return R.layout.activity_second
     }
 
-    override fun bindLayoutData() {
+    override fun bindViewOrData() {
         btnLiveData.setOnClickListener {
             LiveDataBus.with<String>("TestLiveDataBus")
                 .observerSticky(this, false) {
