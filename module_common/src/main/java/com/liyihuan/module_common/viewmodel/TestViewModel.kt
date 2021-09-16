@@ -1,13 +1,15 @@
-package com.liyihuanx.myjetpack
+package com.liyihuan.module_common.viewmodel
 
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
+import com.liyihuan.module_common.bean.ChapterBean
+import com.liyihuan.module_common.service.ConfigRepository
 import com.liyihuanx.module_base.viewmodel.BaseViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * @ClassName: TwoViewModel
@@ -15,7 +17,7 @@ import kotlinx.coroutines.*
  * @Author: liyihuan
  * @Date: 2021/9/8 22:49
  */
-class TwoViewModel(application: Application, data: Bundle?) : BaseViewModel(application,data) {
+class TestViewModel(application: Application, data: Bundle?) : BaseViewModel(application,data) {
 
     val peer = data?.getString("test") // 用户id
 

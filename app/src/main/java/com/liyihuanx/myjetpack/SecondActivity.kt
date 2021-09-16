@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.liyihuan.module_common.RouterPath
 import com.liyihuan.module_common.utils.LiveDataBus
 import com.liyihuan.module_common.utils.lazyVm
+import com.liyihuan.module_common.viewmodel.TestViewModel
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
 import kotlinx.android.synthetic.main.activity_second.*
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_second.*
 @Route(path = RouterPath.Main.secondActivity)
 class SecondActivity : BaseActivity<ActivitySecondBinding>() {
 
-    private val twoVm by lazyVm<TwoViewModel>()
+    private val twoVm by lazyVm<TestViewModel>()
 
     override fun getLayout(): Int {
         return R.layout.activity_second

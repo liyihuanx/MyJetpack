@@ -1,5 +1,6 @@
-package com.liyihuanx.myjetpack
+package com.liyihuan.module_common.service
 
+import com.liyihuan.module_common.bean.ChapterBean
 import com.liyihuanx.annotation.AutoApi
 import com.liyihuanx.annotation.AutoFlowApi
 import com.liyihuanx.annotation.NetStrategy

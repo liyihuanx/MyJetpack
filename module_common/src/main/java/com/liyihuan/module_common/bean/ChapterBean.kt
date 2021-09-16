@@ -1,4 +1,4 @@
-package com.liyihuanx.myjetpack
+package com.liyihuan.module_common.bean
 
 import java.io.Serializable
 

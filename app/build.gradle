@@ -48,7 +48,7 @@ dependencies {
     implementation project(':module_three')
     implementation project(':module_mine')
 
-    kapt project(':lib_compiler')
+
     kapt 'com.alibaba:arouter-compiler:1.5.2'
 
 }

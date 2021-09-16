@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment
  */
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
+    // 布局是否初始化
+    var isViewCreated = false
+
     lateinit var mBinding: T
 
     override fun onCreateView(
@@ -23,6 +26,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
+        isViewCreated = true
         return mBinding.root
     }
 
@@ -35,8 +39,6 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     abstract fun getLayoutId(): Int
     abstract fun initViewOrData()
-
-    open fun defaultClick(v: View) {}
-    open fun observeLiveData() {}
+    abstract fun observeLiveData()
 
 }

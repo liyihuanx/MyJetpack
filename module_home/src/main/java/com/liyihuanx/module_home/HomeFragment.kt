@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.liyihuan.module_common.RouterPath
 import com.liyihuan.module_common.utils.LiveDataBus
 import com.liyihuanx.module_base.fragment.BaseFragment
+import com.liyihuanx.module_base.fragment.BaseLazyFragment
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @date 2021/8/30
  * @description: 类的描述
  */
-class HomeFragment : BaseFragment<FragmentHomeBinding>(){
+class HomeFragment : BaseLazyFragment<FragmentHomeBinding>(){
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
@@ -51,4 +52,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(){
     override fun initViewOrData() {
         mBinding.homeHelper = this
     }
+
+    override fun observeLiveData() {
+
+    }
+
+    override val getTagName: String
+        get() = "HomeFragment"
 }

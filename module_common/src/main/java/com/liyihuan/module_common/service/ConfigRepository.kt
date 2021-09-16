@@ -1,5 +1,6 @@
-package com.liyihuanx.myjetpack
+package com.liyihuan.module_common.service
 
+import com.liyihuan.module_common.bean.ChapterBean
 import com.liyihuan.module_common.utils.viewModelScopeCoroutine
 import com.liyihuanx.module_base.http.BaseRepository
 import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
@@ -23,7 +24,7 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
                 	CoroutineDataFetcher { apiService.config2(page) }.startFetchData(1,
-                		"cache//com.liyihuanx.myjetpack.ConfigService//config2?page=${page}",
+                		"cache//com.liyihuan.module_common.service.ConfigService//config2?page=${page}",
                 		1800000
                 	).collect {
                 		onResult.invoke(it) 

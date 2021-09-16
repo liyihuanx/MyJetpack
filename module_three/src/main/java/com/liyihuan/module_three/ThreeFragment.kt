@@ -2,6 +2,7 @@ package com.liyihuan.module_three
 
 import com.liyihuan.module_three.databinding.FragmentThreeBinding
 import com.liyihuanx.module_base.fragment.BaseFragment
+import com.liyihuanx.module_base.fragment.BaseLazyFragment
 
 /**
  * @ClassName: ThreeFragment
@@ -9,7 +10,7 @@ import com.liyihuanx.module_base.fragment.BaseFragment
  * @Author: liyihuan
  * @Date: 2021/9/14 23:00
  */
-class ThreeFragment : BaseFragment<FragmentThreeBinding>(){
+class ThreeFragment : BaseLazyFragment<FragmentThreeBinding>(){
     override fun getLayoutId(): Int {
         return R.layout.fragment_three
     }
@@ -18,4 +19,10 @@ class ThreeFragment : BaseFragment<FragmentThreeBinding>(){
 
     }
 
+    override fun observeLiveData() {
+
+    }
+
+    override val getTagName: String
+        get() = "ThreeFragment"
 }

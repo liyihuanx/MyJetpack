@@ -49,9 +49,8 @@ dependencies {
     // viewpager2
     api 'androidx.viewpager2:viewpager2:1.0.0'
 
-    // BaseQuickAdapter
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-
+    // AutoApi
+    kapt project(':lib_compiler')
 
     // ARouter
     api 'com.alibaba:arouter-api:1.5.2'

@@ -1,4 +1,4 @@
-package com.liyihuanx.myjetpack
+package com.liyihuanx.myjetpack.main
 
 import androidx.fragment.app.Fragment
 import com.liyihuan.module_three.ThreeFragment
@@ -8,6 +8,7 @@ import com.liyihuanx.module_home.HomeFragment
 import com.liyihuanx.module_mine.MineFragment
 import com.liyihuanx.module_ui.tab.bottom.BottomTabBean
 import com.liyihuanx.module_ui.tab.bottom.IBottomLayout
+import com.liyihuanx.myjetpack.R
 import com.liyihuanx.myjetpack.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,12 +22,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun bindLayoutData() {
-//        val itemName: String,
-//        val selectIcon: Int? = null,
-//        val normalIcon: Int,
-//        val selectColor: Int? = null,
-//        val normalColor: Int? = null,
-//        val textFont: Int? = null
         val arrayListOf = arrayListOf<BottomTabBean>(
             BottomTabBean(
                 "首页1",
@@ -63,9 +58,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         val arrayListOfFragment = arrayListOf<Fragment>(
             HomeFragment(), TwoFragment(), ThreeFragment(), MineFragment()
         )
-        val mainAdapter = MainAdapter(arrayListOfFragment, this)
-        mainVp.adapter = mainAdapter
-        mainVp.isUserInputEnabled = false
+        //viewpager2
+//        val mainAdapter = MainAdapter(arrayListOfFragment, this)
+//        mainVp.adapter = mainAdapter
+//        // 能不能左右滑动
+//        mainVp.isUserInputEnabled = false
+
+
+        // viewpager
+        val viewPagerAdapter =
+            MainViewPagerAdapter(
+                supportFragmentManager,
+                arrayListOfFragment
+            )
+        mainVp.adapter = viewPagerAdapter
+        mainVp.currentItem = 0
+        mainVp.offscreenPageLimit = 1
+
     }
 
 

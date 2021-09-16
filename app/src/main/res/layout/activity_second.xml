@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".SecondActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <Button
-        android:id="@+id/btnHttp"
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="btnHttp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".SecondActivity">
 
-    <Button
-        android:id="@+id/btnFinish"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="btnFinish"/>
+        <Button
+            android:id="@+id/btnLiveData"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="btnLiveData" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnHttp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="btnHttp" />
+
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="btnFinish" />
+
+    </LinearLayout>
+</layout>
