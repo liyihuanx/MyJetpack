@@ -5,6 +5,7 @@ import com.liyihuanx.module_base.http.BaseRepository
 import com.liyihuanx.module_base.http.datasource.CoroutineDataFetcher
 import com.liyihuanx.module_base.utils.viewModelScopeCoroutine
 import java.lang.Exception
+import kotlin.Int
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
@@ -36,6 +37,7 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     }
 
     fun getData(
+        cacheStrategy: Int,
         viewModelScope: CoroutineScope,
         onError: ((e: Exception) -> Unit)? = null,
         onComplete: (() -> Unit)? = null,
@@ -43,10 +45,10 @@ open class ConfigRepository : BaseRepository<ConfigService>() {
     ) {
         viewModelScopeCoroutine(viewModelScope) {
                 doWork { 
-                	CoroutineDataFetcher { apiService.getData() }.startFetchData(0,
-                		"cache//com.liyihuan.module_common.service.ConfigService//getData",
+                	CoroutineDataFetcher { apiService.getData() }.startFetchData(cacheStrategy,
+                 		"cache//com.liyihuan.module_common.service.ConfigService//getData?cacheStrategy=${cacheStrategy}",
                 		1800000
-                	).collect {
+                ).collect {
                 		onResult.invoke(it) 
                 	} 
                 } 

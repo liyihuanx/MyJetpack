@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+<!--                <com.liyihuanx.module_base.refresh.CommonEmptyView-->
+<!--                    android:id="@+id/emptyView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    tools:visibility="visible" />-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -19,12 +25,6 @@
             android:scrollbars="none"
             android:overScrollMode="never"
             />
-
-        <!--        <com.rare.chat.view.CommonEmptyView-->
-        <!--            android:id="@+id/emptyView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            tools:visibility="visible" />-->
 
     </FrameLayout>
 

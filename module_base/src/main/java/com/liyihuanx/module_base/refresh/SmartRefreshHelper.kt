@@ -1,9 +1,8 @@
 package com.liyihuanx.module_base.refresh
 
-import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.liyihuanx.module_base.utils.NetUtil
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import liyihuan.app.android.lazyfragment.refresh.IEmptyView
@@ -60,28 +59,37 @@ open class SmartRefreshHelper<T>(
         }
     }
 
-    fun onFetchDataFinish(data: List<T>?) {
+    fun onFetchDataFinish(data: List<T>?, delay: Int? = null) {
         if (data != null && data.isNotEmpty()) {
             // 如果在加载中
             if (isLoadMoreing) {
                 // 页数加一
                 currentPage++
                 adapter.addData(data)
-                refresh_layout.finishLoadMore()
+                finishLoadMore(delay)
 
             } else if (isRefreshing) {
                 adapter.setNewInstance(data as MutableList<T>?)
-                refresh_layout.finishRefresh()
+                finishRefresh(delay)
             }
-
+            if (emptyCustomView?.getContentView()?.visibility == View.VISIBLE) {
+                refreshEmptyView(NODATA)
+            }
         } else {
             // 如果没有数据
             if (currentPage == 0) {
-                refresh_layout.finishRefresh(false)
-                // 设置空状态
-                refreshEmptyView(NODATA)
+                finishRefresh(isSuccess = false)
+                // 判断网络
+                val connectedStatus = NetUtil.isNetworkAvailable(recycler_view.context)
+                if (!connectedStatus) {
+                    // 设置无网络
+                    refreshEmptyView(NETWORK_ERROR)
+                } else {
+                    // 设置空状态
+                    refreshEmptyView(NODATA)
+                }
             } else {
-                refresh_layout.finishLoadMore(false)
+                finishLoadMore(isSuccess = false)
             }
         }
         isLoadMoreing = false
@@ -120,12 +128,6 @@ open class SmartRefreshHelper<T>(
             return
         }
 
-        // 判断网络
-        val connectedStatus = NetUtil.isNetworkAvailable(recycler_view.context)
-        if (!connectedStatus) {
-            refreshEmptyView(NETWORK_ERROR)
-            return
-        }
         // 没有跳出方法，这符合条件可以刷新
         isRefreshing = true
         // 当前页数重置
@@ -137,9 +139,24 @@ open class SmartRefreshHelper<T>(
     }
 
 
-    fun pauseRefresh() {
+    fun finishRefresh(delay: Int? = null, isSuccess: Boolean = true) {
         if (isRefreshing) {
-            refresh_layout.finishRefresh()
+            if (delay != null) {
+                refresh_layout.finishRefresh(delay)
+            } else {
+                refresh_layout.finishRefresh(isSuccess)
+            }
         }
     }
+
+    fun finishLoadMore(delay: Int? = null, isSuccess: Boolean = true) {
+        if (isLoadMoreing) {
+            if (delay != null) {
+                refresh_layout.finishLoadMore(delay)
+            } else {
+                refresh_layout.finishLoadMore(isSuccess)
+            }
+        }
+    }
+
 }

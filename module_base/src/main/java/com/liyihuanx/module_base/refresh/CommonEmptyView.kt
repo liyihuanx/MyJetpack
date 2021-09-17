@@ -42,27 +42,26 @@ class CommonEmptyView @JvmOverloads constructor(
      * 根据状态設置当前view
      */
     override fun setErrorType(type: Int) {
-        visibility = VISIBLE
+        visibility = View.VISIBLE
         when (type) {
             IEmptyView.NETWORK_ERROR -> {
                 visibility = VISIBLE
                 mErrorState = IEmptyView.NETWORK_ERROR
                 emptyText.text = context.getString(R.string.net_error)
-                img.setImageResource(R.drawable.pic_empty_network)
+                img.setBackgroundResource(R.drawable.pic_empty_network)
                 img.visibility = VISIBLE
                 clickEnable = true
             }
             IEmptyView.NODATA -> {
                 visibility = VISIBLE
                 mErrorState = IEmptyView.NODATA
-                img.setImageResource(R.drawable.pic_empty)
-                img.setVisibility(VISIBLE)
+                img.setBackgroundResource(R.drawable.pic_empty)
+                img.visibility = VISIBLE
                 refreshEmptyView()
                 clickEnable = true
             }
             IEmptyView.HIDE_LAYOUT -> visibility = GONE
-            else -> {
-            }
+
         }
     }
 

@@ -13,7 +13,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         return R.layout.activity_login
     }
 
-    override fun bindLayoutData() {
-
+    override fun bindViewOrData() {
     }
 }

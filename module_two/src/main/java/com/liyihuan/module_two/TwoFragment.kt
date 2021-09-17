@@ -1,6 +1,5 @@
 package com.liyihuan.module_two
 
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -9,7 +8,8 @@ import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_base.utils.lazyVm
 import com.liyihuan.module_common.viewmodel.TestViewModel
 import com.liyihuan.module_two.databinding.FragmentTwoBinding
-import com.liyihuanx.module_base.fragment.LazyRecyclerFragment
+import com.liyihuanx.annotation.NetStrategy
+import com.liyihuanx.module_base.fragment.MainLazyRecyclerFragment
 import com.liyihuanx.module_base.fragment.TimeUnit
 import com.liyihuanx.module_base.refresh.SmartRecyclerView
 import kotlinx.android.synthetic.main.fragment_two.*
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_two.*
  * @Author: liyihuan
  * @Date: 2021/9/14 22:54
  */
-class TwoFragment : LazyRecyclerFragment<ChapterBean,FragmentTwoBinding>(){
+class TwoFragment : MainLazyRecyclerFragment<ChapterBean, FragmentTwoBinding>(){
 
     private val twoVm by lazyVm<TestViewModel>()
 
@@ -34,9 +34,6 @@ class TwoFragment : LazyRecyclerFragment<ChapterBean,FragmentTwoBinding>(){
         })
     }
 
-    private fun loadData() {
-        twoVm.http()
-    }
 
     override val refreshTime: Float
         get() = 10f
@@ -63,6 +60,15 @@ class TwoFragment : LazyRecyclerFragment<ChapterBean,FragmentTwoBinding>(){
 
     override val fetcherFuc: (page: Int) -> Unit
         get() = {
-            loadData()
+            loadData(it)
         }
+
+    private fun loadData(page: Int) {
+        if (page == 0) {
+            twoVm.http(NetStrategy.CACHE_ONLY, page)
+        } else {
+            // 加载更多不做缓存
+            twoVm.http(NetStrategy.CACHE_ONLY, page)
+        }
+    }
 }

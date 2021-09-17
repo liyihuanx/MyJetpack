@@ -5,15 +5,9 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.liyihuanx.module_base.refresh.SmartRecyclerView
+        android:id="@+id/mTwoSmartRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <com.liyihuanx.module_base.refresh.SmartRecyclerView
-            android:id="@+id/mTwoSmartRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -30,7 +30,7 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>() {
         }
 
         btnHttp.setOnClickListener {
-            twoVm.http()
+//            twoVm.http()
         }
         btnFinish.setOnClickListener { finish() }
     }

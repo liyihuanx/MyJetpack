@@ -30,10 +30,10 @@ class TestViewModel(application: Application, data: Bundle?) : BaseViewModel(app
         MutableLiveData<ChapterBean>()
     }
 
-    fun http() {
+    fun http(cacheStrategy: Int, page: Int) {
         getRepo(ConfigRepository::class.java)
-            .getData(viewModelScope) {
-                getHttpData.value =  it
+            .getData(cacheStrategy, viewModelScope) {
+                getHttpData.value = it
             }
     }
 

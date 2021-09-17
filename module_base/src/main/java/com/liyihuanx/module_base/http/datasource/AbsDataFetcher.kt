@@ -1,6 +1,9 @@
 package com.liyihuanx.module_base.http.datasource
 
 import com.liyihuanx.module_base.http.cache.CacheManager
+import com.liyihuanx.module_base.utils.AppContext
+import com.liyihuanx.module_base.utils.NetUtil
+import java.lang.Exception
 
 /**
  * @author created by liyihuanx
@@ -29,6 +32,11 @@ abstract class AbsDataFetcher<T>(private val remoteQuest: suspend () -> T) {
      * 返回T,还是返回T?
      */
     suspend fun remoteRequest(): T? {
-        return remoteQuest.invoke()
+        return try {
+            remoteQuest.invoke()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

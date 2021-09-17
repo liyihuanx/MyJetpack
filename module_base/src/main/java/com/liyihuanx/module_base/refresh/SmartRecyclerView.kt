@@ -4,10 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.liyihuanx.module_base.R
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshFooter
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import kotlinx.android.synthetic.main.layout_refresh_recyclerview.view.*
@@ -55,16 +53,18 @@ class SmartRecyclerView @JvmOverloads constructor(
     /**
      * 手动停止刷新
      */
-    fun pauseRefresh() {
-        smartRefreshHelper.pauseRefresh()
+    fun finishRefresh() {
+        smartRefreshHelper.finishRefresh()
     }
 
     /**
      * 将请求结果交给smartRefreshHelper处理
      */
-    fun onFetchDataFinish(data: List<*>?) {
-        smartRefreshHelper.onFetchDataFinish(data as List<Nothing>?)
+    fun onFetchDataFinish(data: List<*>?, delay: Int? = null) {
+        smartRefreshHelper.onFetchDataFinish(data as List<Nothing>?, delay)
     }
+
+
 
     /**
      * 初始化
@@ -81,7 +81,7 @@ class SmartRecyclerView @JvmOverloads constructor(
         fetcherFuc: (page: Int) -> Unit
     ) {
         if (emptyView != null) {
-            flRecyContent!!.addView(emptyView.getContentView(), 0)
+            flRecyContent.addView(emptyView.getContentView(), 0)
         }
         recyclerView.adapter = adapter
         smartRefreshHelper = SmartRefreshHelper(
