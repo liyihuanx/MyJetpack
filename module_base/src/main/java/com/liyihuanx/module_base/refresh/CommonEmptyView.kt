@@ -47,7 +47,7 @@ class CommonEmptyView @JvmOverloads constructor(
             IEmptyView.NETWORK_ERROR -> {
                 visibility = VISIBLE
                 mErrorState = IEmptyView.NETWORK_ERROR
-                emptyText.text = context.getString(R.string.net_error)
+                emptyText.text = context.getString(R.string.netError)
                 img.setBackgroundResource(R.drawable.pic_empty_network)
                 img.visibility = VISIBLE
                 clickEnable = true
@@ -103,7 +103,7 @@ class CommonEmptyView @JvmOverloads constructor(
     }
 
     private fun refreshEmptyView() {
-        emptyText.text = if (TextUtils.isEmpty(strNoDataContent)) context.getString(R.string.empty_data) else strNoDataContent
+        emptyText.text = if (TextUtils.isEmpty(strNoDataContent)) context.getString(R.string.emptyData) else strNoDataContent
     }
 
     /**
