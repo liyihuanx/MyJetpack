@@ -72,14 +72,14 @@ object StatusBarUtil {
      * @param activity
      */
     fun setWhiteContentStatusBar(activity: Activity) {
-        setStatusBar(activity, false, Color.BLACK, false)
+        setStatusBar(activity, false, Color.BLACK, true)
     }
 
     /**
      * 白底黑字
      */
     fun setDarkContentStatusBar(activity: Activity) {
-        setStatusBar(activity, true, Color.TRANSPARENT, false)
+        setStatusBar(activity, true, Color.TRANSPARENT, true)
     }
 
 
@@ -115,4 +115,9 @@ object StatusBarUtil {
     }
 
 
+    fun addStatusViewWithColor(context: Context, color: Int = Color.TRANSPARENT): View {
+        val statusBarView = View(context)
+        statusBarView.setBackgroundColor(color)
+        return statusBarView
+    }
 }

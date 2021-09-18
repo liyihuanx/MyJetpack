@@ -8,13 +8,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/pink_bg"
-        >
+        android:background="@drawable/pink_bg">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center|top"
             android:text="THREE_FRAGMENT_2"
             android:textSize="40dp"
             android:textStyle="bold" />

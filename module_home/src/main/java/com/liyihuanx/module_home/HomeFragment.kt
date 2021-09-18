@@ -12,27 +12,21 @@ import com.liyihuan.module_common.RouterPath
 import com.liyihuanx.module_base.dialog.BaseDialogFragment
 import com.liyihuanx.module_base.dialog.CommonDialogBuild
 import com.liyihuanx.module_base.utils.LiveDataBus
-import com.liyihuanx.module_base.fragment.BaseLazyFragment
-import com.liyihuanx.module_base.utils.StatusBarUtil
+import com.liyihuanx.module_base.fragment.MainFragment
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+
 
 /**
  * @author created by liyihuanx
  * @date 2021/8/30
  * @description: 类的描述
  */
-class HomeFragment : BaseLazyFragment<FragmentHomeBinding>(){
+class HomeFragment : MainFragment<FragmentHomeBinding>(){
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
-
 
     /**
      * 方法引用，但是参数固定写死了

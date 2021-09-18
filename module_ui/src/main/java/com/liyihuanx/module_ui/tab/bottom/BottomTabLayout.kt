@@ -3,10 +3,12 @@ package com.liyihuanx.module_ui.tab.bottom
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.viewpager.widget.ViewPager
 import com.liyihuanx.module_base.utils.DisplayUtil
 import com.liyihuanx.module_ui.R
 
@@ -76,7 +78,7 @@ class BottomTabLayout @JvmOverloads constructor(
     /**
      * 给外部调用，把底部tab初始化，添加到布局，和数据绑定
      */
-    override fun bindBottomTabData(data: ArrayList<BottomTabBean>) {
+    override fun bindBottomTabData(data: ArrayList<BottomTabBean>){
         // 在本地保存一份
         this.bottomTabList = data
         // 先移除和重置
@@ -201,4 +203,13 @@ class BottomTabLayout @JvmOverloads constructor(
 //        also it 返回调用的人
     }
 
+    fun bindViewPage(viewpage: ViewPager) {
+        bottomTabList.forEachIndexed { index, bottomTabBean ->
+            Log.d("QWER", "bindViewPage: ")
+            if (bottomTabBean.start == true) {
+                viewpage.currentItem = index
+                return@forEachIndexed
+            }
+        }
+    }
 }

@@ -1,9 +1,13 @@
 package com.liyihuanx.module_base.fragment
 
+import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.liyihuanx.module_base.refresh.TopSmoothScroller
+import com.liyihuanx.module_base.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.layout_refresh_recyclerview.view.*
 
 /**
@@ -25,7 +29,19 @@ abstract class MainLazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyRecyc
 
     open val timeUnit = TimeUnit.HOUR
 
+    open val viewStatus by lazy { View(context) }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (mBinding.root as ViewGroup).addView(
+            viewStatus,
+            0,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                StatusBarUtil.getStatusBarHeight(requireContext())
+            )
+        )
+    }
 
     override fun initViewOrData() {
         super.initViewOrData()

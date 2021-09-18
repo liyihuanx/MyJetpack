@@ -1,5 +1,8 @@
 package com.liyihuanx.module_base.fragment
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.liyihuanx.module_base.utils.StatusBarUtil
 
 /**
  * @author created by liyihuanx

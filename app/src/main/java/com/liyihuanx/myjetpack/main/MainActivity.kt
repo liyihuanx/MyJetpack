@@ -58,6 +58,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun bindViewOrData() {
+        initViewPageAndBottom()
+
+    }
+
+
+    private fun initViewPageAndBottom() {
         tabLayout.bindBottomTabData(arrayListOf)
         tabLayout.addTabSelectInterceptorListener(object :
             IBottomLayout.OnTabSelectInterceptorListener {
@@ -72,8 +78,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // viewpager
         val viewPagerAdapter = MainViewPagerAdapter(supportFragmentManager, arrayListOfFragment)
         mainVp.adapter = viewPagerAdapter
-        mainVp.currentItem = 0
-
 
         //viewpager2
 //        val mainAdapter = MainAdapter(arrayListOfFragment, this)
@@ -81,26 +85,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //        // 能不能左右滑动
 //        mainVp.isUserInputEnabled = false
 
-
-
-
-    }
-
-
-    /**
-     * 添加状态栏占位视图
-     *
-     * @param activity
-     */
-    private fun addStatusViewWithColor(activity: Activity, color: Int = Color.RED) {
-        val contentView = activity.findViewById<View>(android.R.id.content) as ViewGroup
-        val statusBarView = View(activity)
-        val lp = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            StatusBarUtil.getStatusBarHeight(activity)
-        )
-        statusBarView.setBackgroundColor(color)
-        contentView.addView(statusBarView, lp)
+        tabLayout.bindViewPage(mainVp)
     }
 
 }
