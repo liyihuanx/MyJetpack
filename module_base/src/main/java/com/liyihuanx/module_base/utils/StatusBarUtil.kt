@@ -1,6 +1,7 @@
 package com.liyihuanx.module_base.utils
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.view.View
@@ -25,7 +26,8 @@ object StatusBarUtil {
         activity: Activity,
         darkContent: Boolean,
         statusBarColor: Int = Color.TRANSPARENT,
-        translucent: Boolean = false
+        translucent: Boolean = false,
+        alpha: Int = 0
     ) {
 
 
@@ -38,7 +40,7 @@ object StatusBarUtil {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             //这俩不能同时出现
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = statusBarColor
+            window.statusBarColor = calculateStatusColor(statusBarColor,alpha)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -70,7 +72,7 @@ object StatusBarUtil {
      * @param activity
      */
     fun setWhiteContentStatusBar(activity: Activity) {
-        setStatusBar(activity, false, Color.TRANSPARENT, false)
+        setStatusBar(activity, false, Color.BLACK, false)
     }
 
     /**
@@ -79,5 +81,38 @@ object StatusBarUtil {
     fun setDarkContentStatusBar(activity: Activity) {
         setStatusBar(activity, true, Color.TRANSPARENT, false)
     }
+
+
+    /**
+     * 获取状态栏高度
+     */
+    fun getStatusBarHeight(context: Context): Int {
+        // 获得状态栏高度
+        val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+        return context.resources.getDimensionPixelSize(resourceId)
+    }
+
+
+    /**
+     * 计算状态栏颜色
+     *
+     * @param color color值
+     * @param alpha alpha值
+     * @return 最终的状态栏颜色
+     */
+    private fun calculateStatusColor(color: Int, alpha: Int): Int {
+        if (alpha == 0) {
+            return color
+        }
+        val a = 1 - alpha / 255f
+        var red = color shr 16 and 0xff
+        var green = color shr 8 and 0xff
+        var blue = color and 0xff
+        red = (red * a + 0.5).toInt()
+        green = (green * a + 0.5).toInt()
+        blue = (blue * a + 0.5).toInt()
+        return 0xff shl 24 or (red shl 16) or (green shl 8) or blue
+    }
+
 
 }

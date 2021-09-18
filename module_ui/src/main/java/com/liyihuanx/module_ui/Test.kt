@@ -1,4 +1,4 @@
-package liyihuan.app.module_ui
+package com.liyihuanx.module_ui
 
 /**
  * @ClassName: Test

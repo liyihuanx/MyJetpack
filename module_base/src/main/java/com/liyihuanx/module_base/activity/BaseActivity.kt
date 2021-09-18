@@ -1,31 +1,58 @@
 package com.liyihuanx.module_base.activity
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.liyihuanx.module_base.utils.StatusBarUtil
 
 /**
  * @author created by liyihuanx
  * @date 2021/8/23
  * @description: 类的描述
  */
-abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding> : BaseFinalActivity() {
 
 
     lateinit var mBinding: T
 
+    override fun createContainerView(): View {
+        val view =  super.createContainerView()
+        createDataBinding(view)
+        return view
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, getLayout())
+    protected open fun createDataBinding(view: View): T {
+        val viewTag = view.tag
+        if (viewTag != null && viewTag is String) {
+            mBinding = DataBindingUtil.bind(view)!!
+        }
+        return mBinding
+    }
+
+
+    override fun initViewForBase() {
+        setStatusBar()
         bindViewOrData()
         observeLiveData()
     }
 
 
-    abstract fun getLayout(): Int
     abstract fun bindViewOrData()
-
     open fun observeLiveData() {}
+
+    /**
+     * 白底黑字
+     */
+    open fun darkContent(): Boolean {
+        return true
+    }
+
+    open fun setStatusBar() {
+        if (darkContent()) {
+            StatusBarUtil.setDarkContentStatusBar(this)
+        } else {
+            StatusBarUtil.setWhiteContentStatusBar(this)
+        }
+    }
 }

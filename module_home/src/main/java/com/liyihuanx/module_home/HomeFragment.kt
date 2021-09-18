@@ -1,7 +1,10 @@
 package com.liyihuanx.module_home
 
+import android.app.Activity
+import android.graphics.Color
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
@@ -10,6 +13,7 @@ import com.liyihuanx.module_base.dialog.BaseDialogFragment
 import com.liyihuanx.module_base.dialog.CommonDialogBuild
 import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.fragment.BaseLazyFragment
+import com.liyihuanx.module_base.utils.StatusBarUtil
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*

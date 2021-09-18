@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class HiViewUtil {
+public class ViewUtil {
     /**
      * 获取指定类型的子View
      *

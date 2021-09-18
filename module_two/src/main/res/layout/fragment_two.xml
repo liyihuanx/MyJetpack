@@ -7,6 +7,7 @@
 
     <com.liyihuanx.module_base.refresh.SmartRecyclerView
         android:id="@+id/mTwoSmartRecycler"
+        android:background="@drawable/pink_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
