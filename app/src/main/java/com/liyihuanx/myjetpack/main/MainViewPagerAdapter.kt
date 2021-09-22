@@ -16,7 +16,7 @@ import java.util.*
 class MainViewPagerAdapter(
     private val mFm: FragmentManager,
     private val fragmentsList: ArrayList<Fragment>
-) : FragmentPagerAdapter(mFm) {
+) : FragmentPagerAdapter(mFm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return fragmentsList[position]
     }

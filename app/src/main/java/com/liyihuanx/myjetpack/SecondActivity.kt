@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.gson.Gson
-import com.liyihuan.module_common.RouterPath
+import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.utils.lazyVm
-import com.liyihuan.module_common.viewmodel.TestViewModel
+import com.liyihuanx.module_common.viewmodel.TestViewModel
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
 import kotlinx.android.synthetic.main.activity_second.*

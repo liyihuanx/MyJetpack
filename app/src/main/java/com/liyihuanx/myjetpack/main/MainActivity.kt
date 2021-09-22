@@ -1,15 +1,10 @@
 package com.liyihuanx.myjetpack.main
 
-import android.app.Activity
-import android.graphics.Color
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.liyihuan.module_three.ThreeFragment
-import com.liyihuan.module_two.TwoFragment
+import com.liyihuanx.module_three.ThreeFragment
+import com.liyihuanx.module_two.TwoFragment
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.module_base.fragment.MainLazyRecyclerFragment
-import com.liyihuanx.module_base.utils.StatusBarUtil
 import com.liyihuanx.module_home.HomeFragment
 import com.liyihuanx.module_mine.MineFragment
 import com.liyihuanx.module_ui.tab.bottom.BottomTabBean

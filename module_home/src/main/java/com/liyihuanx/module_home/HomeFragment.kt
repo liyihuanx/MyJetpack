@@ -1,14 +1,9 @@
 package com.liyihuanx.module_home
 
-import android.app.Activity
-import android.graphics.Color
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
-import com.liyihuan.module_common.RouterPath
+import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.module_base.dialog.BaseDialogFragment
 import com.liyihuanx.module_base.dialog.CommonDialogBuild
 import com.liyihuanx.module_base.utils.LiveDataBus
