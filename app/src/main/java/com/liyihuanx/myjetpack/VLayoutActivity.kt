@@ -2,13 +2,22 @@ package com.liyihuanx.myjetpack
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
+import com.alibaba.android.vlayout.layout.ColumnLayoutHelper
 import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper
+import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelperEx
+import com.liyihuanx.module_base.utils.asToast
+import com.liyihuanx.myjetpack.adapter.BaseDelegateAdapter
+import com.liyihuanx.myjetpack.adapter.ColumnAdapter
+import com.liyihuanx.myjetpack.adapter.OnItemClickListener
+import com.liyihuanx.myjetpack.adapter.OnePlusNAdapter
 import kotlinx.android.synthetic.main.activity_layout.*
 import java.util.*
+
 
 /**
  * @author created by liyihuanx
@@ -59,20 +68,33 @@ class VLayoutActivity : AppCompatActivity() {
         /**
          * 设置1拖N布局
          */
-        val onePlusNLayoutHelper = OnePlusNLayoutHelper(3)
+        val onePlusNLayoutHelper = OnePlusNLayoutHelperEx(5)
         // 公共属性
         // 在构造函数里传入显示的Item数
         // 最多是1拖4,即5个
 //        onePlusNLayoutHelper.itemCount = 2 // 设置布局里Item个数
 
-        onePlusNLayoutHelper.setPadding(20, 20, 20, 20) // 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+//        onePlusNLayoutHelper.setPadding(20, 20, 20, 20) // 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
 
-        onePlusNLayoutHelper.setMargin(20, 20, 20, 20) // 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+//        onePlusNLayoutHelper.setMargin(20, 20, 20, 20) // 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
 
         onePlusNLayoutHelper.bgColor = Color.GRAY // 设置背景颜色
 
-        onePlusNLayoutHelper.aspectRatio = 3f // 设置设置布局内每行布局的宽与高的比
+        onePlusNLayoutHelper.aspectRatio = 2f // 设置设置布局内每行布局的宽与高的比
 
+
+        val newAdapter = OnePlusNAdapter(onePlusNLayoutHelper)
+        val newList = arrayListOf(1, 2, 3, 4, 5)
+        newAdapter.setNewInstance(newList)
+        newAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(
+                adapter: BaseDelegateAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                "$position".asToast()
+            }
+        })
 
         val onePlusNAdapter = object : MyAdapter(this, onePlusNLayoutHelper, 3, listItem) {
             // 设置需要展示的数据总数,此处设置是5,即1拖4
@@ -85,6 +107,43 @@ class VLayoutActivity : AppCompatActivity() {
             }
         }
 
+
+        /**
+        设置栏格布局
+         */
+        val columnLayoutHelper = ColumnLayoutHelper()
+
+        // 公共属性
+        columnLayoutHelper.itemCount = 6 // 设置布局里Item个数
+
+//        columnLayoutHelper.setPadding(20, 20, 20, 20) // 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+
+//        columnLayoutHelper.setMargin(20, 20, 20, 20) // 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+
+        columnLayoutHelper.bgColor = Color.GRAY // 设置背景颜色
+
+        columnLayoutHelper.aspectRatio = 6f // 设置设置布局内每行布局的宽与高的比
+
+
+        // columnLayoutHelper特有属性
+//        columnLayoutHelper.setWeights(floatArrayOf(20f, 40f, 20f)) // 设置该行每个Item占该行总宽度的比例
+
+        val columnAdapter = ColumnAdapter(columnLayoutHelper)
+        val columnAdapterList = arrayListOf(4, 5, 6, 7, 8, 9)
+        columnAdapter.setNewInstance(columnAdapterList)
+        columnAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(
+                adapter: BaseDelegateAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                "$position".asToast()
+            }
+        })
+
+
+
+
         /**
          *步骤5:将生成的LayoutHelper 交给Adapter，并绑定到RecyclerView 对象
          **/
@@ -93,7 +152,8 @@ class VLayoutActivity : AppCompatActivity() {
         val adapters: MutableList<DelegateAdapter.Adapter<*>> = LinkedList()
 
         // 2. 将上述创建的Adapter对象放入到DelegateAdapter.Adapter列表里
-        adapters.add(onePlusNAdapter)
+        adapters.add(newAdapter)
+        adapters.add(columnAdapter)
 
 
         // 3. 创建DelegateAdapter对象 & 将layoutManager绑定到DelegateAdapter
@@ -101,7 +161,6 @@ class VLayoutActivity : AppCompatActivity() {
 
         // 4. 将DelegateAdapter.Adapter列表绑定到DelegateAdapter
         delegateAdapter.setAdapters(adapters)
-
 
         // 5. 将delegateAdapter绑定到recyclerView
         recycler.adapter = delegateAdapter
