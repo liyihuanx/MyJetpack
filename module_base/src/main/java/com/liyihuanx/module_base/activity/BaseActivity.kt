@@ -32,7 +32,7 @@ abstract class BaseActivity<T : ViewDataBinding> : BaseFinalActivity() {
 
 
     override fun initViewForBase() {
-        setStatusBar()
+        setViewStatusBar()
         bindViewOrData()
         observeLiveData()
     }
@@ -41,18 +41,5 @@ abstract class BaseActivity<T : ViewDataBinding> : BaseFinalActivity() {
     abstract fun bindViewOrData()
     open fun observeLiveData() {}
 
-    /**
-     * 白底黑字
-     */
-    open fun darkContent(): Boolean {
-        return true
-    }
-
-    open fun setStatusBar() {
-        if (darkContent()) {
-            StatusBarUtil.setDarkContentStatusBar(this)
-        } else {
-            StatusBarUtil.setWhiteContentStatusBar(this)
-        }
-    }
+    open fun setViewStatusBar(){}
 }

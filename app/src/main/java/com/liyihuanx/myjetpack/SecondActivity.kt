@@ -9,11 +9,12 @@ import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.utils.lazyVm
 import com.liyihuanx.module_common.viewmodel.TestViewModel
 import com.liyihuanx.module_base.activity.BaseActivity
+import com.liyihuanx.module_base.activity.NormalActivity
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
 import kotlinx.android.synthetic.main.activity_second.*
 
 @Route(path = RouterPath.Main.secondActivity)
-class SecondActivity : BaseActivity<ActivitySecondBinding>() {
+class SecondActivity : NormalActivity<ActivitySecondBinding>() {
 
     private val twoVm by lazyVm<TestViewModel>()
 
