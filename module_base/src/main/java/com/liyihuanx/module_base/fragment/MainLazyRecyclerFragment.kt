@@ -29,19 +29,10 @@ abstract class MainLazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyRecyc
 
     open val timeUnit = TimeUnit.HOUR
 
-    open val viewStatus by lazy { View(context) }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (mBinding.root as ViewGroup).addView(
-            viewStatus,
-            0,
-            ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                StatusBarUtil.getStatusBarHeight(requireContext())
-            )
-        )
+    override fun isNeedViewStatus(): Boolean {
+        return true
     }
+
 
     override fun initViewOrData() {
         super.initViewOrData()

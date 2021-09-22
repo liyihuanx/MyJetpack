@@ -2,6 +2,7 @@ package com.liyihuan.module_three
 
 import androidx.fragment.app.Fragment
 import com.liyihuan.module_three.databinding.FragmentThreeBinding
+import com.liyihuanx.module_base.fragment.BaseLazyFragment
 import com.liyihuanx.module_base.fragment.MainFragment
 import kotlinx.android.synthetic.main.fragment_three.*
 
@@ -11,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_three.*
  * @Author: liyihuan
  * @Date: 2021/9/14 23:00
  */
-class ThreeFragment : MainFragment<FragmentThreeBinding>(){
+class ThreeFragment : BaseLazyFragment<FragmentThreeBinding>(){
     override fun getLayoutId(): Int {
         return R.layout.fragment_three
     }
