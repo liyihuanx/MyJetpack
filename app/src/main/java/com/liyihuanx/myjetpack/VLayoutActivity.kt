@@ -1,20 +1,18 @@
 package com.liyihuanx.myjetpack
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
-import com.alibaba.android.vlayout.layout.ColumnLayoutHelper
-import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper
-import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelperEx
 import com.liyihuanx.module_base.utils.asToast
-import com.liyihuanx.myjetpack.adapter.BaseDelegateAdapter
+import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
 import com.liyihuanx.myjetpack.adapter.ColumnAdapter
-import com.liyihuanx.myjetpack.adapter.OnItemClickListener
+import com.liyihuanx.module_base.adapter.OnItemClickListener
 import com.liyihuanx.myjetpack.adapter.OnePlusNAdapter
+import com.liyihuanx.myjetpack.adapter.ScrollFixLayoutAdapter
+import com.liyihuanx.myjetpack.adapter.SingleLayoutAdapter
 import kotlinx.android.synthetic.main.activity_layout.*
 import java.util.*
 
@@ -52,14 +50,6 @@ class VLayoutActivity : AppCompatActivity() {
         /**
          * 步骤3:设置需要存放的数据
          * */
-        val listItem = ArrayList<HashMap<String, Any>>()
-        for (i in 0..99) {
-            val map = HashMap<String, Any>()
-            map["ItemTitle"] = "第" + i + "行"
-            map["ItemImage"] = R.drawable.icon_load_fail
-            listItem.add(map)
-        }
-
 
         /**
          * 步骤4:根据数据列表,创建对应的LayoutHelper
@@ -68,24 +58,11 @@ class VLayoutActivity : AppCompatActivity() {
         /**
          * 设置1拖N布局
          */
-        val onePlusNLayoutHelper = OnePlusNLayoutHelperEx(5)
-        // 公共属性
-        // 在构造函数里传入显示的Item数
-        // 最多是1拖4,即5个
-//        onePlusNLayoutHelper.itemCount = 2 // 设置布局里Item个数
+        val newAdapter = OnePlusNAdapter()
+        val OnePlusN = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        val newOnePlusN = arrayListOf(1, 2, 3, 4, 5, 6)
 
-//        onePlusNLayoutHelper.setPadding(20, 20, 20, 20) // 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
-
-//        onePlusNLayoutHelper.setMargin(20, 20, 20, 20) // 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
-
-        onePlusNLayoutHelper.bgColor = Color.GRAY // 设置背景颜色
-
-        onePlusNLayoutHelper.aspectRatio = 2f // 设置设置布局内每行布局的宽与高的比
-
-
-        val newAdapter = OnePlusNAdapter(onePlusNLayoutHelper)
-        val newList = arrayListOf(1, 2, 3, 4, 5)
-        newAdapter.setNewInstance(newList)
+        newAdapter.setNewInstance(OnePlusN)
         newAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(
                 adapter: BaseDelegateAdapter<*, *>,
@@ -96,40 +73,11 @@ class VLayoutActivity : AppCompatActivity() {
             }
         })
 
-        val onePlusNAdapter = object : MyAdapter(this, onePlusNLayoutHelper, 3, listItem) {
-            // 设置需要展示的数据总数,此处设置是5,即1拖4
-            // 为了展示效果,通过重写onBindViewHolder()将布局的第一个数据设置为onePlus
-            override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-                super.onBindViewHolder(holder, position)
-                if (position == 0) {
-                    holder.Text.text = "onePlus"
-                }
-            }
-        }
-
-
         /**
         设置栏格布局
          */
-        val columnLayoutHelper = ColumnLayoutHelper()
-
-        // 公共属性
-        columnLayoutHelper.itemCount = 6 // 设置布局里Item个数
-
-//        columnLayoutHelper.setPadding(20, 20, 20, 20) // 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
-
-//        columnLayoutHelper.setMargin(20, 20, 20, 20) // 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
-
-        columnLayoutHelper.bgColor = Color.GRAY // 设置背景颜色
-
-        columnLayoutHelper.aspectRatio = 6f // 设置设置布局内每行布局的宽与高的比
-
-
-        // columnLayoutHelper特有属性
-//        columnLayoutHelper.setWeights(floatArrayOf(20f, 40f, 20f)) // 设置该行每个Item占该行总宽度的比例
-
-        val columnAdapter = ColumnAdapter(columnLayoutHelper)
-        val columnAdapterList = arrayListOf(4, 5, 6, 7, 8, 9)
+        val columnAdapter = ColumnAdapter()
+        val columnAdapterList = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         columnAdapter.setNewInstance(columnAdapterList)
         columnAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(
@@ -141,6 +89,40 @@ class VLayoutActivity : AppCompatActivity() {
             }
         })
 
+        /**
+         * 固定布局
+         */
+        val singleLayoutAdapter = SingleLayoutAdapter()
+        val singleLayoutAdapterList = arrayListOf(1,9)
+        singleLayoutAdapter.setNewInstance(singleLayoutAdapterList)
+        singleLayoutAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(
+                adapter: BaseDelegateAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                "$position".asToast()
+            }
+        })
+
+
+
+
+        /**
+         * 固定布局
+         */
+        val scrollFixLayoutAdapter = ScrollFixLayoutAdapter()
+        val scrollFixLayoutAdapterList = arrayListOf(3)
+        scrollFixLayoutAdapter.setNewInstance(scrollFixLayoutAdapterList)
+        scrollFixLayoutAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(
+                adapter: BaseDelegateAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                "$position".asToast()
+            }
+        })
 
 
 
@@ -154,7 +136,8 @@ class VLayoutActivity : AppCompatActivity() {
         // 2. 将上述创建的Adapter对象放入到DelegateAdapter.Adapter列表里
         adapters.add(newAdapter)
         adapters.add(columnAdapter)
-
+        adapters.add(singleLayoutAdapter)
+        adapters.add(scrollFixLayoutAdapter)
 
         // 3. 创建DelegateAdapter对象 & 将layoutManager绑定到DelegateAdapter
         val delegateAdapter = DelegateAdapter(layoutManager)
@@ -165,5 +148,10 @@ class VLayoutActivity : AppCompatActivity() {
         // 5. 将delegateAdapter绑定到recyclerView
         recycler.adapter = delegateAdapter
 
+
+
+        btnRefresh.setOnClickListener {
+            newAdapter.setNewInstance(newOnePlusN)
+        }
     }
 }

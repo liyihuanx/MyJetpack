@@ -1,4 +1,4 @@
-package com.liyihuanx.myjetpack.adapter
+package com.liyihuanx.module_base.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager

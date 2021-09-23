@@ -91,4 +91,8 @@ dependencies {
     // AutoApi 注解
     api project(':lib_annotation')
 
+    // vLayout
+    api ('com.alibaba.android:vlayout:1.2.8@aar') {
+        transitive = true
+    }
 }

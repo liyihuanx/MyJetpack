@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
  * @date 2021/9/22
  * @description: 对使用DataBinding的BaseQuickAdapter封装一层，使用起来和原本Adapter更为接近
  */
-abstract class BaseRecyclerAdapter<T, DB : ViewDataBinding> @JvmOverloads constructor(
+abstract class BaseDataBindingQuickAdapter<T, DB : ViewDataBinding> @JvmOverloads constructor(
     @LayoutRes private val layoutResId: Int,
     data: MutableList<T>? = null
 ) : BaseQuickAdapter<T, BaseDataBindingHolder<DB>>(layoutResId, data) {

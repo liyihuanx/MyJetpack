@@ -56,7 +56,5 @@ dependencies {
     api 'com.alibaba:arouter-api:1.5.2'
     kapt 'com.alibaba:arouter-compiler:1.5.2'
     
-    api ('com.alibaba.android:vlayout:1.2.8@aar') {
-        transitive = true
-    }
+
 }
