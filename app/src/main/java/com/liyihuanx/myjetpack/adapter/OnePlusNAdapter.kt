@@ -4,7 +4,7 @@ import android.graphics.Color
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelperEx
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.liyihuanx.module_base.adapter.BaseOnePlusNAdapter
+import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
 import com.liyihuanx.myjetpack.R
 
 /**
@@ -12,7 +12,7 @@ import com.liyihuanx.myjetpack.R
  * @date 2021/9/23
  * @description: 类的描述
  */
-class OnePlusNAdapter : BaseOnePlusNAdapter<Int, BaseViewHolder>(R.layout.item) {
+class OnePlusNAdapter : BaseDelegateAdapter<Int, BaseViewHolder>(R.layout.item) {
 
     override fun convert(holder: BaseViewHolder, item: Int) {
         holder.setText(R.id.Item, "$item")

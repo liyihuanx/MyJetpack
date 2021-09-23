@@ -1,6 +1,7 @@
 package com.liyihuanx.myjetpack
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
@@ -8,11 +9,8 @@ import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
-import com.liyihuanx.myjetpack.adapter.ColumnAdapter
 import com.liyihuanx.module_base.adapter.OnItemClickListener
-import com.liyihuanx.myjetpack.adapter.OnePlusNAdapter
-import com.liyihuanx.myjetpack.adapter.ScrollFixLayoutAdapter
-import com.liyihuanx.myjetpack.adapter.SingleLayoutAdapter
+import com.liyihuanx.myjetpack.adapter.*
 import kotlinx.android.synthetic.main.activity_layout.*
 import java.util.*
 
@@ -59,7 +57,7 @@ class VLayoutActivity : AppCompatActivity() {
          * 设置1拖N布局
          */
         val newAdapter = OnePlusNAdapter()
-        val OnePlusN = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        val OnePlusN = arrayListOf(1, 2, 3, 4, 5)
         val newOnePlusN = arrayListOf(1, 2, 3, 4, 5, 6)
 
         newAdapter.setNewInstance(OnePlusN)
@@ -72,6 +70,8 @@ class VLayoutActivity : AppCompatActivity() {
                 "$position".asToast()
             }
         })
+//        val header = LayoutInflater.from(this).inflate(R.layout.header_view, null)
+//        newAdapter.addHeaderView(header)
 
         /**
         设置栏格布局
@@ -124,6 +124,39 @@ class VLayoutActivity : AppCompatActivity() {
             }
         })
 
+        /**
+         *
+         */
+
+        val gridLayoutAdapter = GridLayoutAdapter()
+        val gridLayoutAdapterList = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,1, 2, 3, 4, 5, 6, 7, 8, 9, 10,1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        gridLayoutAdapter.setNewInstance(gridLayoutAdapterList)
+        gridLayoutAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(
+                adapter: BaseDelegateAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                "$position".asToast()
+            }
+        })
+
+        /**
+         *
+         */
+
+        val stickyLayoutAdapter = StickyLayoutAdapter()
+        val stickyLayoutAdapterList = arrayListOf(1)
+        stickyLayoutAdapter.setNewInstance(stickyLayoutAdapterList)
+        stickyLayoutAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(
+                adapter: BaseDelegateAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                "$position".asToast()
+            }
+        })
 
 
         /**
@@ -137,7 +170,9 @@ class VLayoutActivity : AppCompatActivity() {
         adapters.add(newAdapter)
         adapters.add(columnAdapter)
         adapters.add(singleLayoutAdapter)
+        adapters.add(stickyLayoutAdapter)
         adapters.add(scrollFixLayoutAdapter)
+        adapters.add(gridLayoutAdapter)
 
         // 3. 创建DelegateAdapter对象 & 将layoutManager绑定到DelegateAdapter
         val delegateAdapter = DelegateAdapter(layoutManager)

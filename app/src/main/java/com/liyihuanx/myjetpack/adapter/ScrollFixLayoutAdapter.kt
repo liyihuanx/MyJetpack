@@ -6,7 +6,6 @@ import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.FixLayoutHelper
 import com.alibaba.android.vlayout.layout.ScrollFixLayoutHelper
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.liyihuanx.module_base.adapter.BaseColumnAdapter
 import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
 import com.liyihuanx.module_base.utils.DisplayUtil
 import com.liyihuanx.myjetpack.R

@@ -4,7 +4,6 @@ import android.graphics.Color
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.ColumnLayoutHelper
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.liyihuanx.module_base.adapter.BaseColumnAdapter
 import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
 import com.liyihuanx.myjetpack.R
 
@@ -14,7 +13,7 @@ import com.liyihuanx.myjetpack.R
  * @Author: liyihuan
  * @Date: 2021/9/22 23:24
  */
-class ColumnAdapter : BaseColumnAdapter<Int, BaseViewHolder>(R.layout.item) {
+class ColumnAdapter : BaseDelegateAdapter<Int, BaseViewHolder>(R.layout.item) {
 
     override fun convert(holder: BaseViewHolder, item: Int) {
         holder.setText(R.id.Item, "$item")

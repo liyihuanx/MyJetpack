@@ -2,6 +2,7 @@ package com.liyihuanx.module_base.adapter
 
 import android.animation.Animator
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
+import com.alibaba.android.vlayout.layout.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.animation.*
 import com.chad.library.adapter.base.diff.BrvahAsyncDiffer
@@ -525,6 +527,28 @@ abstract class BaseDelegateAdapter<T, VH : BaseViewHolder>(
      * 重写此方法，返回你的数据数量。
      */
     protected open fun getDefItemCount(): Int {
+        when (layoutHelper) {
+            is OnePlusNLayoutHelper -> {
+                if (data.size > 5) {
+                    return 5
+                } else if (data.size < 1) {
+                    return 1
+                }
+            }
+            is OnePlusNLayoutHelperEx -> {
+                if (data.size > 7) {
+                    return 7
+                } else if (data.size < 5) {
+                    return 5
+                }
+            }
+            is FixLayoutHelper, is FloatLayoutHelper, is ScrollFixLayoutHelper, is StickyLayoutHelper, is SingleLayoutHelper -> {
+                return if (layoutHelper.itemCount > 0) 1 else 0
+            }
+            is ColumnLayoutHelper -> {
+                return if (layoutHelper.itemCount != 0 && data.size > layoutHelper.itemCount) layoutHelper.itemCount else data.size
+            }
+        }
         return data.size
     }
 
