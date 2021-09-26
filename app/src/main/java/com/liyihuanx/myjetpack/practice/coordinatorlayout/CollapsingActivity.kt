@@ -26,8 +26,8 @@ class CollapsingActivity : BaseActivity() {
         }
         val coordinatorAdapter = CoAdapter()
         coordinatorAdapter.setNewInstance(arrayListOf)
-//        collapsingRv.layoutManager = LinearLayoutManager(this)
-//        collapsingRv.adapter = coordinatorAdapter
+        collapsingRv.layoutManager = LinearLayoutManager(this)
+        collapsingRv.adapter = coordinatorAdapter
     }
 
     override fun getLayout(): Int {

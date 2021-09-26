@@ -115,7 +115,7 @@ object StatusBarUtil {
         return 0xff shl 24 or (red shl 16) or (green shl 8) or blue
     }
 
-    private fun getTranslucentColor(rgb: Int, percent: Float): Int {
+    fun getTranslucentColor(rgb: Int, percent: Float): Int {
         val blue = Color.blue(rgb)
         val green = Color.green(rgb)
         val red = Color.red(rgb)

@@ -47,6 +47,7 @@ dependencies {
     implementation project(':module_two')
     implementation project(':module_three')
     implementation project(':module_mine')
+    implementation 'androidx.palette:palette-ktx:1.0.0'
 
 
     kapt 'com.alibaba:arouter-compiler:1.5.2'

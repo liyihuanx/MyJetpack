@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <!--face部分-->
     <FrameLayout
@@ -13,16 +12,15 @@
         app:layout_behavior=".practice.behavior.BackgroundBehavior">
 
         <ImageView
-            android:id="@+id/iv_face"
+            android:id="@+id/ivBg"
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/pink_bg"
-            android:tag="iv_face"
-            android:translationY="-12dp" />
+            android:src="@drawable/cat"
+            android:tag="iv_face" />
 
         <View
-            android:id="@+id/v_mask"
+            android:id="@+id/vMask"
             android:layout_width="match_parent"
             android:layout_height="500dp" />
     </FrameLayout>
@@ -30,90 +28,91 @@
 
     <!--TopBar部分-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_top_bar"
+        android:id="@+id/clTopBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_behavior=".practice.behavior.TopBarBehavior">
 
         <ImageView
-            android:id="@+id/iv_back"
+            android:id="@+id/ivBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginBottom="0dp"
             android:scaleType="center"
             android:src="@drawable/btn_black_back"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_top_bar_name"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTopBarTitle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_top_bar_name" />
+            app:layout_constraintTop_toTopOf="@+id/tvTopBarTitle" />
 
         <TextView
-            android:id="@+id/tv_top_bar_name"
+            android:id="@+id/tvTopBarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:text="林俊杰"
+            android:text="Cat"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_back" />
+            app:layout_constraintStart_toEndOf="@+id/ivBack" />
 
-        <com.liyihuanx.myjetpack.practice.DrawableLeftTextView
-            android:id="@+id/tv_top_bar_coll"
+        <TextView
+            android:id="@+id/tvTopBarColl"
             android:layout_width="72dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/bg_fd3f70_r30"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="收藏"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_top_bar_name"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTopBarTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_top_bar_name" />
+            app:layout_constraintTop_toTopOf="@+id/tvTopBarTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--TopBar部分-->
 
     <!--TitleBar部分-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cls_title_bar"
+        android:id="@+id/clsTitleBar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_behavior=".practice.behavior.TitleBarBehavior">
 
         <TextView
-            android:id="@+id/tv_cls_content_name"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="林俊杰"
+            android:text="Cat"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.liyihuanx.myjetpack.practice.DrawableLeftTextView
+        <TextView
             android:layout_width="72dp"
             android:layout_height="32dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/bg_fd3f70_r30"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="收藏"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_cls_content_name"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_cls_content_name" />
+            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--TitleBar部分-->
 
     <!--Content部分-->
     <LinearLayout
-        android:id="@+id/ll_content"
+        android:id="@+id/llContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_white"
         android:orientation="vertical"
         android:translationY="280dp"
         app:layout_behavior=".practice.behavior.ContentBehavior">
@@ -121,7 +120,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/collapsingRv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
     <!--Content部分-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
