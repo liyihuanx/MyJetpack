@@ -37,6 +37,9 @@ abstract class BaseFinalActivity : AppCompatActivity(), Toolbar.OnMenuItemClickL
 
     abstract fun initViewForBase()
 
+    abstract fun bindViewOrData()
+    open fun observeLiveData() {}
+    open fun setViewStatusBar(){}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

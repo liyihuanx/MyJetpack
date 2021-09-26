@@ -34,10 +34,10 @@ class TestLayout @JvmOverloads constructor(
 
 
     companion object {
-        @JvmStatic
-        @BindingAdapter(value = ["tes1"], requireAll = false)
-        fun test(tablayout: TestLayout, tes1: String) {
-
-        }
+//        @JvmStatic
+//        @BindingAdapter(value = ["tes1"], requireAll = false)
+//        fun test(tablayout: TestLayout, tes1: String) {
+//
+//        }
     }
 }

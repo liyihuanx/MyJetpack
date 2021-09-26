@@ -9,7 +9,7 @@ import com.liyihuanx.module_base.utils.StatusBarUtil
  * @date 2021/9/22
  * @description: 不会延伸到顶部状态栏
  */
-abstract class NormalActivity<T : ViewDataBinding> : BaseActivity<T>() {
+abstract class NormalActivity<T : ViewDataBinding> : BaseDataBindingActivity<T>() {
 
     override fun setViewStatusBar() {
         StatusBarUtil.setStatusBar(this, true, Color.WHITE, false)

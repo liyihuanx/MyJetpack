@@ -3,7 +3,6 @@ package com.liyihuanx.myjetpack.main
 import androidx.fragment.app.Fragment
 import com.liyihuanx.module_three.ThreeFragment
 import com.liyihuanx.module_two.TwoFragment
-import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.module_base.activity.FullScreenActivity
 import com.liyihuanx.module_base.fragment.MainLazyRecyclerFragment
 import com.liyihuanx.module_home.HomeFragment

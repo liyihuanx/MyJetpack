@@ -1,4 +1,4 @@
-package com.liyihuanx.myjetpack
+package com.liyihuanx.myjetpack.practice
 
 import android.util.Log
 import androidx.lifecycle.Observer
@@ -8,8 +8,8 @@ import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.utils.lazyVm
 import com.liyihuanx.module_common.viewmodel.TestViewModel
-import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.module_base.activity.NormalActivity
+import com.liyihuanx.myjetpack.R
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
 import kotlinx.android.synthetic.main.activity_second.*
 

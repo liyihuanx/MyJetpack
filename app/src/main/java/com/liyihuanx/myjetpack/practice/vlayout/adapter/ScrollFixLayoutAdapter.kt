@@ -1,7 +1,6 @@
-package com.liyihuanx.myjetpack.adapter
+package com.liyihuanx.myjetpack.practice.vlayout.adapter
 
 import android.graphics.Color
-import android.widget.TextView
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.FixLayoutHelper
 import com.alibaba.android.vlayout.layout.ScrollFixLayoutHelper

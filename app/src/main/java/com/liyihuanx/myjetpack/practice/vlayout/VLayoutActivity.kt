@@ -1,7 +1,6 @@
-package com.liyihuanx.myjetpack
+package com.liyihuanx.myjetpack.practice.vlayout
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
@@ -10,7 +9,8 @@ import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
 import com.liyihuanx.module_base.adapter.OnItemClickListener
-import com.liyihuanx.myjetpack.adapter.*
+import com.liyihuanx.myjetpack.R
+import com.liyihuanx.myjetpack.practice.vlayout.adapter.*
 import kotlinx.android.synthetic.main.activity_layout.*
 import java.util.*
 

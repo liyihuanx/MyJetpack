@@ -1,9 +1,7 @@
-package com.liyihuanx.myjetpack.adapter
+package com.liyihuanx.myjetpack.practice.vlayout.adapter
 
 import android.graphics.Color
 import com.alibaba.android.vlayout.LayoutHelper
-import com.alibaba.android.vlayout.layout.FixLayoutHelper
-import com.alibaba.android.vlayout.layout.ScrollFixLayoutHelper
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.liyihuanx.module_base.adapter.BaseDelegateAdapter

@@ -1,4 +1,4 @@
-package com.liyihuanx.myjetpack.adapter
+package com.liyihuanx.myjetpack.practice.vlayout.adapter
 
 import android.graphics.Color
 import com.alibaba.android.vlayout.LayoutHelper

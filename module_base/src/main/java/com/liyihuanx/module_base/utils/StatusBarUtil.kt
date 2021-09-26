@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import kotlin.math.roundToInt
 
 /**
  * @ClassName: StatusBarUtil
@@ -40,7 +41,7 @@ object StatusBarUtil {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             //这俩不能同时出现
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = calculateStatusColor(statusBarColor,alpha)
+            window.statusBarColor = calculateStatusColor(statusBarColor, alpha)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -113,6 +114,16 @@ object StatusBarUtil {
         blue = (blue * a + 0.5).toInt()
         return 0xff shl 24 or (red shl 16) or (green shl 8) or blue
     }
+
+    private fun getTranslucentColor(rgb: Int, percent: Float): Int {
+        val blue = Color.blue(rgb)
+        val green = Color.green(rgb)
+        val red = Color.red(rgb)
+        var alpha = Color.alpha(rgb)
+        alpha = (alpha * percent).roundToInt()
+        return Color.argb(alpha, red, green, blue)
+    }
+
 
 
     fun addStatusViewWithColor(context: Context, color: Int = Color.TRANSPARENT): View {

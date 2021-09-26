@@ -1,6 +1,6 @@
 package com.liyihuanx.module_login
 
-import com.liyihuanx.module_base.activity.BaseActivity
+import com.liyihuanx.module_base.activity.BaseDataBindingActivity
 import com.liyihuanx.module_login.databinding.ActivityLoginBinding
 
 /**
@@ -8,7 +8,7 @@ import com.liyihuanx.module_login.databinding.ActivityLoginBinding
  * @date 2021/9/15
  * @description: 类的描述
  */
-class LoginActivity : BaseActivity<ActivityLoginBinding>() {
+class LoginActivity : BaseDataBindingActivity<ActivityLoginBinding>() {
     override fun getLayout(): Int {
         return R.layout.activity_login
     }
