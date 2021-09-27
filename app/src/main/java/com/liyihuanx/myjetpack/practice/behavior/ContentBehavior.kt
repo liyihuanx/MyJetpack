@@ -1,18 +1,16 @@
 package com.liyihuanx.myjetpack.practice.behavior
 
 import android.animation.ValueAnimator
-import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.OverScroller
-import androidx.annotation.NonNull
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
-import com.liyihuanx.module_base.utils.StatusBarUtil
 import com.liyihuanx.myjetpack.R
 
 /**
@@ -26,7 +24,8 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
     private val ANIM_DURATION_FRACTION = 200L
 
     //topBar内容高度
-    private var topBarHeight: Int
+    private var topBarHeight: Int =
+        context.resources.getDimensionPixelOffset(R.dimen.abc_action_bar_default_height_material)
 
     //滑动内容初始化TransY
     private var contentTransY: Float
@@ -39,34 +38,32 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
 
     //Content部分
     private var mLlContent: View? = null
-    private var flingFromCollaps = false //fling是否从折叠状态发生的
+
+    //fling是否从折叠状态发生的
+    private var flingFromCollapsing = false
 
 
     init {
-        val statusBarHeight = StatusBarUtil.getStatusBarHeight(context)
-        topBarHeight =
-            context.resources.getDimension(R.dimen.top_bar_height).toInt() + statusBarHeight
         contentTransY = context.resources.getDimension(R.dimen.content_trans_y)
         downEndY = context.resources.getDimension(R.dimen.content_trans_down_end_y)
 
+        // 给content做上移的动画
         restoreAnimator = ValueAnimator()
-        restoreAnimator.addUpdateListener(AnimatorUpdateListener { animation ->
-            translation(
-                mLlContent,
-                animation.animatedValue as Float
-            )
-        })
+        restoreAnimator.addUpdateListener { animation ->
+            translation(mLlContent, animation.animatedValue as Float)
+        }
     }
 
     override fun onMeasureChild(
-        @NonNull parent: CoordinatorLayout, child: View,
-        parentWidthMeasureSpec: Int, widthUsed: Int, parentHeightMeasureSpec: Int,
+        parent: CoordinatorLayout,
+        child: View,
+        parentWidthMeasureSpec: Int,
+        widthUsed: Int,
+        parentHeightMeasureSpec: Int,
         heightUsed: Int
     ): Boolean {
         val childLpHeight = child.layoutParams.height
-        if (childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT
-            || childLpHeight == ViewGroup.LayoutParams.WRAP_CONTENT
-        ) {
+        if (childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT || childLpHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
             //先获取CoordinatorLayout的测量规格信息，若不指定具体高度则使用CoordinatorLayout的高度
             var availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec)
             if (availableHeight == 0) {
@@ -93,13 +90,19 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         child: View,
         layoutDirection: Int
     ): Boolean {
-        val handleLayout = super.onLayoutChild(parent!!, child, layoutDirection)
-        //绑定Content View
+        //绑定Content View, 为了设置动画效果
         mLlContent = child
-        return handleLayout
+        return super.onLayoutChild(parent, child, layoutDirection)
     }
 
 
+    /**
+     * 对NestedScrollingChild发起嵌套滑动作出应答
+     * @param child 布局中包含下面target的直接父View
+     * @param target 发起嵌套滑动的NestedScrollingChild的View
+     * @param axes 滑动方向
+     * @return 返回NestedScrollingParent是否配合处理嵌套滑动
+     */
     override fun onStartNestedScroll(
         coordinatorLayout: CoordinatorLayout,
         child: View,
@@ -108,41 +111,50 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         axes: Int,
         type: Int
     ): Boolean {
-        return super.onStartNestedScroll(
-            coordinatorLayout,
-            child,
-            directTargetChild,
-            target,
-            axes,
-            ViewCompat.TYPE_TOUCH
-        )
+        //只接受内容View的垂直滑动
+        return (directTargetChild.id == R.id.llContent
+                && axes == ViewCompat.SCROLL_AXIS_VERTICAL)
     }
 
+    /**
+     * NestedScrollingChild滑动完成后将滑动值分发给NestedScrollingParent回调此方法
+     * @param target 同上
+     * @param dxConsumed 水平方向消费的距离
+     * @param dyConsumed 垂直方向消费的距离
+     * @param dxUnconsumed 水平方向剩余的距离
+     * @param dyUnconsumed 垂直方向剩余的距离
+     */
+//    override fun onNestedScroll(
+//        coordinatorLayout: CoordinatorLayout,
+//        child: View,
+//        target: View,
+//        dxConsumed: Int,
+//        dyConsumed: Int,
+//        dxUnconsumed: Int,
+//        dyUnconsumed: Int,
+//        type: Int,
+//        consumed: IntArray
+//    ) {
+//        super.onNestedScroll(
+//            coordinatorLayout,
+//            child,
+//            target,
+//            dxConsumed,
+//            dyConsumed,
+//            dxUnconsumed,
+//            dyUnconsumed,
+//            ViewCompat.TYPE_TOUCH,
+//            consumed
+//        )
+//    }
 
-    override fun onNestedScroll(
-        coordinatorLayout: CoordinatorLayout,
-        child: View,
-        target: View,
-        dxConsumed: Int,
-        dyConsumed: Int,
-        dxUnconsumed: Int,
-        dyUnconsumed: Int,
-        type: Int,
-        consumed: IntArray
-    ) {
-        super.onNestedScroll(
-            coordinatorLayout,
-            child,
-            target,
-            dxConsumed,
-            dyConsumed,
-            dxUnconsumed,
-            dyUnconsumed,
-            ViewCompat.TYPE_TOUCH,
-            consumed
-        )
-    }
-
+    /**
+     * NestedScrollingChild滑动完之前将滑动值分发给NestedScrollingParent回调此方法
+     * @param target 同上
+     * @param dx 水平方向的距离
+     * @param dy 水平方向的距离
+     * @param consumed 返回NestedScrollingParent是否消费部分或全部滑动值
+     */
     override fun onNestedPreScroll(
         coordinatorLayout: CoordinatorLayout,
         child: View,
@@ -152,15 +164,23 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         consumed: IntArray,
         type: Int
     ) {
+        Log.d("QWER", "onNestedPreScroll: ")
+        // child.translationY 原本距离顶部的距离，上滑dy>0, content里面的view往上走，
+        // translationY会越来越小，到和顶部栏一样的高度则不再上移动。会走child的滑动事件
 
+        // 当前contentView在Y轴的偏移值
         val transY = child.translationY - dy
         //处理上滑
         if (dy > 0) {
+            // 还可以上移动
             if (transY >= topBarHeight) {
                 translationByConsume(child, transY, consumed, dy.toFloat())
             } else {
+                // child消费剩下的dy
                 translationByConsume(
-                    child, topBarHeight.toFloat(), consumed,
+                    child,
+                    topBarHeight.toFloat(),
+                    consumed,
                     child.translationY - topBarHeight
                 )
             }
@@ -168,8 +188,8 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
 
         if (dy < 0 && !target.canScrollVertically(-1)) {
             //下滑时处理Fling,折叠时下滑Recycler(或NestedScrollView) Fling滚动到contentTransY停止Fling
-            if (type == ViewCompat.TYPE_NON_TOUCH && transY >= contentTransY && flingFromCollaps) {
-                flingFromCollaps = false
+            if (type == ViewCompat.TYPE_NON_TOUCH && transY >= contentTransY && flingFromCollapsing) {
+                flingFromCollapsing = false
                 translationByConsume(child, contentTransY, consumed, dy.toFloat())
                 stopViewScroll(target)
                 return
@@ -192,10 +212,20 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         target: View,
         type: Int
     ) {
-        super.onStopNestedScroll(coordinatorLayout, child, target, ViewCompat.TYPE_TOUCH)
+        //如果是从初始状态转换到展开状态过程触发收起动画
+        if (child.translationY > contentTransY) {
+            restore()
+        }
+        super.onStopNestedScroll(coordinatorLayout, child, target, type)
     }
 
-
+    /**
+     * NestedScrollingChild在惯性滑动之前,将惯性滑动的速度分发给NestedScrollingParent
+     * @param target 同上
+     * @param velocityX 同上
+     * @param velocityY 同上
+     * @return 返回NestedScrollingParent是否消费全部惯性滑动
+     */
     override fun onNestedPreFling(
         coordinatorLayout: CoordinatorLayout,
         child: View,
@@ -203,58 +233,35 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         velocityX: Float,
         velocityY: Float
     ): Boolean {
-        flingFromCollaps = child.translationY <= contentTransY
+        flingFromCollapsing = child.translationY <= contentTransY
         return false
     }
 
-    //---NestedScrollingParent2---//
-
-    override fun onStartNestedScroll(
-        coordinatorLayout: CoordinatorLayout,
-        child: View,
-        directTargetChild: View,
-        target: View,
-        axes: Int
-    ): Boolean {
-        //只接受内容View的垂直滑动
-        return (directTargetChild.id == R.id.llContent
-                && axes == ViewCompat.SCROLL_AXIS_VERTICAL)
-    }
-
-
+    /**
+     * NestedScrollingParent配合处理嵌套滑动回调此方法
+     * @param child 同上
+     * @param target 同上
+     * @param axes 同上
+     */
     override fun onNestedScrollAccepted(
         coordinatorLayout: CoordinatorLayout,
         child: View,
         directTargetChild: View,
         target: View,
-        axes: Int
+        axes: Int,
+        type: Int
     ) {
         if (restoreAnimator.isStarted) {
             restoreAnimator.cancel()
         }
-    }
-
-    override fun onStopNestedScroll(
-        coordinatorLayout: CoordinatorLayout,
-        child: View,
-        target: View
-    ) {
-        //如果是从初始状态转换到展开状态过程触发收起动画
-        if (child.translationY > contentTransY) {
-            restore()
-        }
-    }
-
-
-    override fun onNestedPreScroll(
-        coordinatorLayout: CoordinatorLayout,
-        child: View,
-        target: View,
-        dx: Int,
-        dy: Int,
-        consumed: IntArray
-    ) {
-        onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, ViewCompat.TYPE_TOUCH)
+        super.onNestedScrollAccepted(
+            coordinatorLayout,
+            child,
+            directTargetChild,
+            target,
+            axes,
+            type
+        )
     }
 
 
@@ -277,6 +284,12 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
+    /**
+     * @param view 做平移的view
+     * @param translationY 当前view在Y的偏移值
+     * @param consumed 使用了的dx,dy集合
+     * @param consumedDy
+     */
     private fun translationByConsume(
         view: View,
         translationY: Float,
@@ -286,6 +299,7 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         consumed[1] = consumedDy.toInt()
         view.translationY = translationY
     }
+
 
     private fun translation(view: View?, translationY: Float) {
         view?.translationY = translationY
