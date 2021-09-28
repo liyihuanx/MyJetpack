@@ -1,11 +1,10 @@
-package com.liyihuanx.myjetpack.practice.behavior
+package com.liyihuanx.myjetpack.practice.coordinatorlayout.behavior
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils
-import com.liyihuanx.module_base.utils.StatusBarUtil
 import com.liyihuanx.myjetpack.R
 
 /**
@@ -17,8 +16,7 @@ class TopBarBehavior @JvmOverloads constructor(context: Context, attrs: Attribut
     CoordinatorLayout.Behavior<View>(context, attrs) {
 
     private var contentTransY: Float = context.resources.getDimension(R.dimen.content_trans_y)
-    private var topBarHeight: Int = context.resources.getDimension(R.dimen.top_bar_height)
-        .toInt() + StatusBarUtil.getStatusBarHeight(context)
+    private var topBarHeight: Int = context.resources.getDimensionPixelOffset(com.liyihuanx.module_base.R.dimen.abc_action_bar_default_height_material)
 
     override fun layoutDependsOn(
         parent: CoordinatorLayout,
@@ -35,7 +33,8 @@ class TopBarBehavior @JvmOverloads constructor(context: Context, attrs: Attribut
         child: View,
         dependency: View
     ): Boolean {
-        //计算Content上滑的百分比，设置子view的透明度
+        // 计算Content上滑的百分比，设置子view的透明度
+        // clamp 判断是否在两个值之间，超过则取边界
         val upPro: Float = (contentTransY - MathUtils.clamp(
             dependency.translationY,
             topBarHeight.toFloat(),

@@ -1,11 +1,10 @@
 package com.liyihuanx.myjetpack.practice.coordinatorlayout
 
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.liyihuanx.module_base.activity.BaseActivity
-import com.liyihuanx.module_base.activity.NormalActivity
+import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.myjetpack.R
-import com.liyihuanx.myjetpack.databinding.ActivityCoordinatorBinding
 import kotlinx.android.synthetic.main.activity_collapsing.*
 
 /**
@@ -13,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_collapsing.*
  * @date 2021/9/26
  * @description: 类的描述
  */
+@Route(path = RouterPath.Main.CollapsingActivity)
 class CollapsingActivity : BaseActivity() {
     override fun isNeedToolBar(): Boolean {
         return false

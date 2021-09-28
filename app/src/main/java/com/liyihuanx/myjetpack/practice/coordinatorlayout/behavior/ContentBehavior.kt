@@ -1,9 +1,8 @@
-package com.liyihuanx.myjetpack.practice.behavior
+package com.liyihuanx.myjetpack.practice.coordinatorlayout.behavior
 
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.OverScroller
@@ -21,11 +20,11 @@ import com.liyihuanx.myjetpack.R
 class ContentBehavior @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     CoordinatorLayout.Behavior<View>(context, attrs) {
 
-    private val ANIM_DURATION_FRACTION = 200L
+    private var animDuration: Long
 
     //topBar内容高度
     private var topBarHeight: Int =
-        context.resources.getDimensionPixelOffset(R.dimen.abc_action_bar_default_height_material)
+        context.resources.getDimensionPixelOffset(com.liyihuanx.module_base.R.dimen.abc_action_bar_default_height_material)
 
     //滑动内容初始化TransY
     private var contentTransY: Float
@@ -34,7 +33,7 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
     private var downEndY: Float
 
     // 收起内容时执行的动画
-    private var restoreAnimator: ValueAnimator
+    private var restoreAnimator: ValueAnimator = ValueAnimator()
 
     //Content部分
     private var mLlContent: View? = null
@@ -44,14 +43,23 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     init {
-        contentTransY = context.resources.getDimension(R.dimen.content_trans_y)
-        downEndY = context.resources.getDimension(R.dimen.content_trans_down_end_y)
-
         // 给content做上移的动画
-        restoreAnimator = ValueAnimator()
         restoreAnimator.addUpdateListener { animation ->
-            translation(mLlContent, animation.animatedValue as Float)
+            mLlContent?.translationY = animation.animatedValue as Float
         }
+
+        val obtainStyledAttributes = context.obtainStyledAttributes(
+            attrs,
+            R.styleable.ContentBehavior
+        )
+        downEndY =
+            obtainStyledAttributes.getDimension(R.styleable.ContentBehavior_contentDownMaxY, 0f)
+        contentTransY =
+            obtainStyledAttributes.getDimension(R.styleable.ContentBehavior_contentTranslateY, 0f)
+        animDuration =
+            obtainStyledAttributes.getInt(R.styleable.ContentBehavior_anim_duration, 0).toLong()
+        obtainStyledAttributes.recycle()
+
     }
 
     override fun onMeasureChild(
@@ -90,8 +98,10 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         child: View,
         layoutDirection: Int
     ): Boolean {
-        //绑定Content View, 为了设置动画效果
+        // 绑定Content View, 为了设置动画效果
         mLlContent = child
+        // 设置偏移量
+        mLlContent?.translationY = contentTransY
         return super.onLayoutChild(parent, child, layoutDirection)
     }
 
@@ -164,7 +174,6 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         consumed: IntArray,
         type: Int
     ) {
-        Log.d("QWER", "onNestedPreScroll: ")
         // child.translationY 原本距离顶部的距离，上滑dy>0, content里面的view往上走，
         // translationY会越来越小，到和顶部栏一样的高度则不再上移动。会走child的滑动事件
 
@@ -191,7 +200,7 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
             if (type == ViewCompat.TYPE_NON_TOUCH && transY >= contentTransY && flingFromCollapsing) {
                 flingFromCollapsing = false
                 translationByConsume(child, contentTransY, consumed, dy.toFloat())
-                stopViewScroll(target)
+//                stopViewScroll(target)
                 return
             }
 
@@ -251,6 +260,7 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
         axes: Int,
         type: Int
     ) {
+        // 动画未执行完毕手指再落下滑动时，取消当前动画
         if (restoreAnimator.isStarted) {
             restoreAnimator.cancel()
         }
@@ -265,6 +275,9 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
 
+    /**
+     * 停止content里滑动的view
+     */
     private fun stopViewScroll(target: View) {
         if (target is RecyclerView) {
             (target as RecyclerView).stopScroll()
@@ -301,17 +314,13 @@ class ContentBehavior @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
 
-    private fun translation(view: View?, translationY: Float) {
-        view?.translationY = translationY
-    }
-
     private fun restore() {
         if (restoreAnimator.isStarted) {
             restoreAnimator.cancel()
             restoreAnimator.removeAllListeners()
         }
         restoreAnimator.setFloatValues(mLlContent!!.translationY, contentTransY)
-        restoreAnimator.duration = ANIM_DURATION_FRACTION
+        restoreAnimator.duration = animDuration
         restoreAnimator.start()
     }
 }

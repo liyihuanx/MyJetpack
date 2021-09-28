@@ -1,11 +1,10 @@
-package com.liyihuanx.myjetpack.practice.behavior
+package com.liyihuanx.myjetpack.practice.coordinatorlayout.behavior
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils
-import com.liyihuanx.module_base.utils.StatusBarUtil
 import com.liyihuanx.myjetpack.R
 
 /**
@@ -17,8 +16,8 @@ class TitleBarBehavior @JvmOverloads constructor(context: Context, attrs: Attrib
     CoordinatorLayout.Behavior<View>(context, attrs) {
     //滑动内容初始化TransY
     private var contentTransY: Float = context.resources.getDimension(R.dimen.content_trans_y)
-    private var topBarHeight: Int = context.resources.getDimension(R.dimen.top_bar_height)
-        .toInt() + StatusBarUtil.getStatusBarHeight(context)
+    private var topBarHeight: Int =
+        context.resources.getDimensionPixelOffset(com.liyihuanx.module_base.R.dimen.abc_action_bar_default_height_material)
 
 
     override fun layoutDependsOn(
@@ -26,7 +25,6 @@ class TitleBarBehavior @JvmOverloads constructor(context: Context, attrs: Attrib
         child: View,
         dependency: View
     ): Boolean {
-
         //依赖content
         return dependency.id == R.id.llContent
     }

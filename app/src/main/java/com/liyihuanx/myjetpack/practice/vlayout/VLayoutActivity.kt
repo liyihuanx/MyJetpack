@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_base.adapter.BaseDelegateAdapter
 import com.liyihuanx.module_base.adapter.OnItemClickListener
+import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.myjetpack.R
 import com.liyihuanx.myjetpack.practice.vlayout.adapter.*
 import kotlinx.android.synthetic.main.activity_layout.*
@@ -20,6 +22,7 @@ import java.util.*
  * @date 2021/9/22
  * @description: 类的描述
  */
+@Route(path = RouterPath.Main.VLayoutActivity)
 class VLayoutActivity : AppCompatActivity() {
 
     // 存放各个模块的适配器

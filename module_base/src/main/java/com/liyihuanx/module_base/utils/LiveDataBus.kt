@@ -1,5 +1,6 @@
 package com.liyihuanx.module_base.utils
 
+import android.util.Log
 import androidx.lifecycle.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -9,6 +10,11 @@ import java.util.concurrent.ConcurrentHashMap
  * @description: 类的描述
  */
 object LiveDataBus {
+
+//    LiveDataBus.with<String>("TestLiveDataBus").postStickyData("测试！")
+//    LiveDataBus.with<String>("TestLiveDataBus") .observerSticky(this, false) {
+//
+//    }
 
     private val mStickyMap = ConcurrentHashMap<String, StickyLiveData<*>>()
 

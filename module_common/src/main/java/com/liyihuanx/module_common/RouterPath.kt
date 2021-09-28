@@ -11,7 +11,9 @@ class RouterPath {
 
     object Main {
         private const val groupPath = "/Main/"
-        const val secondActivity = groupPath +"secondActivity"
+        const val SecondActivity = groupPath + "secondActivity"
+        const val VLayoutActivity = groupPath + "VLayoutActivity"
+        const val CollapsingActivity = groupPath + "CollapsingActivity"
     }
 
 

@@ -13,7 +13,7 @@ import com.liyihuanx.myjetpack.R
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
 import kotlinx.android.synthetic.main.activity_second.*
 
-@Route(path = RouterPath.Main.secondActivity)
+@Route(path = RouterPath.Main.SecondActivity)
 class SecondActivity : NormalActivity<ActivitySecondBinding>() {
 
     private val twoVm by lazyVm<TestViewModel>()

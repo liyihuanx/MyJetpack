@@ -1,8 +1,12 @@
 package com.liyihuanx.module_home
 
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.launcher.ARouter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.module_base.dialog.BaseDialogFragment
 import com.liyihuanx.module_base.dialog.CommonDialogBuild
@@ -19,6 +23,40 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @description: 类的描述
  */
 class HomeFragment : MainFragment<FragmentHomeBinding>(){
+    private val btnActivityList = arrayListOf(
+        "SecondActivity", "VLayoutActivity", "CollapsingActivity", "btnDialog"
+    )
+
+    private val homeAdapter by lazy {
+        HomeAdapter().apply {
+            this.setOnItemClickListener { _, _, position ->
+                Log.d("QWER", ": ${btnActivityList[position]}")
+                when (btnActivityList[position]) {
+                    "SecondActivity" -> {
+                        ARouter.getInstance()
+                            .build(RouterPath.Main.SecondActivity)
+                            .withString("test", "123456")
+                            .navigation()
+                    }
+                    "VLayoutActivity" -> {
+                        ARouter.getInstance()
+                            .build(RouterPath.Main.VLayoutActivity)
+                            .navigation()
+                    }
+                    "CollapsingActivity" -> {
+                        ARouter.getInstance()
+                            .build(RouterPath.Main.CollapsingActivity)
+                            .navigation()
+                    }
+                    "btnDialog" -> {
+                        showDialog()
+                    }
+                }
+            }
+        }
+    }
+
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
@@ -29,42 +67,11 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
      */
     fun onReferencesClick(v: View) {
         when (v) {
-            btnToSecond -> {
-                ARouter.getInstance()
-                    .build(RouterPath.Main.secondActivity)
-                    .withString("test", "123456")
-                    .navigation()
-            }
 
-            btnSendLiveData -> {
-                LiveDataBus.with<String>("TestLiveDataBus").postStickyData("测试！")
-            }
-
-            btnDialog -> {
-                CommonDialogBuild()
-                    .setTittle("CommonDialog")
-                    .setPositiveText("OK")
-                    .setNegativeText("Cancel")
-                    .setContent("这是一个通用的按钮")
-                    .isNeedCancelBtn(true)
-                    .setListener(object : BaseDialogFragment.BaseDialogListener() {
-                        override fun onDialogNegativeClick(dialog: DialogFragment, any: Any) {
-                            "onDialogNegativeClick".asToast()
-                        }
-
-                        override fun onDialogPositiveClick(dialog: DialogFragment, any: Any) {
-                            "onDialogPositiveClick".asToast()
-                        }
-
-                        override fun onDismiss(dialog: DialogFragment, any: Any) {
-                            super.onDismiss(dialog, any)
-                        }
-                    })
-                    .build()
-                    .show(childFragmentManager,"")
-            }
         }
     }
+
+
 
     /**
      * 自定义的点击 用lambda去引用
@@ -77,6 +84,9 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
 
     override fun initViewOrData() {
         mBinding.homeHelper = this
+        homeAdapter.setNewInstance(btnActivityList)
+        rvHome.adapter = homeAdapter
+        rvHome.layoutManager = LinearLayoutManager(context)
     }
 
     override fun observeLiveData() {
@@ -85,4 +95,37 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
 
     override val getTagName: String
         get() = "HomeFragment"
+
+
+    private fun showDialog() {
+        CommonDialogBuild()
+            .setTittle("CommonDialog")
+            .setPositiveText("OK")
+            .setNegativeText("Cancel")
+            .setContent("这是一个通用的按钮")
+            .isNeedCancelBtn(true)
+            .setListener(object : BaseDialogFragment.BaseDialogListener() {
+                override fun onDialogNegativeClick(dialog: DialogFragment, any: Any) {
+                    "onDialogNegativeClick".asToast()
+                }
+
+                override fun onDialogPositiveClick(dialog: DialogFragment, any: Any) {
+                    "onDialogPositiveClick".asToast()
+                }
+
+                override fun onDismiss(dialog: DialogFragment, any: Any) {
+                    super.onDismiss(dialog, any)
+                }
+            })
+            .build()
+            .show(childFragmentManager,"")
+    }
+
+
+}
+
+class HomeAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_home) {
+    override fun convert(holder: BaseViewHolder, item: String) {
+        holder.setText(R.id.btnActivity, item)
+    }
 }
