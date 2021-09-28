@@ -45,7 +45,7 @@ dependencies {
 
     api project(':module_base')
     api project(':module_ui')
-
+    api project(':module_logUtil')
     // viewpager2
     api 'androidx.viewpager2:viewpager2:1.0.0'
 

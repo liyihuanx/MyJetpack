@@ -15,6 +15,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".practice.LogDemoActivity"/>
         <activity android:name=".practice.coordinatorlayout.CollapsingActivity"/>
         <activity android:name=".practice.vlayout.VLayoutActivity" />
         <activity android:name=".practice.SecondActivity"/>

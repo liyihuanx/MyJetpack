@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomeFragment : MainFragment<FragmentHomeBinding>(){
     private val btnActivityList = arrayListOf(
-        "SecondActivity", "VLayoutActivity", "CollapsingActivity", "btnDialog"
+        "SecondActivity", "VLayoutActivity", "CollapsingActivity", "btnDialog","LogDemoActivity"
     )
 
     private val homeAdapter by lazy {
@@ -50,6 +50,11 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
                     }
                     "btnDialog" -> {
                         showDialog()
+                    }
+                    "LogDemoActivity" -> {
+                        ARouter.getInstance()
+                            .build(RouterPath.Main.LogDemoActivity)
+                            .navigation()
                     }
                 }
             }
