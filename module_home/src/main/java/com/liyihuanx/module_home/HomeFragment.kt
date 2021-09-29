@@ -1,6 +1,5 @@
 package com.liyihuanx.module_home
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,10 +9,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.liyihuanx.module_common.RouterPath
 import com.liyihuanx.module_base.dialog.BaseDialogFragment
 import com.liyihuanx.module_base.dialog.CommonDialogBuild
-import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.fragment.MainFragment
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
+import com.liyihuanx.module_logutil.logpackage.MLog
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -22,15 +21,19 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @date 2021/8/30
  * @description: 类的描述
  */
-class HomeFragment : MainFragment<FragmentHomeBinding>(){
+class HomeFragment : MainFragment<FragmentHomeBinding>() {
     private val btnActivityList = arrayListOf(
-        "SecondActivity", "VLayoutActivity", "CollapsingActivity", "btnDialog","LogDemoActivity"
+        "SecondActivity",
+        "VLayoutActivity",
+        "CollapsingActivity",
+        "btnDialog",
+        "LogDemoActivity",
+        "LogUtil"
     )
 
     private val homeAdapter by lazy {
         HomeAdapter().apply {
             this.setOnItemClickListener { _, _, position ->
-                Log.d("QWER", ": ${btnActivityList[position]}")
                 when (btnActivityList[position]) {
                     "SecondActivity" -> {
                         ARouter.getInstance()
@@ -56,6 +59,9 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
                             .build(RouterPath.Main.LogDemoActivity)
                             .navigation()
                     }
+                    "LogUtil" -> {
+                        MLog.v(1234)
+                    }
                 }
             }
         }
@@ -77,12 +83,11 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
     }
 
 
-
     /**
      * 自定义的点击 用lambda去引用
      * 可以随意加参数
      */
-    fun onClick(){
+    fun onClick() {
 
     }
 
@@ -123,7 +128,7 @@ class HomeFragment : MainFragment<FragmentHomeBinding>(){
                 }
             })
             .build()
-            .show(childFragmentManager,"")
+            .show(childFragmentManager, "")
     }
 
 

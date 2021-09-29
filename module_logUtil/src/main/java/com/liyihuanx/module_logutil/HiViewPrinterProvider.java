@@ -1,16 +1,15 @@
 package com.liyihuanx.module_logutil;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.devio.hi.library.util.HiDisplayUtil;
 
 public class HiViewPrinterProvider {
     private FrameLayout rootView;
@@ -32,14 +31,14 @@ public class HiViewPrinterProvider {
             return;
         }
         FrameLayout.LayoutParams params =
-            new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM | Gravity.END;
         View floatingView = genFloatingView();
         floatingView.setTag(TAG_FLOATING_VIEW);
         floatingView.setBackgroundColor(Color.BLACK);
         floatingView.setAlpha(0.8f);
-        params.bottomMargin = HiDisplayUtil.dp2px(100, rootView.getResources());
-        rootView.addView(genFloatingView(), params);
+        params.bottomMargin = dp2px(100, rootView.getResources());
+        rootView.addView(floatingView, params);
     }
 
     /**
@@ -50,11 +49,11 @@ public class HiViewPrinterProvider {
             return;
         }
         FrameLayout.LayoutParams params =
-            new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, HiDisplayUtil.dp2px(160, rootView.getResources()));
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(160, rootView.getResources()));
         params.gravity = Gravity.BOTTOM;
         View logView = genLogView();
         logView.setTag(TAG_LOG_VIEW);
-        rootView.addView(genLogView(), params);
+        rootView.addView(logView, params);
         isOpen = true;
     }
 
@@ -87,9 +86,9 @@ public class HiViewPrinterProvider {
             }
         });
         textView.setText("HiLog");
+        textView.setTextColor(Color.parseColor("#FFFFFF"));
         return floatingView = textView;
     }
-
 
 
     private View genLogView() {
@@ -98,14 +97,10 @@ public class HiViewPrinterProvider {
         }
         FrameLayout logView = new FrameLayout(rootView.getContext());
         logView.setBackgroundColor(Color.BLACK);
+        logView.addView(recyclerView);
 
-        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(rootView.getContext());
-        FrameLayout.LayoutParams horizontalScrollViewParams =
-                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        horizontalScrollView.addView(recyclerView);
-        logView.addView(horizontalScrollView, horizontalScrollViewParams);
         FrameLayout.LayoutParams params =
-            new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.END;
         TextView closeView = new TextView(rootView.getContext());
         closeView.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +110,16 @@ public class HiViewPrinterProvider {
             }
         });
         closeView.setText("Close");
+        closeView.setTextColor(Color.parseColor("#FFFFFF"));
         logView.addView(closeView, params);
         return this.logView = logView;
+    }
+
+    private int dp2px(int dp, Resources resources) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                resources.getDisplayMetrics()
+        );
     }
 }

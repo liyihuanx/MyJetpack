@@ -12,6 +12,7 @@ import com.liyihuanx.annotation.NetStrategy
 import com.liyihuanx.module_base.fragment.MainLazyRecyclerFragment
 import com.liyihuanx.module_base.fragment.TimeUnit
 import com.liyihuanx.module_base.refresh.SmartRecyclerView
+import com.liyihuanx.module_logutil.logpackage.MLog
 import kotlinx.android.synthetic.main.fragment_two.*
 
 /**
@@ -30,6 +31,7 @@ class TwoFragment : MainLazyRecyclerFragment<ChapterBean, FragmentTwoBinding>(){
 
     override fun observeLiveData() {
         twoVm.getHttpData.observe(this, {
+            MLog.v(it)
             mSmartRecycler.onFetchDataFinish(it)
         })
     }

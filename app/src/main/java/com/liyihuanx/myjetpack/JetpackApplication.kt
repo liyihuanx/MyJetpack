@@ -8,6 +8,9 @@ import com.liyihuanx.module_logutil.HiConsolePrinter
 import com.liyihuanx.module_logutil.HiFilePrinter
 import com.liyihuanx.module_logutil.HiLogConfig
 import com.liyihuanx.module_logutil.HiLogManager
+import com.liyihuanx.module_logutil.logpackage.ConsolePrinter
+import com.liyihuanx.module_logutil.logpackage.LogConfig
+import com.liyihuanx.module_logutil.logpackage.LogManager
 
 /**
  * @author created by liyihuanx
@@ -25,6 +28,11 @@ class JetPackApplication : Application(){
         // activity管理器
         ActivityManager.instance.initActivityManager(this)
 
+        LogManager.init(
+            arrayListOf(
+                ConsolePrinter()
+            )
+        )
         HiLogManager.init(
             object : HiLogConfig() {
                 override fun injectJsonParser(): JsonParser? {

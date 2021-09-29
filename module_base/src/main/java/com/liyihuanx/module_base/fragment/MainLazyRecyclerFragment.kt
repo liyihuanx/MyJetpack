@@ -80,7 +80,6 @@ abstract class MainLazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyRecyc
         if (refreshAtOnStart) {
             onFragmentResumeRefresh()
         }
-        refreshAtOnStart = true
     }
 
     private fun onFragmentResumeRefresh() {

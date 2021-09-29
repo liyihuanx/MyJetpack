@@ -74,6 +74,7 @@ abstract class BaseLazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyFragm
 
 
     override fun onFragmentResume() {
+        super.onFragmentResume()
         mSmartRecycler.startRefresh()
     }
 
@@ -81,6 +82,7 @@ abstract class BaseLazyRecyclerFragment<T, DB : ViewDataBinding> : BaseLazyFragm
      * 离开停止刷新
      */
     override fun onFragmentPause() {
+        super.onFragmentResume()
         mSmartRecycler.finishRefresh()
     }
 

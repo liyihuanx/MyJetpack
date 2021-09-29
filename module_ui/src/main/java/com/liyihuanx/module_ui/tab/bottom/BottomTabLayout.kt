@@ -205,7 +205,6 @@ class BottomTabLayout @JvmOverloads constructor(
 
     fun bindViewPage(viewpage: ViewPager) {
         bottomTabList.forEachIndexed { index, bottomTabBean ->
-            Log.d("QWER", "bindViewPage: ")
             if (bottomTabBean.start == true) {
                 viewpage.currentItem = index
                 return@forEachIndexed

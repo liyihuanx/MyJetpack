@@ -1,6 +1,8 @@
 package com.liyihuanx.myjetpack.main
 
 import androidx.fragment.app.Fragment
+import com.liyihuanx.module_base.activity.BaseActivity
+import com.liyihuanx.module_base.activity.BaseDataBindingActivity
 import com.liyihuanx.module_three.ThreeFragment
 import com.liyihuanx.module_two.TwoFragment
 import com.liyihuanx.module_base.activity.FullScreenActivity
@@ -70,17 +72,16 @@ class MainActivity : FullScreenActivity<ActivityMainBinding>() {
             }
         })
 
-        // viewpager
-        val viewPagerAdapter = MainViewPagerAdapter(supportFragmentManager, arrayListOfFragment)
-        mainVp.adapter = viewPagerAdapter
-
         //viewpager2
 //        val mainAdapter = MainAdapter(arrayListOfFragment, this)
 //        mainVp.adapter = mainAdapter
 //        // 能不能左右滑动
 //        mainVp.isUserInputEnabled = false
 
+
+        // viewpager
+        val viewPagerAdapter = MainViewPagerAdapter(supportFragmentManager, arrayListOfFragment)
+        mainVp.adapter = viewPagerAdapter
         tabLayout.bindViewPage(mainVp)
     }
-
 }
