@@ -55,6 +55,7 @@ dependencies {
     // ARouter
     api 'com.alibaba:arouter-api:1.5.2'
     kapt 'com.alibaba:arouter-compiler:1.5.2'
-    
+    // 指示器框架
+    api 'com.github.hackware1993:MagicIndicator:1.7.0'
 
 }

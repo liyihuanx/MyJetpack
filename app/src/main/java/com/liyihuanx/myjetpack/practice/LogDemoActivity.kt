@@ -25,7 +25,7 @@ class LogDemoActivity : BaseActivity() {
         btnLog.setOnClickListener {
             MLog.e("6789")
         }
-        val testViewPrinter = ViewPrinter(this)
-        LogManager.addLogPrinter(testViewPrinter)
+        val viewPrinter = ViewPrinter(this)
+        LogManager.addLogPrinter(viewPrinter)
     }
 }

@@ -1,5 +1,6 @@
 package com.liyihuanx.module_three
 
+import com.liyihuanx.module_base.fragment.BaseLazyFragment
 import com.liyihuanx.module_three.databinding.FragmentThree1Binding
 import com.liyihuanx.module_base.fragment.MainFragment
 
@@ -8,7 +9,7 @@ import com.liyihuanx.module_base.fragment.MainFragment
  * @date 2021/9/16
  * @description: 类的描述
  */
-class Three1Fragment : MainFragment<FragmentThree1Binding>() {
+class Three1Fragment : BaseLazyFragment<FragmentThree1Binding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_three1
     }
