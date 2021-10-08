@@ -1,4 +1,4 @@
-package com.liyihuanx.module_logutil.logpackage
+package com.liyihuanx.module_logutil
 
 import android.util.Log
 import androidx.annotation.IntDef

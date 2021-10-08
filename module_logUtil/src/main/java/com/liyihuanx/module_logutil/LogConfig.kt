@@ -1,8 +1,6 @@
-package com.liyihuanx.module_logutil.logpackage
+package com.liyihuanx.module_logutil
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.liyihuanx.module_logutil.HiLogPrinter
 
 /**
  * @author created by liyihuanx
@@ -49,7 +47,7 @@ interface LogConfig {
     /**
      * 所有的输出器
      */
-    fun printers(): List<HiLogPrinter>? {
+    fun printers(): List<LogPrinter>? {
         return null
     }
 

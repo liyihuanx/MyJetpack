@@ -1,4 +1,4 @@
-package com.liyihuanx.module_logutil.logpackage
+package com.liyihuanx.module_logutil
 
 /**
  * @author created by liyihuanx

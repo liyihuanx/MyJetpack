@@ -20,13 +20,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 2、线程同步；
  * 2、文件操作，BufferedWriter的应用；
  */
-public class HiFilePrinter implements HiLogPrinter {
+public class FilePrinter implements LogPrinter {
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
     private final String logPath;
     private final long retentionTime;
     private LogWriter writer;
     private volatile PrintWorker worker;
-    private static HiFilePrinter instance;
+    private static FilePrinter instance;
 
     /**
      * 创建HiFilePrinter
@@ -34,15 +34,15 @@ public class HiFilePrinter implements HiLogPrinter {
      * @param logPath       log保存路径，如果是外部路径需要确保已经有外部存储的读写权限
      * @param retentionTime log文件的有效时长，单位毫秒，<=0表示一直有效
      */
-    public static synchronized HiFilePrinter getInstance(String logPath, long retentionTime) {
+    public static synchronized FilePrinter getInstance(String logPath, long retentionTime) {
         if (instance == null) {
-            instance = new HiFilePrinter(logPath, retentionTime);
+            instance = new FilePrinter(logPath, retentionTime);
         }
         return instance;
     }
 
 
-    private HiFilePrinter(String logPath, long retentionTime) {
+    private FilePrinter(String logPath, long retentionTime) {
         this.logPath = logPath;
         this.retentionTime = retentionTime;
         this.writer = new LogWriter();
@@ -52,15 +52,15 @@ public class HiFilePrinter implements HiLogPrinter {
 
 
     @Override
-    public void print(HiLogConfig config, int level, String tag, String printString) {
+    public void print(LogConfig config, int level, String tag, String printString) {
         long timeMillis = System.currentTimeMillis();
         if (!worker.isRunning()) {
             worker.start();
         }
-        worker.put(new HiLogMo(timeMillis, level, tag, printString));
+        worker.put(new LogBean(timeMillis, level, tag, printString));
     }
 
-    private void doPrint(HiLogMo logMo) {
+    private void doPrint(LogBean logMo) {
         String lastFileName = writer.getPreFileName();
         if (lastFileName == null) {
             String newFileName = genFileName();
@@ -104,7 +104,7 @@ public class HiFilePrinter implements HiLogPrinter {
 
     private class PrintWorker implements Runnable {
 
-        private BlockingQueue<HiLogMo> logs = new LinkedBlockingQueue<>();
+        private BlockingQueue<LogBean> logs = new LinkedBlockingQueue<>();
 
         private volatile boolean running;
 
@@ -113,7 +113,7 @@ public class HiFilePrinter implements HiLogPrinter {
          *
          * @param log 要被打印的log
          */
-        void put(HiLogMo log) {
+        void put(LogBean log) {
             try {
                 logs.put(log);
             } catch (InterruptedException e) {
@@ -144,7 +144,7 @@ public class HiFilePrinter implements HiLogPrinter {
 
         @Override
         public void run() {
-            HiLogMo log;
+            LogBean log;
             try {
                 while (true) {
                     log = logs.take();

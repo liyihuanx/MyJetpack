@@ -9,7 +9,6 @@ import com.liyihuanx.module_base.utils.LiveDataBus
 import com.liyihuanx.module_base.utils.lazyVm
 import com.liyihuanx.module_common.viewmodel.TestViewModel
 import com.liyihuanx.module_base.activity.NormalActivity
-import com.liyihuanx.module_logutil.logpackage.MLog
 import com.liyihuanx.myjetpack.R
 import com.liyihuanx.myjetpack.databinding.ActivitySecondBinding
 import kotlinx.android.synthetic.main.activity_second.*

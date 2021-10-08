@@ -1,11 +1,13 @@
 package com.liyihuanx.myjetpack.practice
 
-import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.liyihuanx.module_base.activity.BaseActivity
 import com.liyihuanx.module_common.RouterPath
-import com.liyihuanx.module_logutil.*
+import com.liyihuanx.module_logutil.LogManager
+import com.liyihuanx.module_logutil.MLog
+import com.liyihuanx.module_logutil.ViewPrinter
 import com.liyihuanx.myjetpack.R
+import kotlinx.android.synthetic.main.activity_log_demo.*
 
 /**
  * @author created by liyihuanx
@@ -14,28 +16,16 @@ import com.liyihuanx.myjetpack.R
  */
 @Route(path = RouterPath.Main.LogDemoActivity)
 class LogDemoActivity : BaseActivity() {
-    var viewPrinter: HiViewPrinter? = null
 
     override fun getLayout(): Int {
         return R.layout.activity_log_demo
     }
 
     override fun bindViewOrData() {
-        viewPrinter = HiViewPrinter(this)
-        findViewById<View>(R.id.btn_log).setOnClickListener {
-            printLog()
+        btnLog.setOnClickListener {
+            MLog.e("6789")
         }
-        viewPrinter!!.viewProvider.showFloatingView()
-    }
-
-    private fun printLog() {
-        HiLogManager.getInstance().addPrinter(viewPrinter)
-        HiLog.log(object : HiLogConfig() {
-            override fun includeThread(): Boolean {
-                return false
-            }
-        }, HiLogType.V, "---", "5566")
-
-        HiLog.v("9900")
+        val testViewPrinter = ViewPrinter(this)
+        LogManager.addLogPrinter(testViewPrinter)
     }
 }

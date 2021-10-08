@@ -12,7 +12,7 @@ import com.liyihuanx.annotation.NetStrategy
 import com.liyihuanx.module_base.fragment.MainLazyRecyclerFragment
 import com.liyihuanx.module_base.fragment.TimeUnit
 import com.liyihuanx.module_base.refresh.SmartRecyclerView
-import com.liyihuanx.module_logutil.logpackage.MLog
+import com.liyihuanx.module_logutil.MLog
 import kotlinx.android.synthetic.main.fragment_two.*
 
 /**

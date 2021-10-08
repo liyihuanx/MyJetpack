@@ -1,8 +1,7 @@
 package com.liyihuanx.module_logutil;
 
 
-public class HiStackTraceUtil {
-
+public class StackTraceUtil {
 
 
     /**

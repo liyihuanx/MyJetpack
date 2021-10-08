@@ -12,7 +12,7 @@ import com.liyihuanx.module_base.dialog.CommonDialogBuild
 import com.liyihuanx.module_base.fragment.MainFragment
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
-import com.liyihuanx.module_logutil.logpackage.MLog
+import com.liyihuanx.module_logutil.MLog
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -27,8 +27,7 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
         "VLayoutActivity",
         "CollapsingActivity",
         "btnDialog",
-        "LogDemoActivity",
-        "LogUtil"
+        "LogDemoActivity"
     )
 
     private val homeAdapter by lazy {
@@ -58,9 +57,6 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
                         ARouter.getInstance()
                             .build(RouterPath.Main.LogDemoActivity)
                             .navigation()
-                    }
-                    "LogUtil" -> {
-                        MLog.v(1234)
                     }
                 }
             }

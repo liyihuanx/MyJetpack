@@ -1,15 +1,14 @@
-package com.liyihuanx.module_logutil.logpackage
+package com.liyihuanx.module_logutil
 
 import android.util.Log
-import com.liyihuanx.module_logutil.HiLogConfig
 
 /**
  * @author created by liyihuanx
  * @date 2021/9/29
- * @description: 类的描述
+ * @description: 最简单的，输出在控制台的打印器
  */
-class ConsolePrinter : LogPrinter{
-    override fun print(config: LogConfig?, level: Int, tag: String?, printString: String) {
+class ConsolePrinter : LogPrinter {
+    override fun print(config: LogConfig, level: Int, tag: String?, printString: String) {
         val len = printString.length
         val countOfSub = len / LogConfig.MAX_LEN
         if (countOfSub > 0) {

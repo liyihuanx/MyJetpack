@@ -1,10 +1,6 @@
-package com.liyihuanx.module_logutil.logpackage
+package com.liyihuanx.module_logutil
 
-import com.liyihuanx.module_logutil.HiLogConfig
-import com.liyihuanx.module_logutil.HiLogPrinter
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.log
 
 /**
  * @author created by liyihuanx
@@ -20,8 +16,8 @@ object LogManager {
      * 初始化
      */
     fun init(printers: List<LogPrinter>, logConfig: LogConfig = LogConfig.defaultLogConfig) {
-        this.logConfig = logConfig
-        this.printers.addAll(printers)
+        LogManager.logConfig = logConfig
+        LogManager.printers.addAll(printers)
     }
 
 
