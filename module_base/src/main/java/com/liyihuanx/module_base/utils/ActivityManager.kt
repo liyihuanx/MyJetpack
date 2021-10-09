@@ -25,13 +25,16 @@ class ActivityManager private constructor() {
         }
     }
 
-    private val activityStack: Stack<WeakReference<Activity>?> by lazy {
-        Stack()
-    }
-
     fun initActivityManager(application: Application) {
         application.registerActivityLifecycleCallbacks(InnerActivityLifecycle())
     }
+
+
+    private val activityStack: Stack<WeakReference<Activity>?> by lazy { Stack() }
+    private val frontBackCallbacks = ArrayList<FrontBackCallback>()
+    private var activityStartCount = 0
+    private var front = true;
+
 
     /**
      * 获取activity个数
@@ -248,14 +251,53 @@ class ActivityManager private constructor() {
             pushActivity(activity)
         }
 
-        override fun onActivityStarted(activity: Activity) {}
+        override fun onActivityStarted(activity: Activity) {
+            activityStartCount++
+            //activityStartCount>0  说明应用处在可见状态，也就是前台
+            //!front 之前是不是在后台
+            if (!front && activityStartCount > 0) {
+                front = true
+                onFrontBackChanged(front);
+            }
+        }
+
         override fun onActivityResumed(activity: Activity) {}
         override fun onActivityPaused(activity: Activity) {}
-        override fun onActivityStopped(activity: Activity) {}
+        override fun onActivityStopped(activity: Activity) {
+            activityStartCount--;
+            if (activityStartCount <= 0 && front) {
+                front = false
+                onFrontBackChanged(front)
+            }
+        }
+
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
         override fun onActivityDestroyed(activity: Activity) {
             removeActivity(activity)
         }
     }
+
+
+    interface FrontBackCallback {
+        fun onChanged(front: Boolean)
+    }
+
+    private fun onFrontBackChanged(front: Boolean) {
+        frontBackCallbacks.forEach {
+            it.onChanged(front)
+        }
+    }
+
+    fun addFrontBackCallback(callback: FrontBackCallback) {
+        if (!frontBackCallbacks.contains(callback)) {
+            frontBackCallbacks.add(callback)
+        }
+    }
+
+    // TODO 以后想办法改进成自动反注册的
+    fun removeFrontBackCallback(callback: FrontBackCallback) {
+        frontBackCallbacks.remove(callback);
+    }
+
 
 }
