@@ -18,5 +18,11 @@ class RouterPath {
 
     }
 
+    object LogUtil {
+        private const val groupPath = "/LogUtil/"
+        const val ToolDebugDialog = groupPath + "ToolDebugDialog"
+
+    }
+
 
 }

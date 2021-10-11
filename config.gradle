@@ -1,0 +1,30 @@
+ext {
+    android = [
+            compileSdkVersion: 30,
+            buildToolsVersion: "30.0.3",
+            applicationId    : "com.liyihuanx.myjetpack",
+            minSdkVersion    : 21,
+            targetSdkVersion : 30,
+            versionCode      : 1,
+            versionName      : "1.0",
+
+    ]
+
+    dependencies = [
+            base: [
+
+            ],
+            app : [
+                    "glide:3.7.0": "com.github.bumptech.glide:glide:3.7.0",
+            ]
+    ]
+
+    other = [
+            buildTime: new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("GMT+08:00")),
+    ]
+}
+
+// 在每个模块下
+//rootProject.ext.dependencies[name].each {
+//    dep -> implementation dep.value
+//}

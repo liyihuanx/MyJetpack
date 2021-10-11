@@ -1,3 +1,4 @@
+include ':module_debugTool'
 include ':module_logUtil'
 include ':module_login'
 include ':module_ui'

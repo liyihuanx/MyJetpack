@@ -11,8 +11,8 @@ import com.liyihuanx.module_base.dialog.BaseDialogFragment
 import com.liyihuanx.module_base.dialog.CommonDialogBuild
 import com.liyihuanx.module_base.fragment.MainFragment
 import com.liyihuanx.module_base.utils.asToast
+import com.liyihuanx.module_common.bridge.DebugToolProviderImpl
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
-import com.liyihuanx.module_logutil.MLog
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -27,7 +27,8 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
         "VLayoutActivity",
         "CollapsingActivity",
         "btnDialog",
-        "LogDemoActivity"
+        "LogDemoActivity",
+        "跨模块调用"
     )
 
     private val homeAdapter by lazy {
@@ -57,6 +58,12 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
                         ARouter.getInstance()
                             .build(RouterPath.Main.LogDemoActivity)
                             .navigation()
+                    }
+                    "跨模块调用" -> {
+                        val debugToolProviderImpl =
+                            ARouter.getInstance().build(RouterPath.LogUtil.ToolDebugDialog)
+                                .navigation() as DebugToolProviderImpl
+                        debugToolProviderImpl.getDebugToolDialog().show(childFragmentManager, "")
                     }
                 }
             }

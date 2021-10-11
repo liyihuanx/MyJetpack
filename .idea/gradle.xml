@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/lib_compiler" />
             <option value="$PROJECT_DIR$/module_base" />
             <option value="$PROJECT_DIR$/module_common" />
+            <option value="$PROJECT_DIR$/module_debugTool" />
             <option value="$PROJECT_DIR$/module_home" />
             <option value="$PROJECT_DIR$/module_logUtil" />
             <option value="$PROJECT_DIR$/module_login" />
