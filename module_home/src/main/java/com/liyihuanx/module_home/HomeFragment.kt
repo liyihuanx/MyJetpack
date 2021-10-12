@@ -13,6 +13,7 @@ import com.liyihuanx.module_base.fragment.MainFragment
 import com.liyihuanx.module_base.utils.asToast
 import com.liyihuanx.module_common.bridge.DebugToolProviderImpl
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
+import com.liyihuanx.module_logutil.MLog
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -63,7 +64,7 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
                         val debugToolProviderImpl =
                             ARouter.getInstance().build(RouterPath.LogUtil.ToolDebugDialog)
                                 .navigation() as DebugToolProviderImpl
-                        debugToolProviderImpl.getDebugToolDialog().show(childFragmentManager, "")
+                        debugToolProviderImpl.getDebugToolDialog()?.show(childFragmentManager, "")
                     }
                 }
             }
@@ -100,6 +101,7 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
         homeAdapter.setNewInstance(btnActivityList)
         rvHome.adapter = homeAdapter
         rvHome.layoutManager = LinearLayoutManager(context)
+        MLog.v("111222")
     }
 
     override fun observeLiveData() {

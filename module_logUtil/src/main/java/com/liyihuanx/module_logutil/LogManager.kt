@@ -22,11 +22,16 @@ object LogManager {
 
 
     fun addLogPrinter(logPrinter: LogPrinter) {
-        printers.add(logPrinter)
+        if (!printers.contains(logPrinter)) {
+            printers.add(logPrinter)
+        }
     }
 
     fun removeLogPrinter(logPrinter: LogPrinter) {
         printers.remove(logPrinter)
     }
 
+    fun containsLogPrinter(logPrinter: LogPrinter): Boolean {
+        return printers.contains(logPrinter)
+    }
 }

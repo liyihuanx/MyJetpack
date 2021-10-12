@@ -3,10 +3,9 @@ package com.liyihuanx.module_base.http.request
 import com.google.gson.Gson
 import com.liyihuanx.module_base.http.interceptor.CustomLogInterceptor
 import com.liyihuanx.module_base.http.interceptor.HeadInterceptor
+import com.liyihuanx.module_base.utils.SpUtil
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -25,8 +24,8 @@ class HttpConfig : IHttpConfig {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
         // 添加头部拦截器
-//        okHttpClientBuilder.addInterceptor(HeadInterceptor())
-//        okHttpClientBuilder.addInterceptor(CustomLogInterceptor())
+        okHttpClientBuilder.addInterceptor(HeadInterceptor())
+        okHttpClientBuilder.addInterceptor(CustomLogInterceptor())
         // 超时的时间
         okHttpClientBuilder.connectTimeout(5000, TimeUnit.SECONDS)
         return okHttpClientBuilder.build()

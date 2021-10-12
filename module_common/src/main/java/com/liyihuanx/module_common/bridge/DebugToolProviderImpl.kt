@@ -12,7 +12,17 @@ import com.liyihuanx.module_debugtool.DebugToolDialog
  */
 @Route(path = RouterPath.LogUtil.ToolDebugDialog)
 class DebugToolProviderImpl : IDebugToolProvider {
-    override fun getDebugToolDialog(): DialogFragment {
+    override fun getDebugToolDialog(): DialogFragment? {
+        //ARouter
         return DebugToolDialog()
+
+//        var debugToolDialog: DialogFragment? = null
+//        try {
+//            val clazz = Class.forName("com.liyihuanx.module_debugtool.DebugToolDialog")
+//            debugToolDialog = clazz.getConstructor().newInstance() as DialogFragment
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        return debugToolDialog
     }
 }

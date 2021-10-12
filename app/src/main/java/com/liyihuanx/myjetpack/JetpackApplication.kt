@@ -6,6 +6,7 @@ import com.liyihuanx.module_base.utils.ActivityManager
 import com.liyihuanx.module_logutil.FilePrinter
 import com.liyihuanx.module_logutil.ConsolePrinter
 import com.liyihuanx.module_logutil.LogManager
+import com.liyihuanx.module_logutil.ViewPrinter
 
 /**
  * @author created by liyihuanx

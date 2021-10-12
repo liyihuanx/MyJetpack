@@ -41,9 +41,7 @@ class HeadInterceptor : Interceptor {
         response.newBuilder()
             .body(ResponseBody.create(body.contentType(), bodyString))
             .build()
-
         // 传递给下一层拦截器获取他的返回结果
         return response
-
     }
 }

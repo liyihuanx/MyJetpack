@@ -7,4 +7,4 @@ package com.liyihuanx.module_debugtool
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class DebugAnnotation(val name: String, val des: String)
+annotation class DebugAnnotation(val name: String, val desc: String)

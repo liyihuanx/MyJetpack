@@ -10,5 +10,5 @@ import com.alibaba.android.arouter.facade.template.IProvider
  * @description: 类的描述
  */
 interface IDebugToolProvider : BaseDialogProvider {
-    fun getDebugToolDialog(): DialogFragment
+    fun getDebugToolDialog(): DialogFragment?
 }

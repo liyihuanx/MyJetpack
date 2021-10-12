@@ -96,4 +96,6 @@ dependencies {
     api ('com.alibaba.android:vlayout:1.2.8@aar') {
         transitive = true
     }
+
+    api project(':module_logUtil')
 }

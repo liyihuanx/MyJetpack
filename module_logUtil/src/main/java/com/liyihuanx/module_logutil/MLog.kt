@@ -93,53 +93,28 @@ object MLog {
     }
 
 
-    fun v(contents: Any?) {
-        myLog(LogType.V, LogManager.logConfig.getGlobalTag(), contents)
-    }
-
-    fun vTag(tag: String, contents: Any?) {
+    fun v(contents: Any?, tag: String? = LogManager.logConfig.getGlobalTag()) {
         myLog(LogType.V, tag, contents)
     }
 
-    fun d(contents: Any?) {
-        myLog(LogType.D, LogManager.logConfig.getGlobalTag(), contents)
-    }
-
-    fun dTag(tag: String, contents: Any?) {
+    fun d(contents: Any?, tag: String? = LogManager.logConfig.getGlobalTag()) {
         myLog(LogType.D, tag, contents)
     }
 
-    fun i(contents: Any?) {
-        myLog(LogType.I, LogManager.logConfig.getGlobalTag(), contents)
-    }
-
-    fun iTag(tag: String, contents: Any?) {
+    fun i(contents: Any?, tag: String? = LogManager.logConfig.getGlobalTag()) {
         myLog(LogType.I, tag, contents)
     }
 
-    fun w(contents: Any?) {
-        myLog(LogType.W, LogManager.logConfig.getGlobalTag(), contents)
-    }
-
-    fun wTag(tag: String, contents: Any?) {
+    fun w(contents: Any?, tag: String? = LogManager.logConfig.getGlobalTag()) {
         myLog(LogType.W, tag, contents)
     }
 
-
-    fun e(contents: Any?) {
-        myLog(LogType.E, LogManager.logConfig.getGlobalTag(), contents)
-    }
-
-    fun eTag(tag: String, contents: Any?) {
+    fun e(contents: Any?, tag: String? = LogManager.logConfig.getGlobalTag()) {
         myLog(LogType.E, tag, contents)
     }
 
-
-    fun a(contents: Any?) {
-        myLog(LogType.A, LogManager.logConfig.getGlobalTag(), contents)
-    }
-
-    fun aTag(tag: String, contents: Any?) {
+    fun a(contents: Any?, tag: String? = LogManager.logConfig.getGlobalTag()) {
         myLog(LogType.A, tag, contents)
     }
+
 }
