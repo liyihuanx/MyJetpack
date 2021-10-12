@@ -1,28 +1,38 @@
 package com.liyihuanx.module_logutil
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.log
 
 /**
  * @author created by liyihuanx
  * @date 2021/10/8
  * @description: 可视化打印器
  */
-class ViewPrinter(activity: Activity) : LogPrinter {
+class ViewPrinter(activity: Activity) : LogPrinter, LifecycleObserver {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LogAdapter
 
-    init {
-        val rootView: FrameLayout = activity.findViewById(android.R.id.content)
+    private val rootView: FrameLayout by lazy {
+        activity.findViewById(android.R.id.content)
+    }
 
-        val viewPrinter = LayoutInflater.from(activity).inflate(R.layout.view_printer, null, false)
+    private val viewPrinter by lazy {
+        LayoutInflater.from(activity).inflate(R.layout.view_printer, null, false)
+    }
+
+    init {
         initRecyclerView(viewPrinter)
         initViewPrinterLayout(viewPrinter)
         rootView.addView(viewPrinter)
@@ -62,6 +72,12 @@ class ViewPrinter(activity: Activity) : LogPrinter {
     override fun print(config: LogConfig, level: Int, tag: String?, printString: String) {
         adapter.addItem(LogBean(System.currentTimeMillis(), level, tag, printString))
         recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun removeView() {
+        rootView.removeView(viewPrinter)
+        LogManager.removeLogPrinter(this)
     }
 }
 

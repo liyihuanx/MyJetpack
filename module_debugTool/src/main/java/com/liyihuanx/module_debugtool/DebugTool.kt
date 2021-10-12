@@ -58,6 +58,15 @@ class DebugTool {
         Process.killProcess(Process.myPid())
     }
 
+    @DebugAnnotation("查看本地Crash日志", "")
+    fun localCrashList() {
+        val context = AppContext.get().applicationContext
+        val intent = Intent(context,CrashListActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    }
+
+
 //    @DebugAnnotation("LogTest", "")
 //    fun log() {
 //        MLog.v("LogTest")

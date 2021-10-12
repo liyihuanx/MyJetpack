@@ -15,6 +15,7 @@ import com.liyihuanx.module_common.bridge.DebugToolProviderImpl
 import com.liyihuanx.module_home.databinding.FragmentHomeBinding
 import com.liyihuanx.module_logutil.MLog
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.lang.NullPointerException
 
 
 /**
@@ -29,7 +30,8 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
         "CollapsingActivity",
         "btnDialog",
         "LogDemoActivity",
-        "跨模块调用"
+        "跨模块调用",
+        "Crash"
     )
 
     private val homeAdapter by lazy {
@@ -65,6 +67,9 @@ class HomeFragment : MainFragment<FragmentHomeBinding>() {
                             ARouter.getInstance().build(RouterPath.LogUtil.ToolDebugDialog)
                                 .navigation() as DebugToolProviderImpl
                         debugToolProviderImpl.getDebugToolDialog()?.show(childFragmentManager, "")
+                    }
+                    "Crash" ->{
+                        throw NullPointerException("我制造的空指针异常")
                     }
                 }
             }

@@ -3,6 +3,8 @@ package com.liyihuanx.myjetpack
 import android.app.Application
 import com.alibaba.android.arouter.launcher.ARouter
 import com.liyihuanx.module_base.utils.ActivityManager
+import com.liyihuanx.module_debugtool.CrashHandler
+import com.liyihuanx.module_debugtool.CrashManager
 import com.liyihuanx.module_logutil.FilePrinter
 import com.liyihuanx.module_logutil.ConsolePrinter
 import com.liyihuanx.module_logutil.LogManager
@@ -30,5 +32,7 @@ class JetPackApplication : Application(){
                 FilePrinter.getInstance(applicationContext.cacheDir.absolutePath, 0)
             )
         )
+        CrashManager.init()
+
     }
 }

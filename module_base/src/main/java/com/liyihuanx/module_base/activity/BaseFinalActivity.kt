@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.liyihuanx.module_base.R
+import com.liyihuanx.module_logutil.LogManager
+import com.liyihuanx.module_logutil.ViewPrinter
 
 /**
  * @author created by liyihuanx
@@ -263,6 +265,13 @@ abstract class BaseFinalActivity : AppCompatActivity(), Toolbar.OnMenuItemClickL
             }
             return true
         }
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            val viewPrinter = ViewPrinter(this)
+            lifecycle.addObserver(viewPrinter)
+            LogManager.addLogPrinter(viewPrinter)
+            return true
+        }
+
         return super.onKeyDown(keyCode, event)
     }
 

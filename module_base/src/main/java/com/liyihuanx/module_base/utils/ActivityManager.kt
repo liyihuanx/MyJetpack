@@ -33,7 +33,7 @@ class ActivityManager private constructor() {
     private val activityStack: Stack<WeakReference<Activity>?> by lazy { Stack() }
     private val frontBackCallbacks = ArrayList<FrontBackCallback>()
     private var activityStartCount = 0
-    private var front = true;
+    var front = true;
 
 
     /**
