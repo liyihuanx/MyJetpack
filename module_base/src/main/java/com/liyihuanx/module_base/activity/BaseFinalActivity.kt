@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.DialogFragment
 import com.liyihuanx.module_base.R
 
 /**
@@ -248,6 +249,21 @@ abstract class BaseFinalActivity : AppCompatActivity(), Toolbar.OnMenuItemClickL
             // TODO 做键盘隐藏
         }
         false
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // 按音量下键
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            try {
+                val clazz = Class.forName("com.liyihuanx.module_debugtool.DebugToolDialog")
+                val debugToolDialog = clazz.getConstructor().newInstance() as DialogFragment
+                debugToolDialog.show(supportFragmentManager, "debug_tool")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
 }

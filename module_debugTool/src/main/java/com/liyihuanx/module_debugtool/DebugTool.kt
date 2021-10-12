@@ -58,19 +58,19 @@ class DebugTool {
         Process.killProcess(Process.myPid())
     }
 
-    @DebugAnnotation("LogTest", "")
-    fun log() {
-        MLog.v("LogTest")
-    }
-
-    @DebugAnnotation("Log-View", "")
-    fun logViewSwitch() {
-        val currentActivity = ActivityManager.instance.currentActivity() as FragmentActivity
-        val viewPrinterDialog = ViewPrinterDialog()
-        LogManager.addLogPrinter(viewPrinterDialog)
-        ViewPrinterDialog().show(currentActivity.supportFragmentManager,"ViewPrinterDialog")
-
-        MLog.v("logViewSwitch")
+//    @DebugAnnotation("LogTest", "")
+//    fun log() {
+//        MLog.v("LogTest")
+//    }
+//
+//    @DebugAnnotation("Log-View", "")
+//    fun logViewSwitch() {
+//        val currentActivity = ActivityManager.instance.currentActivity() as FragmentActivity
+//        val viewPrinterDialog = ViewPrinterDialog()
+//        LogManager.addLogPrinter(viewPrinterDialog)
+//        ViewPrinterDialog().show(currentActivity.supportFragmentManager,"ViewPrinterDialog")
+//
+//        MLog.v("logViewSwitch")
 
 //        ActivityManager.instance.currentActivity()?.let {
 //            ViewPrinter(it)
@@ -83,5 +83,5 @@ class DebugTool {
 //                LogManager.addLogPrinter(it)
 //            }
 //        }
-    }
+//    }
 }

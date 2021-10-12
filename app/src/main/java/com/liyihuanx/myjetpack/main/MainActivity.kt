@@ -1,8 +1,6 @@
 package com.liyihuanx.myjetpack.main
 
 import androidx.fragment.app.Fragment
-import com.liyihuanx.module_base.activity.BaseActivity
-import com.liyihuanx.module_base.activity.BaseDataBindingActivity
 import com.liyihuanx.module_three.ThreeFragment
 import com.liyihuanx.module_two.TwoFragment
 import com.liyihuanx.module_base.activity.FullScreenActivity
